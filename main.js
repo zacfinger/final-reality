@@ -18,8 +18,23 @@ document.getElementById("answer") // answer field now allows enter key as input
 
 // set up any map
 function setUpMap(room){
-	output.innerHTML += room.description;
-	output.innerHTML += "\n"+"What dost thou do?"; // THE prompt
+
+	m = room.getMonster(); // Temporary monster retrieved from room.
+
+	// describe the room
+	output.innerHTML += room.describeRoom();
+	output.innerHTML += "<br>";
+	output.innerHTML += room.getDescription2();
+	output.innerHTML += "<br>";
+
+	if(room.getMonsterAmount() > 0) // If monsters are extant
+		output.innerHTML += "A"
+		if((m.getName()).charAt(0) == "I")
+			output.innerHTML += "n"
+
+		output.innerHTML += (" " + m.getName() + " standeths before ye."); // Player is reminded that this is so.
+
+	output.innerHTML += "<br>" + "What dost thou do?"; // THE prompt
 }
 
 ///////
@@ -36,11 +51,13 @@ function yourMove(){
 	// interpret the answer
 	// figure this out later
 	if(option == "open door"){
-		output.innerHTML += ("\n"+map.description2);
+		output.innerHTML += "<br>";
+		output.innerHTML += (map.description2);
 
 	}
 	else{
-		output.innerHTML += "\n"+"Why didst thou not open the door?";
+		output.innerHTML += "<br>";
+		output.innerHTML += "Why didst thou not open the door?";
 	}
 	//update the view
 	//do something to map before end of yourMove()

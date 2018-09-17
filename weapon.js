@@ -9,9 +9,7 @@ class Weapon {
      * Parameters:
      *
      * @param type 		// 1: dagger
-	 *					// 2: club
-	 *					// 3: sword
-	 *					// 4: pistol
+	 *					// 2: pistol
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	constructor (num){
