@@ -8,15 +8,40 @@ class Weapon {
      *
      * Parameters:
      *
-     * @param type 		// 1: dagger
-	 *					// 2: pistol
+     * @param type 		// 0: dagger
+	 *					// 1: pistol
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	constructor (num){
-		// Accepts a number after robustly assessing its validity.
-		if(num < 1 || num > 3)
-			this.type = 0;
+		
+		this.type = num;
+		
+		if(num == 0){
+			this.name = "DAGGER";
+			this.attack = "Thou jabbeth ye ";
+		}
+		if(num == 1){
+			this.name = "PISTOL";
+			this.attack = "Thou firest ye ";
+		}
+		if(num == 2){
+			this.name = "STAFF";
+			this.attack = "Thou swingesteth ye olde ";
+		}
 
-			this.type = num;
+		this.type = num;
+		this.health = num * 3;
+	}
+
+	getName(){
+		return this.name;
+	}
+
+	attackString(){
+		return this.attack + this.name + ". ";
+	}
+
+	getDamage(){
+		return ((this.type + 1) * 10);
 	}
 }

@@ -24,12 +24,19 @@ class Monster {
 			this.name = "GRUE";
 
 		this.type = num;
-		this.health = num * 3;
+		this.health = (num+1) * 3;
 		
-
 	}
 
 	getName(){
 		return this.name;
+	}
+
+	getHurt(num){  // Decrements monsters' health.
+		this.health -= num;
+	}
+
+	getHealth(){  // Returns the monsters' current health.
+		return this.health;
 	}
 }

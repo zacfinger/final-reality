@@ -19,8 +19,8 @@ class Room {
 	constructor (num){ // Map 0 of new game
 		this.weapon = new Weapon(0);
 	
-		this.description = "Thou findeth yeself in the woods. Thou only haveth upon yeself thy DAGGER. ";
-		this.description2 = "In the distance is a great castle. Verily an IMP approaches from yonder umbrage!";
+		this.description = "Thou findeth yeself in the woods. In the distance is a great castle.";
+		this.description2 = "Verily an IMP approaches from yonder umbrage! Thou only haveth upon yeself thy DAGGER.";
 		this.monsteramount = 1;
 		this.weaponamount = 0;
 		this.obstructioncount = 1;
@@ -45,5 +45,13 @@ class Room {
 
 	getMonster(){
 		return this.m;
+	}
+
+	setMonster(temp){
+		this.m = temp;
+	}
+
+	destroyAllMonsters(){
+		this.monsteramount = 0;
 	}
 }

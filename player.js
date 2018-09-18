@@ -30,14 +30,29 @@ class Player {
 		this.armor = armornum;
 
 		this.inventory = [];	// Inventory of weapons
-		this.weaponamount = 0;	// No weapons
+		this.inventory[0] = new Weapon(0);
+		this.weaponamount = 1;	// Default weapon
 		this.position = 0;		// First map
+
 	}
 
 	// Add weapon to inventory
 	receiveWeapon(thing){
 		this.inventory[this.weaponamount] = thing;	// Inputted weapon is added to player's
 		this.weaponamount++;						// inventory. Weapon amount is incremented.
+	}
+
+	getWeaponAmount()
+	{
+		return this.weaponamount;
+	}
+
+	getWeaponName(num){
+		return this.inventory[num].getName();
+	}
+
+	getWeapon(num){
+		return this.inventory[num];
 	}
 	
 }
