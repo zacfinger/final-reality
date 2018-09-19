@@ -16,19 +16,35 @@ class Room {
 
      // notes: http://www2.silverblade.net/cliches/
 
-	constructor (num){ // Map 0 of new game
-		this.weapon = new Weapon(0);
-	
-		this.description = "Thou findeth yeself in the woods. In the distance is a great castle.";
-		this.description2 = "Verily an IMP approaches from yonder umbrage! Thou only haveth upon yeself thy DAGGER.";
-		this.monsteramount = 1;
-		this.weaponamount = 0;
-		this.obstructioncount = 1;
-		this.obstructionname = "door";
-		this.obstructionverb = "open";
-		this.obstructiondescription = "There is a DOOR blocking thy path.";
-		this.obstructiondamage = 0;
-		this.m = new Monster(0);
+	constructor (num){ 
+		if(num == 0){ // Map 0 of new game
+			this.weapon = new Weapon(0);
+		
+			this.description = "Thou findeth yeself in the woods.";
+			this.description2 = "In the distance ahead is a great castle.";
+			this.monsteramount = 1;
+			this.weaponamount = 0;
+			this.obstructioncount = 1;
+			this.obstructionname = "log";
+			this.obstructionverb = "climb";
+			this.obstructiondescription = "There is a LOG blocking thy path.";
+			this.obstructiondamage = 0;
+			this.m = new Monster(0);
+		}
+		if(num == 1){
+			this.weapon = new Weapon(0);
+		
+			this.description = "Thou climbest overeth the LOG.";
+			this.description2 = "Now thou findest yeself at a fork in the path.";
+			this.monsteramount = 0;
+			this.weaponamount = 0;
+			this.obstructioncount = 1;
+			this.obstructionname = "spider";
+			this.obstructionverb = "dagger";
+			this.obstructiondescription = "Thou walkest forward. Ye old spider bites thy body with sickening precision.";
+			this.obstructiondamage = 200;
+			this.m = new Monster(0);
+		}
 	}
 
 	describeRoom(){
@@ -53,5 +69,25 @@ class Room {
 
 	destroyAllMonsters(){
 		this.monsteramount = 0;
+	}
+
+	getObstructCount(){
+		return this.obstructioncount;
+	}
+
+	describeObstruction(){
+		return this.obstructiondescription;
+	}
+
+	getDamage(){
+		return this.obstructiondamage;
+	}
+
+	getVerb(){
+		return this.obstructionverb;
+	}
+
+	getNoun(){
+		return this.obstructionname;
 	}
 }

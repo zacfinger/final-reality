@@ -15,8 +15,12 @@ class Monster {
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	constructor (num){
-		if(num == 0)
-			this.name = "IMP";
+		if(num == 0){
+			if(Math.floor((Math.random() * 100) + 1)>=50)
+				this.name = "IMP";
+			else
+				this.name = "GOBLIN";
+		}
 		if(num == 1)
 			this.name = "PEASANT";
 			// "'Death to collaborators,' he yells"
@@ -39,4 +43,17 @@ class Monster {
 	getHealth(){  // Returns the monsters' current health.
 		return this.health;
 	}
+
+	attackString(){ 
+		switch(this.type){
+			case 0: return "The "+this.name+" lunges. ";
+			case 1: return "The PEASANT fireseth the PISTOL and shouteth 'Death to royalists!' ";
+			case 2: return "The GRUE stares deeply into you and releases a magic missile of energy. ";
+		}
+	}
+
+	getDamage(){  // Damage given by monsters is determined by their type.
+		return ((this.type+1) * 10);
+	}
+
 }

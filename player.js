@@ -36,12 +36,6 @@ class Player {
 
 	}
 
-	// Add weapon to inventory
-	receiveWeapon(thing){
-		this.inventory[this.weaponamount] = thing;	// Inputted weapon is added to player's
-		this.weaponamount++;						// inventory. Weapon amount is incremented.
-	}
-
 	getWeaponAmount()
 	{
 		return this.weaponamount;
@@ -54,5 +48,51 @@ class Player {
 	getWeapon(num){
 		return this.inventory[num];
 	}
+
+	incrementPosition(){
+		this.position++;
+	}
+
+	getPosition(){
+		return this.position;
+	}
+
+	decreaseArmor(num){
+		var temp;
+		
+		if(this.armor - num < 0)
+		{						   
+			temp = num - this.armor;	// This ensures that the player's
+			num = this.armor;          	// health will not go below zero.
+		}
+		else
+		{
+			temp = 0;
+		}
+
+		this.armor = this.armor - num;
+
+		return temp;
+	}
+
+	getHurt(num)						// Inflicts damage upon user.
+	{									
+		if(this.armor > 0)				// If user has armor, armor is
+			num = decreaseArmor(num);	// first targeted. Then health.
+
+		this.health -= num; 
+
+	}
+
+	getHealth(){
+		return this.health;
+	}
+
+	// Add weapon to inventory
+	receiveWeapon(thing){
+		this.inventory[this.weaponamount] = thing;	// Inputted weapon is added to player's
+		this.weaponamount++;						// inventory. Weapon amount is incremented.
+	}
+
 	
 }
