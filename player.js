@@ -36,6 +36,18 @@ class Player {
 
 	}
 
+	setPlayer(gordon){
+		this.health = gordon.getHealth();
+		this.armor = gordon.getArmor();
+
+		this.weaponamount = gordon.getWeaponAmount();
+		this.position = gordon.getPosition();
+
+		for(var x=0; x<this.weaponamount; x++){
+			this.inventory[x] = gordon.getWeapon(x);
+		}
+	}
+
 	getWeaponAmount()
 	{
 		return this.weaponamount;
@@ -86,6 +98,10 @@ class Player {
 
 	getHealth(){
 		return this.health;
+	}
+
+	getArmor(){
+		return this.armor;
 	}
 
 	// Add weapon to inventory

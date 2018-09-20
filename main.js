@@ -92,7 +92,7 @@ function setUpMap(room){
 
 	if(firstScreen == true){
 		output.innerHTML += "<br>Type HELP for a list of commands.<br>";
-		tempPlayer = gordon; // Sets up temporary save of game. (*)
+		tempPlayer.setPlayer(gordon); // Sets up temporary save of game. (*)
 		firstScreen = false;
 	}
 
@@ -111,6 +111,10 @@ function yourMove(){
 	
 	var m = new Monster(0); // Temporary monster retrieved from room.
 							// Temporary monster for battling, looking.
+
+	if(map.getMonsterAmount() > 0){
+		m = map.getMonster();
+
 	var w = new Weapon(0);
 
 	// assumes the response is in two word format
@@ -129,9 +133,6 @@ function yourMove(){
 	if(temp != -1)  // If verb inflicted was an object found
 	{				// in the user's inventory
 		w = gordon.getWeapon(temp);
-
-		if(map.getMonsterAmount() > 0){
-			m = map.getMonster();
 		
 			if(noun == m.getName()) // If noun is monster the user 
 			{						// wishes to attack with noun			
@@ -166,7 +167,7 @@ function yourMove(){
 		{
 			if(map.getObstructCount() == 0){ 	// and there are no obstructions...
 				gordon.incrementPosition(); 	// they will do so.
-				tempPlayer = gordon; // Sets up temporary save of game. (*)
+				tempPlayer.setPlayer(gordon); // Sets up temporary save of game. (*)
 				map = new Room(gordon.getPosition());
 			}
 			else // If there are obstructions...
@@ -183,7 +184,7 @@ function yourMove(){
 	if(map.getObstructCount() > 0){ // If there are obstructions...
 		if(verb == map.getVerb() && noun == map.getNoun()){ // And the user applies the right verb...
 			gordon.incrementPosition(); // They pass the current room.
-			tempPlayer = gordon; // Sets up temporary save of game. (*)
+			tempPlayer.setPlayer(gordon); // Sets up temporary save of game. (*)
 			map = new Room(gordon.getPosition());
 		}
 	}
@@ -216,7 +217,7 @@ function yourMove(){
 	{	
 		output.innerHTML += "Thy corpse falls lifelessly to ye olde floor.<br>"; // Inform them
 		
-		gordon = tempPlayer; // Load game from temporary save point at beginning of setUpMap (*)
+		gordon.setPlayer(tempPlayer); // Load game from temporary save point at beginning of setUpMap (*)
 
 		map = new Room(gordon.getPosition());
 	}
