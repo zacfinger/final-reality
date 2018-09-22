@@ -219,18 +219,50 @@ function yourMove(){
 	// </Go>
 
 	// Allows user to examine environment.
+	if(verb == "scan" || verb == "look"){
+		if(noun == "around" || noun == "environs" || noun == "room"){
+			output.innerHTML += map.getDescription2(); // Describes current room at the user's request.
+
+			// monster description should probably be a function
+			if(map.getMonsterAmount() > 0){  // If there are monsters, the user is reminded.
+				m = map.getMonster(); 
+				output.innerHTML += "A";
+				if(isVowel(m.getName().charAt(0)))
+					output.innerHTML += "n"
+				output.innerHTML += (" " + m.getName() + " standeths before ye.<br>"); // Player is reminded that this is so.
+			}
+
+			if(map.getObjectCount() > 0){ // If there are items, the user is reminded.
+				output.innerHTML += map.getObjectDescription();
+			}
+		}
+
+		if(map.getWeaponAmount() > 0 && noun == m.getName()) // If user looks at a monster
+		{
+			output.innerHTML += m.getDescription();
+		}
+	}
 
 	// Allows user to take objects from room.
+	if((map.getObjectCount() > 0) && (verb == "taketh" || verb == "take"
+		|| verb == "get") &&
+		(noun == map.getObjectName() ) ) {
+			output.innerHTML += "Thou takest ye olde " + map.getObjectName() + ".<br>";
+			gordon.receiveWeapon(map.getObject()); // Adds item to inventory.
+		}
 
 	// Shows stats
-
-	// Saves Game
+	if((verb == "eval" || verb == "check") &&
+		(noun == "statistics" || noun == "stats")){
+		output.innerHTML += gordon.printStatus();
+	}
 
 	// Shows help screen with list of commands
 	if(verb == "help")
 		help();
 
 	// If bad command or object
+	// should probably put a bunch of else ifs
 
 	if(map.getMonsterAmount() > 0){ // If monsters are extant.
 		output.innerHTML += m.attackString();
@@ -254,6 +286,12 @@ function yourMove(){
 	//update the view
 	setUpMap(map);
 }
+
+// enterRoom() is called at the end of main.js (instead of setupmap)
+// this outputs all the room descriptions such as monsters, objects, armor and health
+// yourMove() at the end checks if you advanced or not (using current position)
+// if you did advance, enterRoom() is called with new map
+// if not setUpMap() is called (which just contains the monster battle)
 
 // set up new game
 setUpMap(map);

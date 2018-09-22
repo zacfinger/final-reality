@@ -124,5 +124,17 @@ class Player {
 		this.weaponamount++;						// inventory. Weapon amount is incremented.
 	}
 
-	
+	printStatus(){
+		var string = "Thou hath " + this.health + " HP. Thine shielding is " + this.armor + ". ";
+
+		if(this.weaponamount>0){
+			string+= "In thine inventory, there is ye olde:<br><br>";
+
+			for(var x=0;x<this.weaponamount;x++){
+				string+= " * "+this.inventory[x].getName()+"<br>";
+			}
+		}
+
+		return string + "<br>";
+	}
 }

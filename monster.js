@@ -20,12 +20,18 @@ class Monster {
 				this.name = "IMP";
 			else
 				this.name = "GOBLIN";
+
+			this.description = "The beast is stout, the height of three or four of the King's feet. It squeals as it lunges for thou, its mouth perferated by rows of teeth, dripping wet with ye olde blood.";
 		}
-		if(num == 1)
+		if(num == 1){
 			this.name = "PEASANT";
 			// "'Death to collaborators,' he yells"
-		if(num == 2)
+			//this.description = "'Death to collaborators,' he yells.";
+		}
+		if(num == 2){
 			this.name = "GRUE";
+			this.description = "It has a figure as of a man, but lacks the spirit of one. Its long arms ending in fingers sharp, as of knives.";
+		}
 
 		this.type = num;
 		this.health = (num+1) * 3;
@@ -54,6 +60,10 @@ class Monster {
 
 	getDamage(){  // Damage given by monsters is determined by their type.
 		return ((this.type+1) * 10);
+	}
+
+	getDescription(){
+		return this.description;
 	}
 
 }

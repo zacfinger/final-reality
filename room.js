@@ -18,12 +18,12 @@ class Room {
 
 	constructor (num){ 
 		if(num == 0){ // Map 0 of new game
-			this.weapon = new Weapon(0);
+			this.weapon = new Weapon(1);
 		
 			this.description = "Thou findeth yeself in the woods. ";
 			this.description2 = "In the distance ahead is a great castle. ";
 			this.monsteramount = 1;
-			this.weaponamount = 0;
+			this.weaponamount = 1;
 			this.obstructioncount = 1;
 			this.obstructionname = "log";
 			this.obstructionverb = "climb";
@@ -51,12 +51,21 @@ class Room {
 		}
 	}
 
+	getWeaponAmount(){
+		return this.weaponamount;
+	}
+
+	getObject(){
+		this.weaponamount--;
+		return this.weapon;
+	}
+
 	describeRoom(){
 		return this.description;
 	}
 
 	getDescription2(){
-		return this.description2
+		return this.description2;
 	}
 
 	getMonsterAmount(){
@@ -109,5 +118,9 @@ class Room {
 
 	getObjectDescription(){
 		return this.weapon.getDescription();
+	}
+
+	getObjectName(){
+		return this.weapon.getName();
 	}
 }
