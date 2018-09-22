@@ -43,6 +43,8 @@ class Player {
 		this.weaponamount = gordon.getWeaponAmount();
 		this.position = gordon.getPosition();
 
+		this.inventory = [];
+
 		for(var x=0; x<this.weaponamount; x++){
 			this.inventory[x] = gordon.getWeapon(x);
 		}

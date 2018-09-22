@@ -18,12 +18,12 @@ class Room {
 
 	constructor (num){ 
 		if(num == 0){ // Map 0 of new game
-			this.weapon = new Weapon(1);
+			this.weapon = new Weapon(0);
 		
 			this.description = "Thou findeth yeself in the woods. ";
 			this.description2 = "In the distance ahead is a great castle. ";
 			this.monsteramount = 1;
-			this.weaponamount = 1;
+			this.weaponamount = 0;
 			this.obstructioncount = 1;
 			this.obstructionname = "log";
 			this.obstructionverb = "climb";

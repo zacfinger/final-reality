@@ -34,8 +34,8 @@ class Monster {
 		}
 
 		this.type = num;
-		this.health = (num+1) * 3;
-		
+		//this.health = (num+1) * 3;
+		this.health = 25;
 	}
 
 	getName(){

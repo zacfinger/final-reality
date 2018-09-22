@@ -1,7 +1,7 @@
-//chairman of the rings
-//premier of the rings
+//chairman of the rings // 2 results
+//premier of the rings // 0 results
 //president of the rings
-//citizen of the rings
+//citizen of the rings // 1 result
 //legend of marie
 //final reality
 //peasant of the rings
@@ -57,10 +57,12 @@ function help(){
 	output.innerHTML += "= = = = = = = = = = = =<br><br>";
 
 	output.innerHTML += "Long ago in the beautiful kingdom of FRANKIA, surrounded by mountains and forests... " +
-	"A long peace has ended...<br><br>An evil wizard known as ROBESPIERRE has seized the legendary GOLDEN LANCE " +
-	"in hopes to rule the kingdom... He eliminated the good king He has kidnapped Princess MARIE ANTOINETTE and she is imprisoned in his evil castle, the ROOM OF MACHINES. " + 
+	"A long peace has ended...<br><br>An evil wizard known as ROBESPIERRE has summoned Hellspawn " +
+	"in hopes to rule the kingdom...<br><br>He eliminated the good king and has imprisoned the beautiful PRINCESS MARIE ANTOINETTE " +
+	"in the royal castle.<br><br>"+ 
 	" The people wait, their only hope, a prophecy..." +
-	"<br><br>When the kingdom is in darkness, a hero will come...<br><br>";
+	"<br><br>When the kingdom is in darkness, a hero will come..." +
+	"<br><br>Bearing the GOLDEN LANCE...<br><br>";
 
 	output.innerHTML += "COMMAND LIST<br>";
 	output.innerHTML += "All commands in FINAL REALITY must be entered in verb-noun pairs.<br><br>";
@@ -118,27 +120,29 @@ function setUpMap(room){
 		output.innerHTML += room.getObjectDescription();
 
 	if(firstScreen == true){
-		output.innerHTML += "<br>Type HELP for a list of commands.<br>";
+		output.innerHTML += "<br>Type HELP for a list of commands.";
 		firstScreen = false;
 	}
 
-	output.innerHTML += "What dost thou do?"; // THE prompt
+	output.innerHTML += "<br>What dost thou do?"; // THE prompt
 	$(window).scrollTop() + $(window).height();
 }
 
 function yourMove(){
-	var option = answer.value;
-	console.log(option);
+	var badCommand = true;
+
 	// get the answer first
-	document.getElementById("answer").value = "";
+	var option = answer.value;
+
 	// and reset the input field to blank
+	document.getElementById("answer").value = "";
+	
+	// display the answer before reprinting 
+	// screen for that cool CLI effect
 	output.innerHTML += "<br>>"+option+"<br>";
 
 	var temp = "";  // Multi-purpose temporary number value
 	
-	var m = new Monster(0); // Temporary monster retrieved from room.
-							// Temporary monster for battling, looking.
-
 	var w = new Weapon(0);
 
 	// assumes the response is in two word format
@@ -150,53 +154,49 @@ function yourMove(){
 	verb = words[0];
 	noun = words[1];
 
-	console.log(verb+" .. ");
-
 	// interpret the answer
-	if(map.getMonsterAmount() > 0){
-		m = map.getMonster();
 	// checks if first word is an object in the inventory
-	temp = isVerbWeapon(verb);
-	if(temp != -1)  // If verb inflicted was an object found
-	{				// in the user's inventory
-		w = gordon.getWeapon(temp);
+	if(isVerbWeapon(verb) != -1)  // If verb inflicted was an object found
+	{							  // in the user's inventory
+		w = gordon.getWeapon(isVerbWeapon(verb));
 		
-			if(noun == m.getName()) // If noun is monster the user 
-			{						// wishes to attack with noun			
-				// Takes damage
-				output.innerHTML += w.attackString();
-				temp = w.getDamage();
-				m.getHurt(temp);
-				output.innerHTML += "The " + m.getName() + " takes " + temp + " damage.<br>";
-				map.setMonster(m); // Returns enemy to map
+		if(noun == m.getName()) // If noun is monster the user 
+		{						// wishes to attack with noun			
+			// Takes damage
+			output.innerHTML += w.attackString();
+			temp = w.getDamage();
+			m.getHurt(temp);
+			output.innerHTML += "The " + m.getName() + " takes " + temp + " damage.<br>";
+			map.setMonster(m); // Returns enemy to map
 
-				if(m.getHealth() <= 0) // If monster == teh deadz0r
-				{
+			if(m.getHealth() <= 0) // If monster == teh deadz0r
+			{
 					output.innerHTML += "The " + m.getName() + " is vanquished.<br>";
 					map.destroyAllMonsters(); // Set monstercount to zero.
-				}
-
 			}
+
+			badCommand = false;
+
 		}
 	}
 
-	console.log(verb+" ... ");
-
 	// <Go>	
 
-	if(verb == "go") // If user wishes to go...
-	{	console.log(verb);
+	else if(verb == "go") // If user wishes to go...
+	{	
 		if(noun == "backward" || noun == "back") // backward...
 		{
 			output.innerHTML += "Thou canneth notst goeth in yonder direction.<br>";
 			// ...they will find that quite difficult.
+
+			badCommand = false;
 		}
 
 		if(noun == "forward") // If user wishes to go forward...
 		{
 			if(map.getObstructCount() == 0){ 	// and there are no obstructions...
 				gordon.incrementPosition(); 	// they will do so.
-				map = new Room(gordon.getPosition());
+				//map = new Room(gordon.getPosition());
 			}
 			else // If there are obstructions...
 			{
@@ -205,21 +205,25 @@ function yourMove(){
 				if(map.getDamage() > 0)				  // If the obstructions are 
 					gordon.getHurt(map.getDamage());  // dangerous (such as a cliff) 
 													  // the damage is inflicted.
+
+
 			}
+
+			badCommand = false;
 		}
 	}
 
-	if(map.getObstructCount() > 0){ // If there are obstructions...
-		if(verb == map.getVerb() && noun == map.getNoun()){ // And the user applies the right verb...
+	else if(map.getObstructCount() > 0 && verb == map.getVerb() && noun == map.getNoun()){ 
+	// If there are obstructions and the user applies the right verb...
 			gordon.incrementPosition(); // They pass the current room.
-			map = new Room(gordon.getPosition());
-		}
+			badCommand = false;
 	}
 
 	// </Go>
 
 	// Allows user to examine environment.
-	if(verb == "scan" || verb == "look"){
+
+	else if(verb == "scan" || verb == "look"){
 		if(noun == "around" || noun == "environs" || noun == "room"){
 			output.innerHTML += map.getDescription2(); // Describes current room at the user's request.
 
@@ -235,63 +239,86 @@ function yourMove(){
 			if(map.getObjectCount() > 0){ // If there are items, the user is reminded.
 				output.innerHTML += map.getObjectDescription();
 			}
+
+			badCommand = false;
 		}
 
-		if(map.getWeaponAmount() > 0 && noun == m.getName()) // If user looks at a monster
+		if(map.getMonsterAmount() > 0 && noun == m.getName()) // If user looks at a monster
 		{
 			output.innerHTML += m.getDescription();
+			badCommand = false;
 		}
 	}
 
 	// Allows user to take objects from room.
-	if((map.getObjectCount() > 0) && (verb == "taketh" || verb == "take"
+	else if((map.getObjectCount() > 0) && (verb == "taketh" || verb == "take"
 		|| verb == "get") &&
 		(noun == map.getObjectName() ) ) {
 			output.innerHTML += "Thou takest ye olde " + map.getObjectName() + ".<br>";
 			gordon.receiveWeapon(map.getObject()); // Adds item to inventory.
+			badCommand = false;
 		}
 
 	// Shows stats
-	if((verb == "eval" || verb == "check") &&
+	else if((verb == "eval" || verb == "check") &&
 		(noun == "statistics" || noun == "stats")){
 		output.innerHTML += gordon.printStatus();
+		badCommand = false;
 	}
 
 	// Shows help screen with list of commands
-	if(verb == "help")
+	else if(verb == "help"){
 		help();
+		badCommand = false;
+	}
 
 	// If bad command or object
-	// should probably put a bunch of else ifs
 
-	if(map.getMonsterAmount() > 0){ // If monsters are extant.
-		output.innerHTML += m.attackString();
-		output.innerHTML += "<br>Thou takest " + m.getDamage() + " damage.";
-		gordon.getHurt(m.getDamage()); // Temporary monster attacks.
+	if(badCommand) {
+		output.innerHTML += "Something command error happens. Error ";
+
+		if(Math.floor((Math.random() * 100) + 1)>50)
+			output.innerHTML += "-";
+
+		output.innerHTML += (Math.floor(Math.random() * Number.MAX_SAFE_INTEGER) + 1);
+		output.innerHTML += ": Bad command or non-extant object.<br>" + "Type 'HELP' for help.<br>";
 	}
 
 	// End of round
 
-	if(gordon.getHealth() <= 0) // If player == teh deadz 
-	{	
-		output.innerHTML += "Thy corpse falls lifelessly to ye olde floor.<br>"; // Inform them
-		
-		gordon.setPlayer(tempPlayer); // Load game from temporary save point at beginning of setUpMap (*)
-
-		map = new Room(gordon.getPosition());
+	if(map.getMonsterAmount() > 0){ // If monsters are extant.
+			output.innerHTML += m.attackString();
+			output.innerHTML += "<br>Thou takest " + m.getDamage() + " damage.";
+			gordon.getHurt(m.getDamage()); // Temporary monster attacks.
 	}
 
-	console.log(verb + " end of function");
+	if(gordon.getHealth() <= 0) // If player == teh deadz 
+	{	
+			output.innerHTML += "Thy bloody corpse falls lifelessly to ye olde floor.<br>"; // Inform them
+			output.innerHTML += "Loading from most recent saved game...<br>";
+			
+			gordon.setPlayer(tempPlayer); // Load game from temporary save point at beginning of setUpMap (*)
 
-	//update the view
-	setUpMap(map);
+			map = new Room(tempPlayer.getPosition());
+			setUpMap(map);
+
+	} else if(gordon.getPosition()!=tempPlayer.getPosition()){
+			map = new Room(gordon.getPosition());
+			//update the view
+			setUpMap(map);
+	} else {
+		output.innerHTML += "<br>What dost thou do?"; // THE prompt
+		$(window).scrollTop() + $(window).height();
+	}
+
 }
 
-// enterRoom() is called at the end of main.js (instead of setupmap)
-// this outputs all the room descriptions such as monsters, objects, armor and health
-// yourMove() at the end checks if you advanced or not (using current position)
-// if you did advance, enterRoom() is called with new map
-// if not setUpMap() is called (which just contains the monster battle)
+// yourMove() has an if statement at the end that checks: 
+// if user is in current room (check against tempplayer position) and is not dead
+// monster attacks and the user is prompted again "what dost thou do"
+// else if gordon is dead set up map with saved value
+// else if gordon is not dead and position is advanced set up map with next map
 
 // set up new game
 setUpMap(map);
+console.log("This should only trigger once");
