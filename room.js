@@ -25,8 +25,8 @@ class Room {
 			this.monsteramount = 1;
 			this.weaponamount = 0;
 			this.obstructioncount = 1;
-			this.obstructionname = "log";
-			this.obstructionverb = "climb";
+			this.obstructionname = "LOG";
+			this.obstructionverb = "CLIMB";
 			this.obstructiondescription = "There is a LOG blocking thy path.";
 			this.obstructiondamage = 0;
 			this.m = new Monster(0);
@@ -41,8 +41,8 @@ class Room {
 			this.monsteramount = 0;
 			this.weaponamount = 1;
 			this.obstructioncount = 1;
-			this.obstructionname = "spider";
-			this.obstructionverb = "dagger";
+			this.obstructionname = "SPIDER";
+			this.obstructionverb = "DAGGER";
 			this.obstructiondescription = "Thou walkest forward. Ye old spider bites thy body with sickening precision.";
 			this.obstructiondamage = 200;
 			this.m = new Monster(0);

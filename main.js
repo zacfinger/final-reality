@@ -151,8 +151,8 @@ function yourMove(){
 
 	// get first two words in the response
 	var words = option.split(" ");
-	verb = words[0];
-	noun = words[1];
+	verb = words[0].toUpperCase();
+	noun = words[1].toUpperCase();
 
 	// interpret the answer
 	// checks if first word is an object in the inventory
@@ -182,9 +182,9 @@ function yourMove(){
 
 	// <Go>	
 
-	else if(verb == "go") // If user wishes to go...
+	else if(verb == "GO") // If user wishes to go...
 	{	
-		if(noun == "backward" || noun == "back") // backward...
+		if(noun == "BACKWARD" || noun == "BACK") // backward...
 		{
 			output.innerHTML += "Thou canneth notst goeth in yonder direction.<br>";
 			// ...they will find that quite difficult.
@@ -192,7 +192,7 @@ function yourMove(){
 			badCommand = false;
 		}
 
-		if(noun == "forward") // If user wishes to go forward...
+		if(noun == "FORWARD") // If user wishes to go forward...
 		{
 			if(map.getObstructCount() == 0){ 	// and there are no obstructions...
 				gordon.incrementPosition(); 	// they will do so.
@@ -223,8 +223,8 @@ function yourMove(){
 
 	// Allows user to examine environment.
 
-	else if(verb == "scan" || verb == "look"){
-		if(noun == "around" || noun == "environs" || noun == "room"){
+	else if(verb == "SCAN" || verb == "LOOK"){
+		if(noun == "AROUND" || noun == "ENVIRONS" || noun == "ROOM"){
 			output.innerHTML += map.getDescription2(); // Describes current room at the user's request.
 
 			// monster description should probably be a function
@@ -251,8 +251,8 @@ function yourMove(){
 	}
 
 	// Allows user to take objects from room.
-	else if((map.getObjectCount() > 0) && (verb == "taketh" || verb == "take"
-		|| verb == "get") &&
+	else if((map.getObjectCount() > 0) && (verb == "TAKETH" || verb == "TAKE"
+		|| verb == "GET") &&
 		(noun == map.getObjectName() ) ) {
 			output.innerHTML += "Thou takest ye olde " + map.getObjectName() + ".<br>";
 			gordon.receiveWeapon(map.getObject()); // Adds item to inventory.
@@ -260,14 +260,14 @@ function yourMove(){
 		}
 
 	// Shows stats
-	else if((verb == "eval" || verb == "check") &&
-		(noun == "statistics" || noun == "stats")){
+	else if((verb == "EVAL" || verb == "CHECK") &&
+		(noun == "STATISTICS" || noun == "STATS")){
 		output.innerHTML += gordon.printStatus();
 		badCommand = false;
 	}
 
 	// Shows help screen with list of commands
-	else if(verb == "help"){
+	else if(verb == "HELP"){
 		help();
 		badCommand = false;
 	}
