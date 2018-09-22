@@ -1,3 +1,12 @@
+//chairman of the rings
+//premier of the rings
+//president of the rings
+//citizen of the rings
+//legend of marie
+//final reality
+//peasant of the rings
+//bourgois of the rings
+
 // define all the objects
 var gordon = new Player(100,0);
 var map = new Room(0);
@@ -71,17 +80,31 @@ function help(){
 // set up any map
 function setUpMap(room){
 
+	tempPlayer.setPlayer(gordon); // Sets up temporary save of game. (*)
+	// this needs to be set when the player enters a room
+	// not when setUpMap() is called at the beginning of each round
+
 	// describe the room
 	output.innerHTML += room.describeRoom();
-	output.innerHTML += "<br>";
 	output.innerHTML += room.getDescription2();
-	output.innerHTML += "<br>";
+
+	if(room.getHealth() > 0) // If there are potions inside the room
+	{						 // Player health is increased.
+					output.innerHTML += "Thou encounterest ye olde POTION. Thou gain " + map.getHealth() + " HP.<br>";
+					gordon.increaseHealth(map.getHealth());
+	}
+
+	if(room.getArmor() > 0) 	// If there are armor boosts inside the room
+	{   					// Player armor is increased.
+		output.innerHTML += "Thou encounterest ye olde GREENE ARMOUR. Thou gain " + map.getArmor() + " armor points.<br>";
+		gordon.increaseArmor(map.getArmor());
+	}
 
 	if(gordon.getPosition() == 0 && room.getMonsterAmount() > 0 && firstScreen == true){
 	// hard coded, this is probably bad
 		output.innerHTML += "<br>Verily something approaches from yonder umbrage! Thou haveth upon yeself only thy DAGGER.";
 	}
-	
+
 	if(room.getMonsterAmount() > 0){ // If monsters are extant
 		m = room.getMonster(); 
 		output.innerHTML += "A";
@@ -90,9 +113,12 @@ function setUpMap(room){
 		output.innerHTML += (" " + m.getName() + " standeths before ye.<br>"); // Player is reminded that this is so.
 	}
 
+	// If objects are still extant
+	if(room.getObjectCount() > 0) // If objects are still extant
+		output.innerHTML += room.getObjectDescription();
+
 	if(firstScreen == true){
 		output.innerHTML += "<br>Type HELP for a list of commands.<br>";
-		tempPlayer.setPlayer(gordon); // Sets up temporary save of game. (*)
 		firstScreen = false;
 	}
 
@@ -102,6 +128,7 @@ function setUpMap(room){
 
 function yourMove(){
 	var option = answer.value;
+	console.log(option);
 	// get the answer first
 	document.getElementById("answer").value = "";
 	// and reset the input field to blank
@@ -111,9 +138,6 @@ function yourMove(){
 	
 	var m = new Monster(0); // Temporary monster retrieved from room.
 							// Temporary monster for battling, looking.
-
-	if(map.getMonsterAmount() > 0){
-		m = map.getMonster();
 
 	var w = new Weapon(0);
 
@@ -126,8 +150,11 @@ function yourMove(){
 	verb = words[0];
 	noun = words[1];
 
+	console.log(verb+" .. ");
+
 	// interpret the answer
-	
+	if(map.getMonsterAmount() > 0){
+		m = map.getMonster();
 	// checks if first word is an object in the inventory
 	temp = isVerbWeapon(verb);
 	if(temp != -1)  // If verb inflicted was an object found
@@ -153,10 +180,12 @@ function yourMove(){
 		}
 	}
 
+	console.log(verb+" ... ");
+
 	// <Go>	
 
 	if(verb == "go") // If user wishes to go...
-	{
+	{	console.log(verb);
 		if(noun == "backward" || noun == "back") // backward...
 		{
 			output.innerHTML += "Thou canneth notst goeth in yonder direction.<br>";
@@ -167,7 +196,6 @@ function yourMove(){
 		{
 			if(map.getObstructCount() == 0){ 	// and there are no obstructions...
 				gordon.incrementPosition(); 	// they will do so.
-				tempPlayer.setPlayer(gordon); // Sets up temporary save of game. (*)
 				map = new Room(gordon.getPosition());
 			}
 			else // If there are obstructions...
@@ -184,7 +212,6 @@ function yourMove(){
 	if(map.getObstructCount() > 0){ // If there are obstructions...
 		if(verb == map.getVerb() && noun == map.getNoun()){ // And the user applies the right verb...
 			gordon.incrementPosition(); // They pass the current room.
-			tempPlayer.setPlayer(gordon); // Sets up temporary save of game. (*)
 			map = new Room(gordon.getPosition());
 		}
 	}
@@ -221,6 +248,8 @@ function yourMove(){
 
 		map = new Room(gordon.getPosition());
 	}
+
+	console.log(verb + " end of function");
 
 	//update the view
 	setUpMap(map);

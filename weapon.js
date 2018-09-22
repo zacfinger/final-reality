@@ -23,14 +23,17 @@ class Weapon {
 		if(num == 1){
 			this.name = "PISTOL";
 			this.attack = "Thou firest ye ";
+
 		}
 		if(num == 2){
 			this.name = "STAFF";
-			this.attack = "Thou swingesteth ye olde ";
+			this.attack = "Thou swingest ye ";
 		}
 
-		this.type = num;
-		this.health = num * 3;
+		var description0 = "Ye olde ";
+		var description1 = " lies on ye olde ground.";
+		this.description = description0 + this.name + description1;
+		
 	}
 
 	getName(){
@@ -43,5 +46,9 @@ class Weapon {
 
 	getDamage(){
 		return ((this.type + 1) * 10);
+	}
+
+	getDescription(){
+		return this.description;
 	}
 }

@@ -48,6 +48,20 @@ class Player {
 		}
 	}
 
+	increaseHealth(num){
+		if(num + this.health > 100)    		// This ensures that the player's
+			num = 100 - this.health;    // health will not exceed 100.
+
+		this.health+=num;
+	}
+
+	increaseArmor(num){
+		if(num + this.armor > 100)
+			num = 100 - this.armor;
+
+		this.armor+=num;
+	}
+
 	getWeaponAmount()
 	{
 		return this.weaponamount;
