@@ -19,6 +19,8 @@
 
 // notes: http://www2.silverblade.net/cliches/
 // https://stackoverflow.com/questions/1640502/pc-speaker-beep-via-javascript
+// https://stackoverflow.com/questions/27366848/how-do-i-store-my-node-mysql-password-not-in-plain-text
+// https://stackoverflow.com/questions/22348705/best-way-to-store-db-config-in-node-js-express-app
 
 ///////////////////////////
 
@@ -36,6 +38,9 @@
 
 ///////////////////////////
 
+// kill goblin
+// loot goblin
+// "look at" goblin
 ///////////////////////////
 
 // define all the objects
@@ -77,6 +82,18 @@ function isVerbWeapon(word){ 	// Checks to see if verb issued is a weapon in inv
 	return -1; // returns -1 if weapon is not found in the inventory.
 }
 
+function printSpace(num){
+	// returns num amount of non breaking space characters for 
+	// building tables and other blocks requiring legibility
+	var str = "";
+
+	for(var x=0;x<num;x++){
+		str+= "&nbsp;"
+	}
+
+	return str;
+}
+
 function help(){
 	/* Task: Provide game information
 	to user, including game description
@@ -86,26 +103,26 @@ function help(){
 	output.innerHTML += "<br>F I N A L R E A L I T Y<br>";
 	output.innerHTML += "= = = = = = = = = = = =<br><br>";*/
 
-	output.innerHTML += "COMMAND LIST<br>";
+	output.innerHTML = "COMMAND LIST<br>";
 	output.innerHTML += "======= ====<br>"
 	output.innerHTML += "All commands in FINAL REALITY must be entered in verb-noun pairs.<br><br>";
-	output.innerHTML += "Verb             - Noun               : Function<br>";
-	output.innerHTML += "-------------    --------------------   --------<br>"
-	output.innerHTML += "help             - me                 : Accesses this list at any time during gameplay.<br>";
-	output.innerHTML += "scan             - environs           : Examine current location.<br>";
-	output.innerHTML += "go               - (forward/backward) : Translates character in desired direction.<br>";
-	output.innerHTML += "taketh           - (name of weapon)   : Allows user to add a weapon encountered in a room<br>";
-	output.innerHTML += "										 to their inventory.<br>";
-	output.innerHTML += "scan             - (name of monster)  : Allows user to examine monster.<br>";
-	output.innerHTML += "(name of weapon) - (name of object)   : Uses desired weapon against desired object.<br>";
-	output.innerHTML += "										 # Example: 'sword door' allows user to<br>";
-	output.innerHTML += "										   use the SWORD against a stubborn DOOR.<br>";
-	output.innerHTML += "(name of weapon) - (name of enemy)    : Uses desired weapon against desired enemy.<br>";
-	output.innerHTML += "										 # Example: 'dagger imp' allows the user<br>";
-	output.innerHTML += "										   to use the DAGGER against an IMP.<br>";
-	output.innerHTML += "										 # Example: 'sword goblin' allows the user<br>"; 
-	output.innerHTML += "										   to lance a GOBLIN with the SWORD.<br>";
-	output.innerHTML += "eval 			  - stats 				: Allows user to check health, armor and inventory.<br><br>";
+	output.innerHTML += "Verb" + printSpace(13) + "- Noun" + printSpace(15) + ": Function<br>";
+	output.innerHTML += "----------------" + printSpace(3) + "------------------" + printSpace(3) + "--------<br>"
+	output.innerHTML += "help" + printSpace(13) + "- me" + printSpace(17) + ": Accesses this list at any time during gameplay.<br>";
+	output.innerHTML += "scan" + printSpace(13) + "- environs" + printSpace(11) + ": Examine current location.<br>";
+	output.innerHTML += "go " + printSpace(14) + "- (forward/backward) : Translates character in desired direction.<br>";
+	output.innerHTML += "taketh" + printSpace(11) + "- (name of weapon)" + printSpace(3) + ": Allows user to add a weapon encountered in a room<br>";
+	output.innerHTML += "" + printSpace(40) + "to their inventory.<br>";
+	output.innerHTML += "scan" + printSpace(13) + "- (name of monster)" + printSpace(2) + ": Allows user to examine monster.<br>";
+	output.innerHTML += "(name of weapon) - (name of object)" + printSpace(3) + ": Uses desired weapon against desired object.<br>";
+	output.innerHTML += printSpace(40) + "* Example: 'sword door' allows user to<br>";
+	output.innerHTML += printSpace(42) + "use the SWORD against a stubborn DOOR.<br>";
+	output.innerHTML += "(name of weapon) - (name of enemy)" + printSpace(4) + ": Uses desired weapon against desired enemy.<br>";
+	output.innerHTML += printSpace(40) + "* Example: 'dagger imp' allows the user<br>";
+	output.innerHTML += printSpace(42) + "to use the DAGGER against an IMP.<br>";
+	output.innerHTML += printSpace(40) + "* Example: 'sword goblin' allows the user<br>"; 
+	output.innerHTML += printSpace(42) + "to lance a GOBLIN with the SWORD.<br>";
+	output.innerHTML += "eval" + printSpace(13) + "- stats" + printSpace(14) + ": Allows user to check health, armor and inventory.<br><br>";
 
 	output.innerHTML += "STORY SO FAR<br>";
 	output.innerHTML += "===== == ===<br>";
@@ -122,20 +139,8 @@ function help(){
 	"The people wait, their only hope, a prophecy...<br><br>" +
 
 	"When the kingdom is in darkness, a HERO will come...<br>" +
-	"Bearing the IRONWOOD SWORD...<br><br>";
+	"Bearing the CATHERINE SWORD...<br><br>";
 	
-}
-
-function printSpace(num){
-	// returns num amount of non breaking space characters for 
-	// building tables and other blocks requiring legibility
-	var str = "";
-
-	for(var x=0;x<num;x++){
-		str+= "&nbsp;"
-	}
-
-	return str;
 }
 
 // called when a user enters any room
