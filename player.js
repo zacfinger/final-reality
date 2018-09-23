@@ -3,17 +3,19 @@ class Player {
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      * 
      * Player class
+     * (C) 2018 ZacFinger.com
+     * https://github.com/zacfinger/final-reality
      *
      * * * * * * * * 
      *
      * Parameters:
      *
-     * @param health 		// The player's health ( 0 - 100 )
-     * @param armor 		// The player's armor ( 0 - 100 )
-     * @param inventory 	// Array of Weapon objects
-     * @param weaponamount 	// Amount of weapons ( 0 or 1 )
-     * @param position 		// Player's current map location.
-     * 						// 0 = First map
+     * @param number 	health 			The player's health ( 0 - 100 )
+     * @param number 	armor 			The player's armor ( 0 - 100 )
+     * @param weapon[] 	inventory 		Array of Weapon objects
+     * @param number 	weaponamount 	Amount of weapons
+     * @param number 	position 		Player's current map location (0 = first map)
+     * 						
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 	
 	constructor(healthnum,armornum){
@@ -36,14 +38,16 @@ class Player {
 
 	}
 
-	setPlayer(gordon){
+	setPlayer(gordon){  // Receives another player object and sets
+						// current player attributes to that object's.
+						// This is used for loading from save points.
 		this.health = gordon.getHealth();
 		this.armor = gordon.getArmor();
 
 		this.weaponamount = gordon.getWeaponAmount();
 		this.position = gordon.getPosition();
 
-		this.inventory = [];
+		this.inventory = []; // Reset weapon inventory to empty
 
 		for(var x=0; x<this.weaponamount; x++){
 			this.inventory[x] = gordon.getWeapon(x);
@@ -51,25 +55,25 @@ class Player {
 	}
 
 	increaseHealth(num){
-		if(num + this.health > 100)    		// This ensures that the player's
+		if(num + this.health > 100)    	// This ensures that the player's
 			num = 100 - this.health;    // health will not exceed 100.
 
 		this.health+=num;
 	}
 
 	increaseArmor(num){
-		if(num + this.armor > 100)
-			num = 100 - this.armor;
+		if(num + this.armor > 100)		// This ensures that the player's
+			num = 100 - this.armor;    	// armor will not exceed 100.
 
 		this.armor+=num;
 	}
 
-	getWeaponAmount()
+	getWeaponAmount() // Get amount of weapons
 	{
 		return this.weaponamount;
 	}
 
-	getWeaponName(num){
+	getWeaponName(num){ // Get name of weapon in position num
 		return this.inventory[num].getName();
 	}
 
@@ -77,11 +81,11 @@ class Player {
 		return this.inventory[num];
 	}
 
-	incrementPosition(){
+	incrementPosition(){  // Increments users' room number
 		this.position++;
 	}
 
-	getPosition(){
+	getPosition(){  // Get users' position
 		return this.position;
 	}
 
@@ -103,36 +107,35 @@ class Player {
 		return temp;
 	}
 
-	getHurt(num)						// Inflicts damage upon user.
+	getHurt(num)							// Inflicts damage upon user.
 	{									
-		if(this.armor > 0)				// If user has armor, armor is
-			num = decreaseArmor(num);	// first targeted. Then health.
+		if(this.armor > 0)					// If user has armor, armor is
+			num = this.decreaseArmor(num);	// first targeted. Then health.
 
 		this.health -= num; 
 
 	}
 
-	getHealth(){
+	getHealth(){  // Get users' health
 		return this.health;
 	}
 
-	getArmor(){
+	getArmor(){   // Get users' armor
 		return this.armor;
 	}
 
-	// Add weapon to inventory
-	receiveWeapon(thing){
+	receiveWeapon(thing){ // Add weapon to inventory
 		this.inventory[this.weaponamount] = thing;	// Inputted weapon is added to player's
 		this.weaponamount++;						// inventory. Weapon amount is incremented.
 	}
 
-	printStatus(){
+	printStatus(){ // Display health, armor, inventory
 		var string = "Thou hath " + this.health + " HP. Thine shielding is " + this.armor + ". ";
 
 		if(this.weaponamount>0){
-			string+= "In thine inventory, there is ye olde:<br><br>";
+			string+= "In thine inventory, there is ye olde:<br>";
 
-			for(var x=0;x<this.weaponamount;x++){
+			for(var x=0;x<this.weaponamount;x++){  // Cycle through inventory, display each weapon.
 				string+= " * "+this.inventory[x].getName()+"<br>";
 			}
 		}

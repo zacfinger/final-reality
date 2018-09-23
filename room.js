@@ -3,18 +3,28 @@ class Room {
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      * 
      * Room class
+     * (C) 2018 ZacFinger.com
+     * https://github.com/zacfinger/final-reality
      *
      * * * * * * * * 
      *
      * Parameters:
      *
-     * @param type 		// 1: dagger
-	 *					// 2: club
-	 *					// 3: sword
-	 *					// 4: pistol
+     * @param weapon 	weapon 					Weapon within room.
+     * @param string 	description 			Initial description of room.
+     * @param string 	description2 			Secondary description of room.
+     * @param number 	monsteramount 			Count of monsters ( 0 or 1 for now )
+     * @param number 	getWeaponAmount			Count of weapons ( 0 of 1 for now )
+     * @param number 	obstructioncount		Count of obstructions in room ( 0 or 1 )
+     * @param string 	obstructionname			Name of obstruction
+     * @param string 	obstructionverb			Verb to be applied to obstruction
+     * @param string 	obstructiondescription 	Description of obstruction
+     * @param number 	obstructiondamage 		If obstruction is dangerous, damage is inflicted.
+     * @param monster 	m 						Monster within room.
+     * @param number 	health 					Health to be encountered upon entering a room, if any.
+     * @param number 	armor 					Armor to be encountered upon entering a room, if any.
+     * 
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-     // notes: http://www2.silverblade.net/cliches/
 
 	constructor (num){ 
 		if(num == 0){ // Map 0 of new game
@@ -27,7 +37,7 @@ class Room {
 			this.obstructioncount = 1;
 			this.obstructionname = "LOG";
 			this.obstructionverb = "CLIMB";
-			this.obstructiondescription = "There is a LOG blocking thy path.";
+			this.obstructiondescription = "There is a LOG blocking thy path. Perhaps thou shalt CLIMB it.";
 			this.obstructiondamage = 0;
 			this.m = new Monster(0);
 			this.health = 0;
@@ -36,20 +46,32 @@ class Room {
 		if(num == 1){
 			this.weapon = new Weapon(1);
 		
-			this.description = "Thou climbest overeth the LOG.";
-			this.description2 = "Now thou findest yeself at a fork in the path.";
+			this.description = "Thou climbest overeth the LOG. ";
+			this.description2 = "Now thou findest yeself at a fork in the path. ";
 			this.monsteramount = 0;
 			this.weaponamount = 1;
 			this.obstructioncount = 1;
 			this.obstructionname = "SPIDER";
 			this.obstructionverb = "DAGGER";
-			this.obstructiondescription = "Thou walkest forward. Ye old spider bites thy body with sickening precision.";
+			this.obstructiondescription = "Thou walkest forward. Ye old spider bites thy body with sickening precision. ";
 			this.obstructiondamage = 200;
 			this.m = new Monster(0);
 			this.health = 0;
 			this.armor = 0;
 		}
 	}
+
+	/*
+	[0][0] user encounters an imp which is killed easily, exits are south
+	[1][0] user can go east or west
+	[1][1] east of [1][0] is a church where a cleric NPC gives you the IRONWOOD SWORD / CATHERINE SWORD
+			"its dangerous to go alone" // basillica of st denis // st catherine of fierbois
+			https://www.unboundworlds.com/2014/10/magic-swords-king-arthur-aragorn-and-joan-of-arc/
+	[1][-1] west of [1][0] is a battle against a peastant that can not be defeated without the GOLDEN LANCE
+	// need save states to occur at certain rooms rather than in every room
+	// example: when first peasant kills you in [1][-1] need to return to room [1][0] 
+
+	*/
 
 	getWeaponAmount(){
 		return this.weaponamount;
@@ -60,11 +82,11 @@ class Room {
 		return this.weapon;
 	}
 
-	describeRoom(){
+	describeRoom(){ // Returns primary description.
 		return this.description;
 	}
 
-	getDescription2(){
+	getDescription2(){ // Returns secondary description.
 		return this.description2;
 	}
 
@@ -80,7 +102,7 @@ class Room {
 		this.m = temp;
 	}
 
-	destroyAllMonsters(){
+	destroyAllMonsters(){ // Sets monster count to zero.
 		this.monsteramount = 0;
 	}
 
@@ -88,19 +110,19 @@ class Room {
 		return this.obstructioncount;
 	}
 
-	describeObstruction(){
+	describeObstruction(){ // Returns description of obstruction.
 		return this.obstructiondescription;
 	}
 
-	getDamage(){
+	getDamage(){ // Return damage an obstruction inflicts.
 		return this.obstructiondamage;
 	}
 
-	getVerb(){
+	getVerb(){ // Verb to be applied to obstruction
 		return this.obstructionverb;
 	}
 
-	getNoun(){
+	getNoun(){ // Name of obstruction
 		return this.obstructionname;
 	}
 

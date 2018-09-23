@@ -3,16 +3,21 @@ class Weapon {
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      * 
      * Weapon class
+     * (C) 2018 ZacFinger.com
+     * https://github.com/zacfinger/final-reality
      *
      * * * * * * * * 
      *
      * Parameters:
      *
-     * @param type 		// 0: dagger
-	 *					// 1: pistol
+     * @param number	type		Weapon attributes are determined by type in the constructor
+     * @param string	name 		Name of the weapon
+     * @param string	attack 		Description to be printed when weapon is used
+     * @param string	description Description to be printed when weapon is found in a room
+     * 
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-	constructor (num){
+	constructor (num){    // Accepts a number after robustly assessing its validity.
 		
 		this.type = num;
 		
@@ -44,7 +49,8 @@ class Weapon {
 		return this.attack + this.name + ". ";
 	}
 
-	getDamage(){
+	getDamage(){	// Returns an attack (hit points)  
+					// Damage given by weapons is determined by their type.
 		return ((this.type + 1) * 10);
 	}
 

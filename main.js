@@ -1,16 +1,46 @@
-//chairman of the rings // 2 results
-//premier of the rings // 0 results
-//president of the rings
-//citizen of the rings // 1 result
-//legend of marie
-//final reality
-//peasant of the rings
-//bourgois of the rings
+// Final Reality command line javascript game
+// (C) 2018 Zac Finger
+
+// things left to do:
+// ------ ---- -- ---
+// add more commands to help menu/improve help menu
+// clean up/document/comment main.js/main.css/index.html 
+// make opening screen (first load up) block letter title screen
+// add copyright info to title screen
+// pull rooms and monsters programmatically from JSON file?
+// add more rooms
+// add north, south, west east functionality etc
+// add ability to go backwards
+// (load temporary save of each room so that monsters stay dead etc)
+// add non violent NPCs
+// make items more robust
+// update battle system (earthbound battle system)
+// test edge cases
+
+// notes: http://www2.silverblade.net/cliches/
+// https://stackoverflow.com/questions/1640502/pc-speaker-beep-via-javascript
+
+///////////////////////////
+
+// possible names
+// -------- -----
+// chairman of the rings // 2 results
+// premier of the rings // 0 results
+// president of the rings // 21 results
+// citizen of the rings // 1 result
+// legend of marie // 315000 results
+// final reality // 61500 results
+// peasant of the rings // 0 results
+// bourgeoisie of the rings // 0 results
+// bourgeois of the rings // 0 results
+
+///////////////////////////
+
+///////////////////////////
 
 // define all the objects
 var gordon = new Player(100,0);
 var map = new Room(0);
-var m = new Monster(0);
 var firstScreen = true;
 var tempPlayer = new Player(100,0);
 
@@ -36,15 +66,15 @@ function isVowel(x) {
   return result;
 }
 
-function isVerbWeapon(word){
-	for(var x=0; x < gordon.getWeaponAmount(); x++ )
+function isVerbWeapon(word){ 	// Checks to see if verb issued is a weapon in inventory.
+	for(var x=0; x < gordon.getWeaponAmount(); x++ ) // Cycles through inventory to check
 	{
 		w = gordon.getWeapon(x);
 
 		if(word == w.getName())
-			return x;
+			return x; // returns index of requested weapon
 	}
-	return -1;
+	return -1; // returns -1 if weapon is not found in the inventory.
 }
 
 function help(){
@@ -52,83 +82,123 @@ function help(){
 	to user, including game description
 	and a list of commands.
 	In: Nothing. Out: Nothing. */
-
+	/*
 	output.innerHTML += "<br>F I N A L R E A L I T Y<br>";
-	output.innerHTML += "= = = = = = = = = = = =<br><br>";
-
-	output.innerHTML += "Long ago in the beautiful kingdom of FRANKIA, surrounded by mountains and forests... " +
-	"A long peace has ended...<br><br>An evil wizard known as ROBESPIERRE has summoned Hellspawn " +
-	"in hopes to rule the kingdom...<br><br>He eliminated the good king and has imprisoned the beautiful PRINCESS MARIE ANTOINETTE " +
-	"in the royal castle.<br><br>"+ 
-	" The people wait, their only hope, a prophecy..." +
-	"<br><br>When the kingdom is in darkness, a hero will come..." +
-	"<br><br>Bearing the GOLDEN LANCE...<br><br>";
+	output.innerHTML += "= = = = = = = = = = = =<br><br>";*/
 
 	output.innerHTML += "COMMAND LIST<br>";
+	output.innerHTML += "======= ====<br>"
 	output.innerHTML += "All commands in FINAL REALITY must be entered in verb-noun pairs.<br><br>";
-	output.innerHTML += "Verb - Noun : Function<br><br>";
-	output.innerHTML += "help - me : Accesses this list at any time during gameplay.<br><br>";
-	output.innerHTML += "scan - environs : Examine current location.<br><br>";
-	output.innerHTML += "go - (Forward/Backward) : Translates character in desired direction.<br><br>";
-	output.innerHTML += "taketh - (Name of weapon) - Allows user to add a weapon encountered in a room";
-	output.innerHTML += " to their inventory.<br><br>";
-	output.innerHTML += " scan - (Name of monster) - Allows user to examine monster.<br><br>";
-	
-	//unsure if display the story before or after command list
+	output.innerHTML += "Verb             - Noun               : Function<br>";
+	output.innerHTML += "-------------    --------------------   --------<br>"
+	output.innerHTML += "help             - me                 : Accesses this list at any time during gameplay.<br>";
+	output.innerHTML += "scan             - environs           : Examine current location.<br>";
+	output.innerHTML += "go               - (forward/backward) : Translates character in desired direction.<br>";
+	output.innerHTML += "taketh           - (name of weapon)   : Allows user to add a weapon encountered in a room<br>";
+	output.innerHTML += "										 to their inventory.<br>";
+	output.innerHTML += "scan             - (name of monster)  : Allows user to examine monster.<br>";
+	output.innerHTML += "(name of weapon) - (name of object)   : Uses desired weapon against desired object.<br>";
+	output.innerHTML += "										 # Example: 'sword door' allows user to<br>";
+	output.innerHTML += "										   use the SWORD against a stubborn DOOR.<br>";
+	output.innerHTML += "(name of weapon) - (name of enemy)    : Uses desired weapon against desired enemy.<br>";
+	output.innerHTML += "										 # Example: 'dagger imp' allows the user<br>";
+	output.innerHTML += "										   to use the DAGGER against an IMP.<br>";
+	output.innerHTML += "										 # Example: 'sword goblin' allows the user<br>"; 
+	output.innerHTML += "										   to lance a GOBLIN with the SWORD.<br>";
+	output.innerHTML += "eval 			  - stats 				: Allows user to check health, armor and inventory.<br><br>";
 
+	output.innerHTML += "STORY SO FAR<br>";
+	output.innerHTML += "===== == ===<br>";
+	output.innerHTML += "Long ago in the Sixth Age of the World...<br>"+
+	/*"Surrounded by mountains and forests...<br>"+*/
+	"A long peace has ended...<br><br>"+
+
+	"A mysterious wizard known as ROBESPIERRE used<br>" +
+	"evil magic in hopes to rule the kingdom...<br><br>"+
+
+	"He eliminated the good king and has imprisoned the<br>" +
+	"beautiful PRINCESS MARIE ANTOINETTE in the royal castle.<br><br>"+ 
+
+	"The people wait, their only hope, a prophecy...<br><br>" +
+
+	"When the kingdom is in darkness, a HERO will come...<br>" +
+	"Bearing the IRONWOOD SWORD...<br><br>";
 	
 }
 
-// set up any map
+function printSpace(num){
+	// returns num amount of non breaking space characters for 
+	// building tables and other blocks requiring legibility
+	var str = "";
+
+	for(var x=0;x<num;x++){
+		str+= "&nbsp;"
+	}
+
+	return str;
+}
+
+// called when a user enters any room
+// or when loading up the most recent save point
 function setUpMap(room){
 
 	tempPlayer.setPlayer(gordon); // Sets up temporary save of game. (*)
-	// this needs to be set when the player enters a room
-	// not when setUpMap() is called at the beginning of each round
+	// tempMap.setMap(map) would go here as well
+	// (if you are killed by a goblin here there is about 
+	// 50% chance the room will respawn with an imp instead)
 
 	// describe the room
-	output.innerHTML += room.describeRoom();
-	output.innerHTML += room.getDescription2();
+	output.innerHTML += room.describeRoom(); // Provides verbal description of entering current room.
+	output.innerHTML += room.getDescription2(); // Provides verbal description of current room.
+	output.innerHTML += "<br>";
 
 	if(room.getHealth() > 0) // If there are potions inside the room
 	{						 // Player health is increased.
-					output.innerHTML += "Thou encounterest ye olde POTION. Thou gain " + map.getHealth() + " HP.<br>";
-					gordon.increaseHealth(map.getHealth());
+		output.innerHTML += "Thou encounterest ye olde POTION. Thou gain " + map.getHealth() + " HP.<br>";
+		gordon.increaseHealth(map.getHealth());
 	}
 
-	if(room.getArmor() > 0) 	// If there are armor boosts inside the room
+	if(room.getArmor() > 0) // If there are armor boosts inside the room
 	{   					// Player armor is increased.
 		output.innerHTML += "Thou encounterest ye olde GREENE ARMOUR. Thou gain " + map.getArmor() + " armor points.<br>";
 		gordon.increaseArmor(map.getArmor());
 	}
-
+/*
 	if(gordon.getPosition() == 0 && room.getMonsterAmount() > 0 && firstScreen == true){
 	// hard coded, this is probably bad
 		output.innerHTML += "<br>Verily something approaches from yonder umbrage! Thou haveth upon yeself only thy DAGGER.";
-	}
+	}*/
 
 	if(room.getMonsterAmount() > 0){ // If monsters are extant
 		m = room.getMonster(); 
+		console.log(m);
 		output.innerHTML += "A";
 		if(isVowel(m.getName().charAt(0)))
 			output.innerHTML += "n"
 		output.innerHTML += (" " + m.getName() + " standeths before ye.<br>"); // Player is reminded that this is so.
 	}
 
-	// If objects are still extant
 	if(room.getObjectCount() > 0) // If objects are still extant
-		output.innerHTML += room.getObjectDescription();
+		output.innerHTML += room.getObjectDescription() + "<br>";  // Player is reminded as such.
 
 	if(firstScreen == true){
-		output.innerHTML += "<br>Type HELP for a list of commands.";
+		output.innerHTML += "Type HELP for a list of commands.<br>";
 		firstScreen = false;
 	}
 
-	output.innerHTML += "<br>What dost thou do?"; // THE prompt
+	output.innerHTML += "What dost thou do?<br>"; // THE prompt
 	$(window).scrollTop() + $(window).height();
 }
 
+// called when a user enters any command
 function yourMove(){
+	/* Description: Inflicts various 
+	actions upon the room, the things
+	within it, or to the player.
+	*/
+
+	// set to false if any of the entered commands succeed
+	// if still false at the end of yourMove(), error is printed
 	var badCommand = true;
 
 	// get the answer first
@@ -139,11 +209,7 @@ function yourMove(){
 	
 	// display the answer before reprinting 
 	// screen for that cool CLI effect
-	output.innerHTML += "<br>>"+option+"<br>";
-
-	var temp = "";  // Multi-purpose temporary number value
-	
-	var w = new Weapon(0);
+	output.innerHTML += ">"+option+"<br>";
 
 	// assumes the response is in two word format
 	var verb = "";
@@ -152,7 +218,8 @@ function yourMove(){
 	// get first two words in the response
 	var words = option.split(" ");
 	verb = words[0].toUpperCase();
-	noun = words[1].toUpperCase();
+	if(words[1] != null)
+		noun = words[1].toUpperCase();
 
 	// interpret the answer
 	// checks if first word is an object in the inventory
@@ -163,10 +230,9 @@ function yourMove(){
 		if(noun == m.getName()) // If noun is monster the user 
 		{						// wishes to attack with noun			
 			// Takes damage
-			output.innerHTML += w.attackString();
-			temp = w.getDamage();
-			m.getHurt(temp);
-			output.innerHTML += "The " + m.getName() + " takes " + temp + " damage.<br>";
+			output.innerHTML += w.attackString() + "<br>";
+			m.getHurt(w.getDamage());
+			output.innerHTML += "The " + m.getName() + " takes " + w.getDamage() + " damage.<br>";
 			map.setMonster(m); // Returns enemy to map
 
 			if(m.getHealth() <= 0) // If monster == teh deadz0r
@@ -196,7 +262,6 @@ function yourMove(){
 		{
 			if(map.getObstructCount() == 0){ 	// and there are no obstructions...
 				gordon.incrementPosition(); 	// they will do so.
-				//map = new Room(gordon.getPosition());
 			}
 			else // If there are obstructions...
 			{
@@ -205,7 +270,6 @@ function yourMove(){
 				if(map.getDamage() > 0)				  // If the obstructions are 
 					gordon.getHurt(map.getDamage());  // dangerous (such as a cliff) 
 													  // the damage is inflicted.
-
 
 			}
 
@@ -224,8 +288,8 @@ function yourMove(){
 	// Allows user to examine environment.
 
 	else if(verb == "SCAN" || verb == "LOOK"){
-		if(noun == "AROUND" || noun == "ENVIRONS" || noun == "ROOM"){
-			output.innerHTML += map.getDescription2(); // Describes current room at the user's request.
+		if(noun == "AROUND" || noun == "ENVIRONS" || noun == "ROOM" || noun == ""){
+			output.innerHTML += map.getDescription2() + "<br>"; // Describes current room at the user's request.
 
 			// monster description should probably be a function
 			if(map.getMonsterAmount() > 0){  // If there are monsters, the user is reminded.
@@ -233,11 +297,11 @@ function yourMove(){
 				output.innerHTML += "A";
 				if(isVowel(m.getName().charAt(0)))
 					output.innerHTML += "n"
-				output.innerHTML += (" " + m.getName() + " standeths before ye.<br>"); // Player is reminded that this is so.
+				output.innerHTML += (" " + m.getName() + " standeths before ye.<br>");
 			}
 
 			if(map.getObjectCount() > 0){ // If there are items, the user is reminded.
-				output.innerHTML += map.getObjectDescription();
+				output.innerHTML += map.getObjectDescription() + "<br>";
 			}
 
 			badCommand = false;
@@ -245,7 +309,7 @@ function yourMove(){
 
 		if(map.getMonsterAmount() > 0 && noun == m.getName()) // If user looks at a monster
 		{
-			output.innerHTML += m.getDescription();
+			output.innerHTML += m.getDescription() + "<br>";  // The monster is described
 			badCommand = false;
 		}
 	}
@@ -255,13 +319,13 @@ function yourMove(){
 		|| verb == "GET") &&
 		(noun == map.getObjectName() ) ) {
 			output.innerHTML += "Thou takest ye olde " + map.getObjectName() + ".<br>";
-			gordon.receiveWeapon(map.getObject()); // Adds item to inventory.
-			badCommand = false;
+			gordon.receiveWeapon(map.getObject()); 	// Adds item to inventory and
+			badCommand = false;						// detracts item from map.
 		}
 
 	// Shows stats
 	else if((verb == "EVAL" || verb == "CHECK") &&
-		(noun == "STATISTICS" || noun == "STATS")){
+		(noun == "STATISTICS" || noun == "STATS" || noun == "")){
 		output.innerHTML += gordon.printStatus();
 		badCommand = false;
 	}
@@ -280,45 +344,43 @@ function yourMove(){
 		if(Math.floor((Math.random() * 100) + 1)>50)
 			output.innerHTML += "-";
 
-		output.innerHTML += (Math.floor(Math.random() * Number.MAX_SAFE_INTEGER) + 1);
-		output.innerHTML += ": Bad command or non-extant object.<br>" + "Type 'HELP' for help.<br>";
+		output.innerHTML += (Math.floor(Math.random() * Number.MAX_SAFE_INTEGER));
+		output.innerHTML += ": Bad command or non-extant object.<br>" + "Type 'help' for help.<br>";
+	}
+
+	if(map.getMonsterAmount() > 0){ // If monsters are extant.
+			console.log(map.getMonsterAmount());
+			output.innerHTML += m.attackString() + "<br>";
+			output.innerHTML += "Thou takest " + m.getDamage() + " damage.<br>";
+			gordon.getHurt(m.getDamage()); // Monster attacks.
 	}
 
 	// End of round
 
-	if(map.getMonsterAmount() > 0){ // If monsters are extant.
-			output.innerHTML += m.attackString();
-			output.innerHTML += "<br>Thou takest " + m.getDamage() + " damage.";
-			gordon.getHurt(m.getDamage()); // Temporary monster attacks.
-	}
-
 	if(gordon.getHealth() <= 0) // If player == teh deadz 
 	{	
-			output.innerHTML += "Thy bloody corpse falls lifelessly to ye olde floor.<br>"; // Inform them
-			output.innerHTML += "Loading from most recent saved game...<br>";
+			output.innerHTML += "Thy bloody corpse falls lifelessly to ye olde grounde.<br>"; // Inform them
+			output.innerHTML += "<br>Loading from most recent saved game...<br><br>";
 			
 			gordon.setPlayer(tempPlayer); // Load game from temporary save point at beginning of setUpMap (*)
 
-			map = new Room(tempPlayer.getPosition());
+			map = new Room(tempPlayer.getPosition()); // maybe this is retrieved from the temp map saved earlier
 			setUpMap(map);
 
 	} else if(gordon.getPosition()!=tempPlayer.getPosition()){
-			map = new Room(gordon.getPosition());
-			//update the view
-			setUpMap(map);
+	// If user is still alive and has advanced into the next room
+		
+		map = new Room(gordon.getPosition());
+		
+		//update the view
+		setUpMap(map);
+
 	} else {
-		output.innerHTML += "<br>What dost thou do?"; // THE prompt
+		output.innerHTML += "What dost thou do?<br>"; // THE prompt
 		$(window).scrollTop() + $(window).height();
 	}
 
 }
 
-// yourMove() has an if statement at the end that checks: 
-// if user is in current room (check against tempplayer position) and is not dead
-// monster attacks and the user is prompted again "what dost thou do"
-// else if gordon is dead set up map with saved value
-// else if gordon is not dead and position is advanced set up map with next map
-
 // set up new game
 setUpMap(map);
-console.log("This should only trigger once");
