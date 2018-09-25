@@ -29,9 +29,12 @@ class Room {
 	constructor (num){ 
 		if(num == 0){ // Map 0 of new game
 			this.weapon = new Weapon(0);
+
+			// if look any direction and a monster before ye
+			// 
 		
-			this.description = "Thou findeth yeself in the woods. ";
-			this.description2 = "In the distance ahead is a great castle. ";
+			this.description = "Ye findeth yeself in the woods. Thou hath left the home of thy parents to fulfill thy destiny. ";
+			this.description2 = "Thou haveth upon yeself only thy DAGGER. In the distance ahead is a great castle. ";
 			this.monsteramount = 1;
 			this.weaponamount = 0;
 			this.obstructioncount = 1;

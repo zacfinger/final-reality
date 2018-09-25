@@ -1,26 +1,45 @@
 // Final Reality command line javascript game
-// (C) 2018 Zac Finger
+// 1000yearkingdom.com
+// (C) 2018 ZacFinger.com
 
 // things left to do:
 // ------ ---- -- ---
-// add more commands to help menu/improve help menu
+// add World class to main.js to store all rooms as they are encountered
+// // still one dimensional for now
+// // object representing entire world (every room object)
+// // adds ability to go backwards
+// // this allows persistence i.e., an IMP stays dead in room 0
+// // as rooms are encountered save them to client world object in main.js
+// room.js contains array of all possible rooms
+// // pull rooms and monsters programmatically from JSON file?
+// add X and Y coordinates to rooms
+// add north, south, west east functionality etc
+// user says go north, look up index of room north of user
+// add non violent NPCs
+//
+// // make monsters have gold and items
+//
+
+// make items more robust (i.e., stats for items)
+// make INN in town restore health
+// make shop where you can buy items for the castle
+//
+// update battle system (earthbound battle system)
+// super mario rpg battle system
+// 
 // clean up/document/comment main.js/main.css/index.html 
 // make opening screen (first load up) block letter title screen
 // add copyright info to title screen
-// pull rooms and monsters programmatically from JSON file?
-// add more rooms
-// add north, south, west east functionality etc
-// add ability to go backwards
-// (load temporary save of each room so that monsters stay dead etc)
-// add non violent NPCs
-// make items more robust
-// update battle system (earthbound battle system)
+//
 // test edge cases
+//
 
 // notes: http://www2.silverblade.net/cliches/
 // https://stackoverflow.com/questions/1640502/pc-speaker-beep-via-javascript
 // https://stackoverflow.com/questions/27366848/how-do-i-store-my-node-mysql-password-not-in-plain-text
 // https://stackoverflow.com/questions/22348705/best-way-to-store-db-config-in-node-js-express-app
+// https://www.ffcompendium.com/h/faqs/ff1bsiron.txt
+// https://strategywiki.org/wiki/Final_Fantasy/Items
 
 ///////////////////////////
 
@@ -35,6 +54,7 @@
 // peasant of the rings // 0 results
 // bourgeoisie of the rings // 0 results
 // bourgeois of the rings // 0 results
+// comrade of the rings // 
 
 ///////////////////////////
 
@@ -42,6 +62,38 @@
 // loot goblin
 // "look at" goblin
 ///////////////////////////
+
+/*
+you encountereth ye olde parish of st. dennis. it has a cemetary and it is constructed in the gothic architectural style. 
+the cleric inside "what is your name" <choose character name (and eventually race and class)>
+// paladin or mage and one emphasizes strength/speed while other emphasizes magic/wisdom
+"we have been expecting you. it is dangerous to go alone. take this" // gives characer the CATHERINE SWORD
+"for generations the clerics of this parish have been entrusted to safeguard the CATHERINE SWORD 
+until the day the propheseid hero <NAME> would arrive."
+"for it is written, only <NAME> can defeat ROBESPIERRE and rescue the PRINCESS"
+"take now whatever thou may find in these treasure chests to aid thee in thy quest"
+"return to the parish for a rest if thou are wounded in battle. sleep heals all."
+explain what to buy in the city
+
+"of gold thou has gained 120 GP"
+"fortune smiles upon thee <NAME>, thou hast found the <OBJECT>"
+
+in the city:
+* peasant: this is lumeria, the city of lights
+* peasant: please! save the princess!
+* aristocratic girl: i am arylon! the dancer!
+* cleric: st. joan left the CATHERINE SWORD at the parish for safekeeping 360 years ago, before she was captured by the orcs.
+* guard: the king was sure that one day the HERO <name> will come to save the princess, just as in st. joan's prophecy
+* guard: the king was looking for <name> you do not happen to be them do you?
+* guard: robespierre used to be a good wizard, until...
+
+
+
+
+
+
+guards 
+*/
 
 // define all the objects
 var gordon = new Player(100,0);
@@ -56,7 +108,7 @@ var answer = document.getElementById("answer"); // Get the answer field
 //set up view
 answer.focus(); // autofocus on input field
 document.getElementById("answer") // answer field now allows enter key as input
-    .addEventListener("keyup", function(event) {
+    .addEventListener("keyup", function(event) { // this simulates old school CLI
     event.preventDefault();
     if (event.keyCode === 13) {
         document.getElementById("enter").click();
@@ -99,32 +151,13 @@ function help(){
 	to user, including game description
 	and a list of commands.
 	In: Nothing. Out: Nothing. */
+
 	/*
 	output.innerHTML += "<br>F I N A L R E A L I T Y<br>";
 	output.innerHTML += "= = = = = = = = = = = =<br><br>";*/
 
-	output.innerHTML = "COMMAND LIST<br>";
-	output.innerHTML += "======= ====<br>"
-	output.innerHTML += "All commands in FINAL REALITY must be entered in verb-noun pairs.<br><br>";
-	output.innerHTML += "Verb" + printSpace(13) + "- Noun" + printSpace(15) + ": Function<br>";
-	output.innerHTML += "----------------" + printSpace(3) + "------------------" + printSpace(3) + "--------<br>"
-	output.innerHTML += "help" + printSpace(13) + "- me" + printSpace(17) + ": Accesses this list at any time during gameplay.<br>";
-	output.innerHTML += "scan" + printSpace(13) + "- environs" + printSpace(11) + ": Examine current location.<br>";
-	output.innerHTML += "go " + printSpace(14) + "- (forward/backward) : Translates character in desired direction.<br>";
-	output.innerHTML += "taketh" + printSpace(11) + "- (name of weapon)" + printSpace(3) + ": Allows user to add a weapon encountered in a room<br>";
-	output.innerHTML += "" + printSpace(40) + "to their inventory.<br>";
-	output.innerHTML += "scan" + printSpace(13) + "- (name of monster)" + printSpace(2) + ": Allows user to examine monster.<br>";
-	output.innerHTML += "(name of weapon) - (name of object)" + printSpace(3) + ": Uses desired weapon against desired object.<br>";
-	output.innerHTML += printSpace(40) + "* Example: 'sword door' allows user to<br>";
-	output.innerHTML += printSpace(42) + "use the SWORD against a stubborn DOOR.<br>";
-	output.innerHTML += "(name of weapon) - (name of enemy)" + printSpace(4) + ": Uses desired weapon against desired enemy.<br>";
-	output.innerHTML += printSpace(40) + "* Example: 'dagger imp' allows the user<br>";
-	output.innerHTML += printSpace(42) + "to use the DAGGER against an IMP.<br>";
-	output.innerHTML += printSpace(40) + "* Example: 'sword goblin' allows the user<br>"; 
-	output.innerHTML += printSpace(42) + "to lance a GOBLIN with the SWORD.<br>";
-	output.innerHTML += "eval" + printSpace(13) + "- stats" + printSpace(14) + ": Allows user to check health, armor and inventory.<br><br>";
-
-	output.innerHTML += "STORY SO FAR<br>";
+	// display the story
+	output.innerHTML = "STORY SO FAR<br>";
 	output.innerHTML += "===== == ===<br>";
 	output.innerHTML += "Long ago in the Sixth Age of the World...<br>"+
 	/*"Surrounded by mountains and forests...<br>"+*/
@@ -140,6 +173,31 @@ function help(){
 
 	"When the kingdom is in darkness, a HERO will come...<br>" +
 	"Bearing the CATHERINE SWORD...<br><br>";
+
+	// display the commands
+	output.innerHTML += "COMMAND LIST<br>" + "======= ====<br>"
+	+ "All commands in FINAL REALITY must be entered in verb-noun pairs.<br><br>"
+	+ "Verb" + printSpace(13) + "- Noun" + printSpace(15) + ": Function<br>"
+	+ "----------------" + printSpace(3) + "------------------" + printSpace(3) + "--------<br>"
+	+ "help" + printSpace(13) + "- me" + printSpace(17) + ": Accesses this list at any time during gameplay.<br>"
+	+ "scan" + printSpace(13) + "- environs" + printSpace(11) + ": Examine current location.<br>"
+	+ "go " + printSpace(14) + "- (forward/backward) : Translates character in desired direction.<br>"
+	+ "taketh" + printSpace(11) + "- (name of weapon)" + printSpace(3) 
+	+ ": Allows user to add a weapon encountered in a room<br>"
+	+ "" + printSpace(40) + "to their inventory.<br>" + "scan" + printSpace(13) 
+	+ "- (name of monster)" + printSpace(2) + ": Allows user to examine monster.<br>"
+	+ "(name of weapon) - (name of object)" + printSpace(3) + ": Uses desired weapon against desired object.<br>"
+	+ printSpace(40) + "* Example: 'sword vine' allows user to<br>"
+	+ printSpace(42) + "use the SWORD to cut a stubborn VINE.<br>"
+	+ "(name of weapon) - (name of enemy)" + printSpace(4) + ": Uses desired weapon against desired enemy.<br>"
+	+ printSpace(40) + "* Example: 'dagger imp' allows the user<br>"
+	+ printSpace(42) + "to use the DAGGER against an IMP.<br>"
+	+ printSpace(40) + "* Example: 'sword goblin' allows the user<br>"
+	+ printSpace(42) + "to lance a GOBLIN with the SWORD.<br>"
+	+ "eval" + printSpace(13) + "- stats" + printSpace(14) 
+	+ ": Allows user to check health, armor and inventory.<br><br>"
+
+	// unsure whether to put story before or after command list in help menu
 	
 }
 
@@ -153,7 +211,7 @@ function setUpMap(room){
 	// 50% chance the room will respawn with an imp instead)
 
 	// describe the room
-	output.innerHTML += room.describeRoom(); // Provides verbal description of entering current room.
+	output.innerHTML += room.describeRoom() + "<br>" // Provides verbal description of entering current room.
 	output.innerHTML += room.getDescription2(); // Provides verbal description of current room.
 	output.innerHTML += "<br>";
 
@@ -168,13 +226,12 @@ function setUpMap(room){
 		output.innerHTML += "Thou encounterest ye olde GREENE ARMOUR. Thou gain " + map.getArmor() + " armor points.<br>";
 		gordon.increaseArmor(map.getArmor());
 	}
-/*
-	if(gordon.getPosition() == 0 && room.getMonsterAmount() > 0 && firstScreen == true){
-	// hard coded, this is probably bad
-		output.innerHTML += "<br>Verily something approaches from yonder umbrage! Thou haveth upon yeself only thy DAGGER.";
-	}*/
 
 	if(room.getMonsterAmount() > 0){ // If monsters are extant
+
+		if(firstScreen) // hard coded, this is probably bad
+			output.innerHTML += "Verily something approaches from yonder umbrage! ";
+
 		m = room.getMonster(); 
 		console.log(m);
 		output.innerHTML += "A";
@@ -191,7 +248,7 @@ function setUpMap(room){
 		firstScreen = false;
 	}
 
-	output.innerHTML += "What dost thou do?<br>"; // THE prompt
+	output.innerHTML += "What dost thou do?<br><br>"; // THE prompt
 	$(window).scrollTop() + $(window).height();
 }
 
@@ -381,7 +438,7 @@ function yourMove(){
 		setUpMap(map);
 
 	} else {
-		output.innerHTML += "What dost thou do?<br>"; // THE prompt
+		output.innerHTML += "What dost thou do?<br><br>"; // THE prompt
 		$(window).scrollTop() + $(window).height();
 	}
 
