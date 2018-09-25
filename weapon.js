@@ -45,6 +45,10 @@ class Weapon {
 		return this.name;
 	}
 
+	getAttack(){
+		return this.attack;
+	}
+
 	attackString(){
 		return this.attack + this.name + ". ";
 	}
@@ -56,5 +60,16 @@ class Weapon {
 
 	getDescription(){
 		return this.description;
+	}
+
+	getType(){
+		return this.type;
+	}
+
+	setWeapon(w){
+		this.type = w.getType();
+		this.name = w.getName();
+		this.attack = w.getAttack();
+		this.description = w.getDescription();
 	}
 }

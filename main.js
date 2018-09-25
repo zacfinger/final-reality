@@ -100,6 +100,7 @@ var gordon = new Player(100,0);
 var map = new Room(0);
 var firstScreen = true;
 var tempPlayer = new Player(100,0);
+var myWorld = new World(map);
 
 // set view elements to local variables
 var output = document.getElementById("container");  // Get the content of the container element 
@@ -324,6 +325,7 @@ function yourMove(){
 		{
 			if(map.getObstructCount() == 0){ 	// and there are no obstructions...
 				gordon.incrementPosition(); 	// they will do so.
+				myWorld.setRoom(map);
 			}
 			else // If there are obstructions...
 			{
@@ -342,6 +344,7 @@ function yourMove(){
 	else if(map.getObstructCount() > 0 && verb == map.getVerb() && noun == map.getNoun()){ 
 	// If there are obstructions and the user applies the right verb...
 			gordon.incrementPosition(); // They pass the current room.
+			myWorld.setRoom(map);
 			badCommand = false;
 	}
 

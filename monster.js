@@ -41,6 +41,17 @@ class Monster {
 		this.health = (num+1) * 3;
 	}
 
+	getType(){
+		return this.type;
+	}
+
+	setMonster(m){
+		this.name = m.getName();
+		this.description = m.getDescription();
+		this.type = m.getType();
+		this.health = m.getHealth();
+	}
+
 	getName(){ // Returns monster's name
 		return this.name;
 	}

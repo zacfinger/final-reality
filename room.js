@@ -85,6 +85,10 @@ class Room {
 		return this.weapon;
 	}
 
+	getWeapon(){
+		return this.weapon;
+	}
+
 	describeRoom(){ // Returns primary description.
 		return this.description;
 	}
@@ -147,5 +151,21 @@ class Room {
 
 	getObjectName(){
 		return this.weapon.getName();
+	}
+
+	setRoom(map){
+		this.weapon.setWeapon(map.getWeapon());
+		this.description = map.describeRoom();
+		this.description2 = map.getDescription2();
+		this.monsteramount = map.getMonsterAmount();
+		this.weaponamount = map.getWeaponAmount();
+		this.obstructioncount = map.getObstructCount();
+		this.obstructionname = map.getNoun();
+		this.obstructionverb = map.getVerb();
+		this.obstructiondescription = map.describeObstruction();
+		this.obstructiondamage = map.getDamage();
+		this.m.setMonster(map.getMonster());
+		this.health = map.getHealth();
+		this.armor = map.getArmor();
 	}
 }
