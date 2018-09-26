@@ -33,8 +33,8 @@ class Room {
 			// if look any direction and a monster before ye
 			// 
 		
-			this.description = "Ye findeth yeself in the woods. Thou hath left the home of thy parents to fulfill thy destiny. ";
-			this.description2 = "Thou haveth upon yeself only thy DAGGER. In the distance ahead is a great castle. ";
+			this.description = "Thou findeth yeself in the woods. ";
+			this.description2 = "In the distance ahead is a great castle. ";
 			this.monsteramount = 1;
 			this.weaponamount = 0;
 			this.obstructioncount = 1;
@@ -43,8 +43,8 @@ class Room {
 			this.obstructiondescription = "There is a LOG blocking thy path. Perhaps thou shalt CLIMB it.";
 			this.obstructiondamage = 0;
 			this.m = new Monster(0);
-			this.health = 0;
-			this.armor = 0;
+			this.health = 10;
+			this.armor = 10;
 		}
 		if(num == 1){
 			this.weapon = new Weapon(1);
@@ -52,7 +52,7 @@ class Room {
 			this.description = "Thou climbest overeth the LOG. ";
 			this.description2 = "Now thou findest yeself at a fork in the path. ";
 			this.monsteramount = 0;
-			this.weaponamount = 1;
+			this.weaponamount = 0;
 			this.obstructioncount = 1;
 			this.obstructionname = "SPIDER";
 			this.obstructionverb = "DAGGER";
@@ -151,6 +151,14 @@ class Room {
 
 	getObjectName(){
 		return this.weapon.getName();
+	}
+
+	setHealth(num){
+		this.health = num;
+	}
+
+	setArmor(num){
+		this.armor = num;
 	}
 
 	setRoom(map){

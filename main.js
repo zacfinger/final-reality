@@ -1,24 +1,34 @@
-// Final Reality command line javascript game
+// 1000 YEAR KINGDOM command line javascript game
 // 1000yearkingdom.com
 // (C) 2018 ZacFinger.com
+// v0.0.1.80925
 
 // things left to do:
 // ------ ---- -- ---
-// add World class to main.js to store all rooms as they are encountered
-// // still one dimensional for now
-// // object representing entire world (every room object)
-// // adds ability to go backwards
-// // this allows persistence i.e., an IMP stays dead in room 0
-// // as rooms are encountered save them to client world object in main.js
+// add X and Y coordinates to rooms
+// setTempMap at beginning of setUpMap to save map state
+// // // if you are killed by the IMP in map 0,0 
+// // // there is a ~50% chance when you load from the
+// // // saved game it will respawn as a GOBLIN
+// // // you probably cant do this without adding X,Y coordinates
+// add ability to go backwards
+// // cant simply add current room to array of rooms
+// // need the x,y coordinates of each room
+// update rooms so that obstructions have directionality
 // room.js contains array of all possible rooms
 // // pull rooms and monsters programmatically from JSON file?
-// add X and Y coordinates to rooms
 // add north, south, west east functionality etc
 // user says go north, look up index of room north of user
+//
+// firstScreen will not work if you are killed by the IMP in map 0,0
+// fix checking gordon health > 0 when monster attacks breaks functionality
+// 
 // add non violent NPCs
-//
+// 
 // // make monsters have gold and items
-//
+// // user can use word "loot" to loot monster
+// // user has to use word "take potion" to get potion/armor
+// // user uses word "kill" to use currently equipped item
 
 // make items more robust (i.e., stats for items)
 // make INN in town restore health
@@ -106,6 +116,8 @@ var myWorld = new World(map);
 var output = document.getElementById("container");  // Get the content of the container element 
 var answer = document.getElementById("answer"); // Get the answer field
 
+output.innerHTML = "1000 YEAR KINGDOM<br>(c) 2018 ZacFinger.com<br>v0.0.1.80925<br><br>";
+
 //set up view
 answer.focus(); // autofocus on input field
 document.getElementById("answer") // answer field now allows enter key as input
@@ -177,7 +189,7 @@ function help(){
 
 	// display the commands
 	output.innerHTML += "COMMAND LIST<br>" + "======= ====<br>"
-	+ "All commands in FINAL REALITY must be entered in verb-noun pairs.<br><br>"
+	+ "All commands in 1000 YEAR KINGDOM must be entered in verb-noun pairs.<br><br>"
 	+ "Verb" + printSpace(13) + "- Noun" + printSpace(15) + ": Function<br>"
 	+ "----------------" + printSpace(3) + "------------------" + printSpace(3) + "--------<br>"
 	+ "help" + printSpace(13) + "- me" + printSpace(17) + ": Accesses this list at any time during gameplay.<br>"
@@ -207,31 +219,36 @@ function help(){
 function setUpMap(room){
 
 	tempPlayer.setPlayer(gordon); // Sets up temporary save of game. (*)
-	// tempMap.setMap(map) would go here as well
+	// tempMap.setMap(room) would go here as well
 	// (if you are killed by a goblin here there is about 
 	// 50% chance the room will respawn with an imp instead)
 
 	// describe the room
 	output.innerHTML += room.describeRoom() + "<br>" // Provides verbal description of entering current room.
-	output.innerHTML += room.getDescription2(); // Provides verbal description of current room.
-	output.innerHTML += "<br>";
+	//if(firstScreen)
+	//	output.innerHTML += "Thou hath left the home of thy parents to fulfill thy destiny.<br>";
+	output.innerHTML += room.getDescription2() + "<br>"; // Provides verbal description of current room.
 
 	if(room.getHealth() > 0) // If there are potions inside the room
 	{						 // Player health is increased.
 		output.innerHTML += "Thou encounterest ye olde POTION. Thou gain " + map.getHealth() + " HP.<br>";
 		gordon.increaseHealth(map.getHealth());
+		map.setHealth(0);		// Map health set to zero
 	}
 
 	if(room.getArmor() > 0) // If there are armor boosts inside the room
 	{   					// Player armor is increased.
 		output.innerHTML += "Thou encounterest ye olde GREENE ARMOUR. Thou gain " + map.getArmor() + " armor points.<br>";
 		gordon.increaseArmor(map.getArmor());
+		map.setArmor(0);
 	}
 
 	if(room.getMonsterAmount() > 0){ // If monsters are extant
 
-		if(firstScreen) // hard coded, this is probably bad
-			output.innerHTML += "Verily something approaches from yonder umbrage! ";
+		if(firstScreen){ // hard coded, this is probably bad
+			output.innerHTML += "Verily something approaches from yonder umbrage!<br>"+
+			"Thou haveth upon yeself only thy DAGGER.<br>";
+		}
 
 		m = room.getMonster(); 
 		console.log(m);
@@ -261,7 +278,7 @@ function yourMove(){
 	*/
 
 	// set to false if any of the entered commands succeed
-	// if still false at the end of yourMove(), error is printed
+	// if still true at the end of yourMove(), error is printed
 	var badCommand = true;
 
 	// get the answer first
@@ -398,6 +415,12 @@ function yourMove(){
 	// Shows help screen with list of commands
 	else if(verb == "HELP"){
 		help();
+		badCommand = false;
+	}
+
+	else if(verb == "KILL" && (noun == "SELF" || noun == "YOURSELF")) // only for testing purposes i swear
+	{
+		gordon.getHurt(200);
 		badCommand = false;
 	}
 

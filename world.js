@@ -9,6 +9,9 @@ class World {
 	}
 
 	setRoom(map){
+		/*
+		need to be able to send in X and Y coordinates
+		*/
 		this.rooms[this.amountOfRooms].setRoom(map);
 		this.amountOfRooms++;
 	}
