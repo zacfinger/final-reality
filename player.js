@@ -14,7 +14,7 @@ class Player {
      * @param number 	armor 			The player's armor ( 0 - 100 )
      * @param weapon[] 	inventory 		Array of Weapon objects
      * @param number 	weaponamount 	Amount of weapons
-     * @param number 	position 		Player's current map location (0 = first map)
+     * @param number 	positionX 		Player's current map location (0 = first map)
      * 						
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 	
@@ -34,8 +34,17 @@ class Player {
 		this.inventory = [];	// Inventory of weapons
 		this.inventory[0] = new Weapon(0);
 		this.weaponamount = 1;	// Default weapon
-		this.position = 0;		// First map
+		this.positionX = 0;		// First map
+		this.positionY = 0;
 
+	}
+
+	setX(num){
+		this.positionX = num;
+	}
+
+	setY(num){
+		this.positionY = num;
 	}
 
 	setPlayer(gordon){  // Receives another player object and sets
@@ -45,7 +54,8 @@ class Player {
 		this.armor = gordon.getArmor();
 
 		this.weaponamount = gordon.getWeaponAmount();
-		this.position = gordon.getPosition();
+		this.positionX = gordon.getPositionX();
+		this.positionY = gordon.getPositionY();
 
 		this.inventory = []; // Reset weapon inventory to empty
 
@@ -81,12 +91,20 @@ class Player {
 		return this.inventory[num];
 	}
 
-	incrementPosition(){  // Increments users' room number
-		this.position++;
+	goSouth(){  // Increments users' room number
+		this.positionX++;
 	}
 
-	getPosition(){  // Get users' position
-		return this.position;
+	goNorth(){
+		this.positionX--;
+	}
+
+	getPositionX(){  // Get users' position
+		return this.positionX;
+	}
+
+	getPositionY(){  // Get users' position
+		return this.positionY;
 	}
 
 	decreaseArmor(num){

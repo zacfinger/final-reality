@@ -26,8 +26,28 @@ class Room {
      * 
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-	constructor (num){ 
-		if(num == 0){ // Map 0 of new game
+	constructor (xCoordinate,yCoordinate){ 
+		if(xCoordinate == 0 && yCoordinate == 0){
+
+			this.weapon = new Weapon(0);
+
+			this.description = "Thou cometh to thy parents house, which you left to fulfill your destiny.";
+			this.health = 10;
+			this.armor = 10;
+			this.description2 = "You could go inside. ";
+			this.monsteramount = 0;
+			this.weaponamount = 0;
+			this.obstructioncount = 0;
+			this.obstructionname = "LOG";
+			this.obstructionverb = "CLIMB";
+			this.obstructiondescription = "There is a LOG blocking thy path. Perhaps thou shalt CLIMB it.";
+			this.obstructiondamage = 0;
+			this.m = new Monster(0);
+			this.health = 0;
+			this.armor = 0;
+		}
+
+		if(xCoordinate == 1 && yCoordinate == 0){ // Map 0 of new game
 			this.weapon = new Weapon(0);
 
 			// if look any direction and a monster before ye
@@ -43,10 +63,11 @@ class Room {
 			this.obstructiondescription = "There is a LOG blocking thy path. Perhaps thou shalt CLIMB it.";
 			this.obstructiondamage = 0;
 			this.m = new Monster(0);
-			this.health = 10;
-			this.armor = 10;
+			this.health = 0;
+			this.armor = 0;
 		}
-		if(num == 1){
+
+		if(xCoordinate == 2 && yCoordinate == 0){ // directly south of Map 0
 			this.weapon = new Weapon(1);
 		
 			this.description = "Thou climbest overeth the LOG. ";
@@ -62,6 +83,9 @@ class Room {
 			this.health = 0;
 			this.armor = 0;
 		}
+
+		this.x = xCoordinate;
+		this.y = yCoordinate;
 	}
 
 	/*
@@ -161,7 +185,17 @@ class Room {
 		this.armor = num;
 	}
 
+	getX(){
+		return this.x;
+	}
+
+	getY(){
+		return this.y;
+	}
+
 	setRoom(map){
+		this.x = map.getX();
+		this.y = map.getY();
 		this.weapon.setWeapon(map.getWeapon());
 		this.description = map.describeRoom();
 		this.description2 = map.getDescription2();

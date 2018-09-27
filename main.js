@@ -1,11 +1,13 @@
 // 1000 YEAR KINGDOM command line javascript game
 // 1000yearkingdom.com
 // (C) 2018 ZacFinger.com
-// v0.0.1.80925
+// v0.0.1.80926
 
 // things left to do:
 // ------ ---- -- ---
-// add X and Y coordinates to rooms
+// add large enough array in myWorld for all rooms to exist
+// make west and east work
+// initialize large enough array
 // setTempMap at beginning of setUpMap to save map state
 // // // if you are killed by the IMP in map 0,0 
 // // // there is a ~50% chance when you load from the
@@ -107,16 +109,21 @@ guards
 
 // define all the objects
 var gordon = new Player(100,0);
-var map = new Room(0);
+var map = new Room(1,0);
 var firstScreen = true;
 var tempPlayer = new Player(100,0);
-var myWorld = new World(map);
+var myWorld = new World();
+
+gordon.setX(map.getX());
+gordon.setY(map.getY());
+tempPlayer.setX(map.getX());
+tempPlayer.setY(map.getY());
 
 // set view elements to local variables
 var output = document.getElementById("container");  // Get the content of the container element 
 var answer = document.getElementById("answer"); // Get the answer field
 
-output.innerHTML = "1000 YEAR KINGDOM<br>(c) 2018 ZacFinger.com<br>v0.0.1.80925<br><br>";
+//output.innerHTML = "1000 YEAR KINGDOM<br>(c) 2018 ZacFinger.com<br>v0.0.1.809<br><br>";
 
 //set up view
 answer.focus(); // autofocus on input field
@@ -330,19 +337,23 @@ function yourMove(){
 
 	else if(verb == "GO") // If user wishes to go...
 	{	
-		if(noun == "BACKWARD" || noun == "BACK") // backward...
+		if(noun == "NORTH") // backward...
 		{
-			output.innerHTML += "Thou canneth notst goeth in yonder direction.<br>";
+			//output.innerHTML += "Thou canneth notst goeth in yonder direction.<br>";
 			// ...they will find that quite difficult.
+
+			gordon.goNorth();
+			myWorld.setRoom(map);
 
 			badCommand = false;
 		}
 
-		if(noun == "FORWARD") // If user wishes to go forward...
+		if(noun == "SOUTH") // If user wishes to go forward...
 		{
 			if(map.getObstructCount() == 0){ 	// and there are no obstructions...
-				gordon.incrementPosition(); 	// they will do so.
+				gordon.goSouth(); 	// they will do so.
 				myWorld.setRoom(map);
+
 			}
 			else // If there are obstructions...
 			{
@@ -360,7 +371,7 @@ function yourMove(){
 
 	else if(map.getObstructCount() > 0 && verb == map.getVerb() && noun == map.getNoun()){ 
 	// If there are obstructions and the user applies the right verb...
-			gordon.incrementPosition(); // They pass the current room.
+			gordon.goSouth(); // They pass the current room.
 			myWorld.setRoom(map);
 			badCommand = false;
 	}
@@ -452,13 +463,15 @@ function yourMove(){
 			
 			gordon.setPlayer(tempPlayer); // Load game from temporary save point at beginning of setUpMap (*)
 
-			map = new Room(tempPlayer.getPosition()); // maybe this is retrieved from the temp map saved earlier
+			map = new Room(tempPlayer.getPositionX(),tempPlayer.getPositionY()); 
+			// maybe this is retrieved from the temp map saved earlier
 			setUpMap(map);
 
-	} else if(gordon.getPosition()!=tempPlayer.getPosition()){
+	} else if(gordon.getPositionX()!=tempPlayer.getPositionX() ||
+		gordon.getPositionY() != tempPlayer.getPositionY()){
 	// If user is still alive and has advanced into the next room
 		
-		map = new Room(gordon.getPosition());
+		map = new Room(gordon.getPositionX(),gordon.getPositionY());
 		
 		//update the view
 		setUpMap(map);
