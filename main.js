@@ -1,28 +1,20 @@
 // 1000 YEAR KINGDOM command line javascript game
 // 1000yearkingdom.com
 // (C) 2018 ZacFinger.com
-// v0.0.1.80926
+// v0.0.1.80926.23
 
 // things left to do:
 // ------ ---- -- ---
-// add large enough array in myWorld for all rooms to exist
+// 
 // make west and east work
-// initialize large enough array
-// setTempMap at beginning of setUpMap to save map state
-// // // if you are killed by the IMP in map 0,0 
-// // // there is a ~50% chance when you load from the
-// // // saved game it will respawn as a GOBLIN
-// // // you probably cant do this without adding X,Y coordinates
-// add ability to go backwards
-// // cant simply add current room to array of rooms
-// // need the x,y coordinates of each room
 // update rooms so that obstructions have directionality
+//
+// // add large enough array in myWorld for all rooms to exist
+// initialize large enough array
 // room.js contains array of all possible rooms
 // // pull rooms and monsters programmatically from JSON file?
-// add north, south, west east functionality etc
-// user says go north, look up index of room north of user
 //
-// firstScreen will not work if you are killed by the IMP in map 0,0
+// firstScreen will not work if you are killed by the IMP in map 1,0
 // fix checking gordon health > 0 when monster attacks breaks functionality
 // 
 // add non violent NPCs
@@ -110,14 +102,15 @@ guards
 // define all the objects
 var gordon = new Player(100,0);
 var map = new Room(1,0);
+var tempMap = new Room(0,0);
 var firstScreen = true;
 var tempPlayer = new Player(100,0);
 var myWorld = new World();
 
 gordon.setX(map.getX());
 gordon.setY(map.getY());
-tempPlayer.setX(map.getX());
-tempPlayer.setY(map.getY());
+//tempPlayer.setX(map.getX());
+//tempPlayer.setY(map.getY());
 
 // set view elements to local variables
 var output = document.getElementById("container");  // Get the content of the container element 
@@ -225,16 +218,16 @@ function help(){
 // or when loading up the most recent save point
 function setUpMap(room){
 
-	tempPlayer.setPlayer(gordon); // Sets up temporary save of game. (*)
-	// tempMap.setMap(room) would go here as well
-	// (if you are killed by a goblin here there is about 
-	// 50% chance the room will respawn with an imp instead)
+	// Sets up temporary save of game. (*)
+	tempPlayer.setPlayer(gordon);
+	tempMap.setRoom(room);
 
 	// describe the room
 	output.innerHTML += room.describeRoom() + "<br>" // Provides verbal description of entering current room.
 	//if(firstScreen)
 	//	output.innerHTML += "Thou hath left the home of thy parents to fulfill thy destiny.<br>";
 	output.innerHTML += room.getDescription2() + "<br>"; // Provides verbal description of current room.
+
 
 	if(room.getHealth() > 0) // If there are potions inside the room
 	{						 // Player health is increased.
@@ -258,7 +251,7 @@ function setUpMap(room){
 		}
 
 		m = room.getMonster(); 
-		console.log(m);
+		
 		output.innerHTML += "A";
 		if(isVowel(m.getName().charAt(0)))
 			output.innerHTML += "n"
@@ -448,7 +441,7 @@ function yourMove(){
 	}
 
 	if(map.getMonsterAmount() > 0){ // If monsters are extant.
-			console.log(map.getMonsterAmount());
+			
 			output.innerHTML += m.attackString() + "<br>";
 			output.innerHTML += "Thou takest " + m.getDamage() + " damage.<br>";
 			gordon.getHurt(m.getDamage()); // Monster attacks.
@@ -462,16 +455,22 @@ function yourMove(){
 			output.innerHTML += "<br>Loading from most recent saved game...<br><br>";
 			
 			gordon.setPlayer(tempPlayer); // Load game from temporary save point at beginning of setUpMap (*)
-
-			map = new Room(tempPlayer.getPositionX(),tempPlayer.getPositionY()); 
-			// maybe this is retrieved from the temp map saved earlier
+			map.setRoom(tempMap); // retrieved from the temp map saved upon entry in setUpMap()
+			
 			setUpMap(map);
 
 	} else if(gordon.getPositionX()!=tempPlayer.getPositionX() ||
 		gordon.getPositionY() != tempPlayer.getPositionY()){
-	// If user is still alive and has advanced into the next room
+		// If user is still alive and has advanced into the next room
 		
-		map = new Room(gordon.getPositionX(),gordon.getPositionY());
+		// if the user has already been in the room
+		if(myWorld.hasRoom(gordon.getPositionX(),gordon.getPositionY())){
+			map.setRoom(myWorld.getRoom(gordon.getPositionX(),gordon.getPositionY()));
+		}
+		else {
+			// if not then new room constructor
+			map = new Room(gordon.getPositionX(),gordon.getPositionY());
+		}
 		
 		//update the view
 		setUpMap(map);

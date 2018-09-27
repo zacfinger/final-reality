@@ -43,8 +43,6 @@ class Room {
 			this.obstructiondescription = "There is a LOG blocking thy path. Perhaps thou shalt CLIMB it.";
 			this.obstructiondamage = 0;
 			this.m = new Monster(0);
-			this.health = 0;
-			this.armor = 0;
 		}
 
 		if(xCoordinate == 1 && yCoordinate == 0){ // Map 0 of new game
