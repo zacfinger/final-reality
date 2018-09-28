@@ -36,7 +36,7 @@ class Room {
 			this.armor = 10;
 			this.description2 = "You could go inside. ";
 			this.monsteramount = 0;
-			this.weaponamount = 0;
+			this.weaponamount = 1;
 			this.obstructioncount = 0;
 			this.obstructionname = "LOG";
 			this.obstructionverb = "CLIMB";

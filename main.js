@@ -1,7 +1,7 @@
 // 1000 YEAR KINGDOM command line javascript game
 //
 // (c) 2018 ZacFinger.com
-// v0.0.1.80927.21
+// v0.0.1.80927.22
 
 // things left to do:
 // ------ ---- -- ---
@@ -194,7 +194,7 @@ function help(){
 	+ "----------------" + printSpace(3) + "------------------" + printSpace(3) + "--------<br>"
 	+ "help" + printSpace(13) + "- me" + printSpace(17) + ": Accesses this list at any time during gameplay.<br>"
 	+ "scan" + printSpace(13) + "- environs" + printSpace(11) + ": Examine current location.<br>"
-	+ "go " + printSpace(14) + "- (forward/backward) : Translates character in desired direction.<br>"
+	+ "go " + printSpace(14) + "- (north/south)" + printSpace(6) + ": Translates character in desired direction.<br>"
 	+ "taketh" + printSpace(11) + "- (name of weapon)" + printSpace(3) 
 	+ ": Allows user to add a weapon encountered in a room<br>"
 	+ "" + printSpace(40) + "to their inventory.<br>" + "scan" + printSpace(13) 
@@ -465,11 +465,8 @@ function yourMove(){
 		
 		// if the user has already been in the room
 		if(myWorld.hasRoom(gordon.getPositionX(),gordon.getPositionY())){
-			console.log("this is before setting room");
-			console.log(gordon.getWeaponName(1));
 			map.setRoom(myWorld.getRoom(gordon.getPositionX(),gordon.getPositionY()));
-			console.log("this is after setting room");
-			console.log(gordon.getWeaponName(1));
+
 		}
 		else {
 			// if not then new room constructor
