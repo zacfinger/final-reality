@@ -1,7 +1,7 @@
 // 1000 YEAR KINGDOM command line javascript game
 //
 // (c) 2018 ZacFinger.com
-// v0.0.1.80927.22
+// v0.0.1.80927.22.27
 
 // things left to do:
 // ------ ---- -- ---

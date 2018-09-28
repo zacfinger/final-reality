@@ -52,7 +52,7 @@ class Room {
 			// 
 		
 			this.description = "Thou findeth yeself in the woods. ";
-			this.description2 = "In the distance ahead is a great castle. ";
+			this.description2 = "In the distance south is a great castle. ";
 			this.monsteramount = 1;
 			this.weaponamount = 0;
 			this.obstructioncount = 1;
