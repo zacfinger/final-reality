@@ -330,11 +330,15 @@ function yourMove(){
 
 	else if(verb == "GO") // If user wishes to go...
 	{	
-		if(noun == "NORTH") // backward...
-		{
-			//output.innerHTML += "Thou canneth notst goeth in yonder direction.<br>";
+		if(noun == "WEST" || "EAST"){
+			output.innerHTML += "Thou canneth notst goeth in yonder direction.<br>";
 			// ...they will find that quite difficult.
 
+			badCommand = false;
+		}
+
+		if(noun == "NORTH") // backward...
+		{
 			gordon.goNorth();
 			myWorld.setRoom(map);
 
