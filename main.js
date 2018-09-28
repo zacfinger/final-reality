@@ -1,18 +1,18 @@
 // 1000 YEAR KINGDOM command line javascript game
-// 1000yearkingdom.com
-// (C) 2018 ZacFinger.com
-// v0.0.1.80926.23
+//
+// (c) 2018 ZacFinger.com
+// v0.0.1.80927.21
 
 // things left to do:
 // ------ ---- -- ---
-// 
-// make west and east work
 // update rooms so that obstructions have directionality
 //
-// // add large enough array in myWorld for all rooms to exist
-// initialize large enough array
-// room.js contains array of all possible rooms
-// // pull rooms and monsters programmatically from JSON file?
+// make west and east work
+//
+// add large enough array in myWorld for all rooms to exist
+// // initialize large enough array
+// // room.js contains array of all possible rooms
+// // // pull rooms and monsters programmatically from JSON file?
 //
 // firstScreen will not work if you are killed by the IMP in map 1,0
 // fix checking gordon health > 0 when monster attacks breaks functionality
@@ -217,7 +217,6 @@ function help(){
 // called when a user enters any room
 // or when loading up the most recent save point
 function setUpMap(room){
-
 	// Sets up temporary save of game. (*)
 	tempPlayer.setPlayer(gordon);
 	tempMap.setRoom(room);
@@ -268,6 +267,7 @@ function setUpMap(room){
 
 	output.innerHTML += "What dost thou do?<br><br>"; // THE prompt
 	$(window).scrollTop() + $(window).height();
+
 }
 
 // called when a user enters any command
@@ -465,12 +465,17 @@ function yourMove(){
 		
 		// if the user has already been in the room
 		if(myWorld.hasRoom(gordon.getPositionX(),gordon.getPositionY())){
+			console.log("this is before setting room");
+			console.log(gordon.getWeaponName(1));
 			map.setRoom(myWorld.getRoom(gordon.getPositionX(),gordon.getPositionY()));
+			console.log("this is after setting room");
+			console.log(gordon.getWeaponName(1));
 		}
 		else {
 			// if not then new room constructor
 			map = new Room(gordon.getPositionX(),gordon.getPositionY());
 		}
+
 		
 		//update the view
 		setUpMap(map);

@@ -71,7 +71,7 @@ class Room {
 			this.description = "Thou climbest overeth the LOG. ";
 			this.description2 = "Now thou findest yeself at a fork in the path. ";
 			this.monsteramount = 0;
-			this.weaponamount = 0;
+			this.weaponamount = 1;
 			this.obstructioncount = 1;
 			this.obstructionname = "SPIDER";
 			this.obstructionverb = "DAGGER";
