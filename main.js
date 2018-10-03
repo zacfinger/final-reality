@@ -1,7 +1,7 @@
 // 1000 YEAR KINGDOM command line javascript game
 //
 // (c) 2018 ZacFinger.com
-// v0.0.1.81
+// v0.0.1.810.02
 
 // things left to do:
 // ------ ---- -- ---
@@ -107,6 +107,7 @@ var tempMap = new Room(0,0);
 var firstScreen = true;
 var tempPlayer = new Player(100,0);
 var myWorld = new World();
+var tempItems = [];
 
 gordon.setX(map.getX());
 gordon.setY(map.getY());
@@ -224,16 +225,25 @@ function setUpMap(room){
 
 	// describe the room
 	output.innerHTML += room.describeRoom() + "<br>" // Provides verbal description of entering current room.
-	//if(firstScreen)
-	//	output.innerHTML += "Thou hath left the home of thy parents to fulfill thy destiny.<br>";
 	output.innerHTML += room.getDescription2() + "<br>"; // Provides verbal description of current room.
 
+			// this will work but its probably a good idea to set this to an array once
+			// that is, when they enter the room for the first time set array tempItems
+			// not every single time the room is described etc
+	if(room.getItemAmount() > 0) // If there are items inside the room
+	{
+		for(var x=0;x<room.getItemAmount();x++){
+			output.innerHTML += "Thou encounterest ye olde ";
+			tempItems[x] = new Item("null",0,0,0);
+			tempItems[x].setItem(room.getItemAt(x));
+			
+			output.innerHTML += tempItems[x].getName();
+			output.innerHTML += ".<br>";
+		}
 
-	if(room.getHealth() > 0) // If there are potions inside the room
-	{						 // Player health is increased.
-		output.innerHTML += "Thou encounterest ye olde POTION. Thou gain " + map.getHealth() + " HP.<br>";
-		gordon.increaseHealth(map.getHealth());
-		map.setHealth(0);		// Map health set to zero
+		//POTION. Thou gain " + map.getHealth() + " HP.<br>";
+		//gordon.increaseHealth(map.getHealth());
+		//map.setHealth(0);		// Map health set to zero
 	}
 
 	if(room.getArmor() > 0) // If there are armor boosts inside the room

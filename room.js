@@ -28,9 +28,11 @@ class Room {
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	constructor (xCoordinate,yCoordinate){ 
-		if(xCoordinate == 0 && yCoordinate == 0){
 
 			this.items = [];
+
+		if(xCoordinate == 0 && yCoordinate == 0){
+
 			this.items[0] = new Item("POTION",10,0,5);
 
 			this.weapon = new Weapon(0);
@@ -55,6 +57,7 @@ class Room {
 			// if look any direction and a monster before ye
 			// 
 		
+			this.items[0] = new Item("POTION",10,0,5);
 			this.description = "Thou findeth yeself in the woods. ";
 			this.description2 = "In the distance south is a great castle. ";
 			this.monsteramount = 1;
@@ -104,6 +107,10 @@ class Room {
 
 	getItemAmount(){
 		return this.items.length;
+	}
+
+	getItemAt(num){
+		return this.items[num];
 	}
 
 	getWeaponAmount(){

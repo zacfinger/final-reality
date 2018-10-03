@@ -33,4 +33,11 @@ class Item {
 	getPrice(){
 		return this.price;
 	}
+
+	setItem(i){
+		this.name = i.getName();
+		this.healthIncrease = i.getHealthIncrease();
+		this.magicIncrease = i.getMagicIncrease();
+		this.price = i.getPrice();
+	}
 }
