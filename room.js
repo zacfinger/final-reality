@@ -23,16 +23,20 @@ class Room {
      * @param monster 	m 						Monster within room.
      * @param number 	health 					Health to be encountered upon entering a room, if any.
      * @param number 	armor 					Armor to be encountered upon entering a room, if any.
+     * @param Item[]	items					Array of Item objects
      * 
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	constructor (xCoordinate,yCoordinate){ 
 		if(xCoordinate == 0 && yCoordinate == 0){
 
+			this.items = [];
+			this.items[0] = new Item("POTION",10,0,5);
+
 			this.weapon = new Weapon(0);
 
 			this.description = "Thou cometh to thy parents house, which you left to fulfill your destiny.";
-			this.health = 10;
+			this.health = 0;
 			this.armor = 10;
 			this.description2 = "You could go inside. ";
 			this.monsteramount = 0;
@@ -97,6 +101,10 @@ class Room {
 	// example: when first peasant kills you in [1][-1] need to return to room [1][0] 
 
 	*/
+
+	getItemAmount(){
+		return this.items.length;
+	}
 
 	getWeaponAmount(){
 		return this.weaponamount;

@@ -1,7 +1,7 @@
 // 1000 YEAR KINGDOM command line javascript game
 //
 // (c) 2018 ZacFinger.com
-// v0.0.1.80927.22.27
+// v0.0.1.81
 
 // things left to do:
 // ------ ---- -- ---
@@ -13,6 +13,7 @@
 // // initialize large enough array
 // // room.js contains array of all possible rooms
 // // // pull rooms and monsters programmatically from JSON file?
+// https://www.w3schools.com/jquery/ajax_ajax.asp
 //
 // firstScreen will not work if you are killed by the IMP in map 1,0
 // fix checking gordon health > 0 when monster attacks breaks functionality
@@ -116,7 +117,7 @@ gordon.setY(map.getY());
 var output = document.getElementById("container");  // Get the content of the container element 
 var answer = document.getElementById("answer"); // Get the answer field
 
-//output.innerHTML = "1000 YEAR KINGDOM<br>(c) 2018 ZacFinger.com<br>v0.0.1.809<br><br>";
+//output.innerHTML = "1000 YEAR KINGDOM<br>(c) 2018 ZacFinger.com<br>v0.0.1.81<br><br>";
 
 //set up view
 answer.focus(); // autofocus on input field
@@ -245,8 +246,8 @@ function setUpMap(room){
 	if(room.getMonsterAmount() > 0){ // If monsters are extant
 
 		if(firstScreen){ // hard coded, this is probably bad
-			output.innerHTML += "Verily something approaches from yonder umbrage!<br>"+
-			"Thou haveth upon yeself only thy DAGGER.<br>";
+			output.innerHTML += "Thou haveth upon yeself only thy DAGGER.<br>"+
+			"Verily something approaches from yonder umbrage!<br>";
 		}
 
 		m = room.getMonster(); 
@@ -330,7 +331,7 @@ function yourMove(){
 
 	else if(verb == "GO") // If user wishes to go...
 	{	
-		if(noun == "WEST" || "EAST"){
+		if(noun == "WEST" || noun == "EAST"){
 			output.innerHTML += "Thou canneth notst goeth in yonder direction.<br>";
 			// ...they will find that quite difficult.
 
