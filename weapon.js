@@ -1,4 +1,4 @@
-class Weapon {
+class Weapon extends Item {
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      * 
@@ -19,21 +19,21 @@ class Weapon {
 
 	constructor (num){    // Accepts a number after robustly assessing its validity.
 		
-		this.type = num;
-		
 		if(num == 0){
-			this.name = "DAGGER";
+			super("DAGGER",(num+1)*10,0,10);
 			this.attack = "Thou jabbeth ye ";
 		}
 		if(num == 1){
-			this.name = "PISTOL";
+			super("PISTOL",(num+1)*10,0,20);
 			this.attack = "Thou firest ye ";
 
 		}
 		if(num == 2){
-			this.name = "STAFF";
+			super("STAFF",(num+1)*10,0,25);
 			this.attack = "Thou swingest ye ";
 		}
+
+		this.type = num;
 
 		var description0 = "Ye olde ";
 		var description1 = " lies on ye olde ground.";
@@ -55,7 +55,8 @@ class Weapon {
 
 	getDamage(){	// Returns an attack (hit points)  
 					// Damage given by weapons is determined by their type.
-		return ((this.type + 1) * 10);
+		//return ((this.type + 1) * 10);
+		return this.healthIncrease;
 	}
 
 	getDescription(){
@@ -66,10 +67,11 @@ class Weapon {
 		return this.type;
 	}
 
-	setWeapon(w){
+	setItem(w){
 		this.type = w.getType();
 		this.name = w.getName();
 		this.attack = w.getAttack();
 		this.description = w.getDescription();
+		this.healthIncrease = w.getDamage();
 	}
 }

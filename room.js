@@ -34,6 +34,8 @@ class Room {
 		if(xCoordinate == 0 && yCoordinate == 0){
 
 			this.items[0] = new Item("POTION",10,0,5);
+			this.items[1] = new Item("ELIXIR",10,0,5);
+			this.items[2] = new Item("TONIC",10,0,5);
 
 			this.weapon = new Weapon(0);
 
@@ -58,6 +60,10 @@ class Room {
 			// 
 		
 			this.items[0] = new Item("POTION",10,0,5);
+			this.items[1] = new Item("ELIXIR",10,0,5);
+			this.items[2] = new Item("TONIC",10,0,5);
+
+			
 			this.description = "Thou findeth yeself in the woods. ";
 			this.description2 = "In the distance south is a great castle. ";
 			this.monsteramount = 1;
@@ -109,8 +115,22 @@ class Room {
 		return this.items.length;
 	}
 
+	isObjectThere(str){
+
+		for(var x=0;x<this.items.length;x++){
+			if(str == this.items[x].getName())
+				return x;
+		}
+
+		return -1;
+	}
+
 	getItemAt(num){
 		return this.items[num];
+	}
+
+	removeItemAt(num){
+		this.items.splice(num, 1);
 	}
 
 	getWeaponAmount(){
@@ -209,7 +229,7 @@ class Room {
 	setRoom(map){
 		this.x = map.getX();
 		this.y = map.getY();
-		this.weapon.setWeapon(map.getWeapon());
+		this.weapon.setItem(map.getWeapon());
 		this.description = map.describeRoom();
 		this.description2 = map.getDescription2();
 		this.monsteramount = map.getMonsterAmount();
@@ -222,5 +242,12 @@ class Room {
 		this.m.setMonster(map.getMonster());
 		this.health = map.getHealth();
 		this.armor = map.getArmor();
+
+		this.items = [];
+
+		for(var x=0;x<map.getItemAmount();x++){
+			this.items[x] = new Item("null",0,0,0);
+			this.items[x].setItem(map.getItemAt(x));
+		}
 	}
 }

@@ -59,9 +59,8 @@ class Player {
 
 		this.inventory = []; // Reset weapon inventory to empty
 
-		for(var x=0; x<this.weaponamount; x++){
-			this.inventory[x] = new Weapon(0);
-			this.inventory[x].setWeapon(gordon.getWeapon(x));
+		for(var x=0; x<this.inventory.length; x++){
+			this.inventory[x].setItem(gordon.getItem(x));
 		}
 	}
 
@@ -143,9 +142,19 @@ class Player {
 		return this.armor;
 	}
 
+	getItem(x){
+		return this.inventory[x];
+	}
+
+	receiveItem(thing){
+		this.inventory[this.weaponamount] = new Item("null",0,0,0);
+		this.inventory[this.weaponamount].setItem(thing);
+		this.weaponamount++;
+	}
+
 	receiveWeapon(thing){ // Add weapon to inventory
 		this.inventory[this.weaponamount] = new Weapon(0);
-		this.inventory[this.weaponamount].setWeapon(thing);	// Inputted weapon is added to player's
+		this.inventory[this.weaponamount].setItem(thing);	// Inputted weapon is added to player's
 		this.weaponamount++;						// inventory. Weapon amount is incremented.
 	}
 

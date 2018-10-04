@@ -1,7 +1,7 @@
 // 1000 YEAR KINGDOM command line javascript game
 //
 // (c) 2018 ZacFinger.com
-// v0.0.1.810.02
+// v0.0.1.810.03
 
 // things left to do:
 // ------ ---- -- ---
@@ -38,6 +38,13 @@
 //
 // test edge cases
 //
+
+// https://babeljs.io/
+// https://webpack.js.org/
+// https://babeljs.io/docs/en/next/learn
+// https://webpack.js.org/concepts
+// https://wesbos.com/courses/
+// https://es6.io/
 
 // notes: http://www2.silverblade.net/cliches/
 // https://stackoverflow.com/questions/1640502/pc-speaker-beep-via-javascript
@@ -415,7 +422,7 @@ function yourMove(){
 		}
 	}
 
-	// Allows user to take objects from room.
+	// Allows user to take weapons from room.
 	else if((map.getObjectCount() > 0) && (verb == "TAKETH" || verb == "TAKE"
 		|| verb == "GET") &&
 		(noun == map.getObjectName() ) ) {
@@ -423,6 +430,20 @@ function yourMove(){
 			gordon.receiveWeapon(map.getObject()); 	// Adds item to inventory and
 			badCommand = false;						// detracts item from map.
 		}
+
+	else if((map.getItemAmount() > 0) && (verb == "TAKETH" || verb == "TAKE"
+		|| verb == "GET") && (map.isObjectThere(noun) != -1 )	) {
+
+		var indexOf = map.isObjectThere(noun);
+
+		gordon.receiveItem(map.getItemAt(indexOf));
+		output.innerHTML += "Thou takest ye olde " + noun.toUpperCase() + ".<br>";
+		map.removeItemAt(indexOf);
+		badCommand = false;
+		
+		// have to set it so that item is removed
+
+	}
 
 	// Shows stats
 	else if((verb == "EVAL" || verb == "CHECK") &&
