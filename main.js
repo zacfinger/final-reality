@@ -1,12 +1,27 @@
 // 1000 YEAR KINGDOM command line javascript game
 //
 // (c) 2018 ZacFinger.com
-// v0.0.1.810.03
+// v0.0.1.810.04
 
 // things left to do:
 // ------ ---- -- ---
-// update rooms so that obstructions have directionality
+// figure out why setPlayer() doesnt actually copy inventory ??
+// clean up item and weapon classes
+// weapon methods must be inherited from item
+// set and get methods in player, room, world, etc must work
+// world and player must be persistent as user changes rooms
 //
+// user must be able to use potions, elixirs, etc
+// if user uses potion on monster the monster gains health
+// if user uses potion on self it gains health
+// if user users weapon on self it takes damage
+// if user uses weapon on monster, monster takes dmg
+// user uses word "kill" to use currently equipped item
+//
+// make monsters have gold and items
+// user can use word "loot" to loot monster
+// 
+// update rooms so that obstructions have directionality
 // make west and east work
 //
 // add large enough array in myWorld for all rooms to exist
@@ -20,11 +35,6 @@
 // 
 // add non violent NPCs
 // 
-// // make monsters have gold and items
-// // user can use word "loot" to loot monster
-// // user has to use word "take potion" to get potion/armor
-// // user uses word "kill" to use currently equipped item
-
 // make items more robust (i.e., stats for items)
 // make INN in town restore health
 // make shop where you can buy items for the castle

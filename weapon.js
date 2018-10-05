@@ -41,10 +41,6 @@ class Weapon extends Item {
 		
 	}
 
-	getName(){
-		return this.name;
-	}
-
 	getAttack(){
 		return this.attack;
 	}
@@ -73,5 +69,7 @@ class Weapon extends Item {
 		this.attack = w.getAttack();
 		this.description = w.getDescription();
 		this.healthIncrease = w.getDamage();
+		this.price = w.getPrice();
+		this.magicIncrease = w.getMagicIncrease();
 	}
 }

@@ -59,9 +59,14 @@ class Player {
 
 		this.inventory = []; // Reset weapon inventory to empty
 
-		for(var x=0; x<this.inventory.length; x++){
+		console.log("This should be zero: " + this.inventory.length);
+
+		for(var x=0; x<this.weaponamount; x++){
+			this.inventory[x] = new Item("null",0,0,0);
 			this.inventory[x].setItem(gordon.getItem(x));
+			console.log(gordon.getItem(x).getName());
 		}
+		
 	}
 
 	increaseHealth(num){
@@ -80,7 +85,7 @@ class Player {
 
 	getWeaponAmount() // Get amount of weapons
 	{
-		return this.weaponamount;
+		return this.inventory.length;
 	}
 
 	getWeaponName(num){ // Get name of weapon in position num
