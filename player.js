@@ -32,8 +32,9 @@ class Player {
 		this.armor = armornum;
 
 		this.inventory = [];	// Inventory of weapons
-		this.inventory[0] = new Weapon(0);
-		this.weaponamount = 1;	// Default weapon
+		
+		this.inventory[0] = new Weapon(0);// Default weapon
+		//this.weaponamount = 1;	
 		this.positionX = 0;		// First map
 		this.positionY = 0;
 
@@ -53,7 +54,7 @@ class Player {
 		this.health = gordon.getHealth();
 		this.armor = gordon.getArmor();
 
-		this.weaponamount = gordon.getWeaponAmount();
+		//this.weaponamount = gordon.getWeaponAmount();
 		this.positionX = gordon.getPositionX();
 		this.positionY = gordon.getPositionY();
 
@@ -61,10 +62,10 @@ class Player {
 
 		console.log("This should be zero: " + this.inventory.length);
 
-		for(var x=0; x<this.weaponamount; x++){
+		for(var x=0; x<gordon.getWeaponAmount(); x++){
 			this.inventory[x] = new Item("null",0,0,0);
 			this.inventory[x].setItem(gordon.getItem(x));
-			console.log(gordon.getItem(x).getName());
+			//console.log(gordon.getItem(x).getName());
 		}
 		
 	}
@@ -152,24 +153,24 @@ class Player {
 	}
 
 	receiveItem(thing){
-		this.inventory[this.weaponamount] = new Item("null",0,0,0);
-		this.inventory[this.weaponamount].setItem(thing);
-		this.weaponamount++;
+		this.inventory[this.inventory.length] = new Item("null",0,0,0);
+		this.inventory[this.inventory.length-1].setItem(thing);
+		//this.weaponamount++;
 	}
-
+/*
 	receiveWeapon(thing){ // Add weapon to inventory
 		this.inventory[this.weaponamount] = new Weapon(0);
 		this.inventory[this.weaponamount].setItem(thing);	// Inputted weapon is added to player's
 		this.weaponamount++;						// inventory. Weapon amount is incremented.
-	}
+	}*/
 
 	printStatus(){ // Display health, armor, inventory
 		var string = "Thou hath " + this.health + " HP. Thine shielding is " + this.armor + ". ";
 
-		if(this.weaponamount>0){
+		if(this.inventory.length>0){
 			string+= "In thine inventory, there is ye olde:<br>";
 
-			for(var x=0;x<this.weaponamount;x++){  // Cycle through inventory, display each weapon.
+			for(var x=0;x<this.inventory.length;x++){  // Cycle through inventory, display each weapon.
 				string+= " * "+this.inventory[x].getName()+"<br>";
 			}
 		}

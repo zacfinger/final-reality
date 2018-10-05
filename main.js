@@ -1,15 +1,16 @@
 // 1000 YEAR KINGDOM command line javascript game
 //
 // (c) 2018 ZacFinger.com
-// v0.0.1.810.04
+// v0.0.1.810.04.21
 
 // things left to do:
 // ------ ---- -- ---
-// figure out why setPlayer() doesnt actually copy inventory ??
 // clean up item and weapon classes
+// // rename item methods to be weapon method names
 // weapon methods must be inherited from item
 // set and get methods in player, room, world, etc must work
 // world and player must be persistent as user changes rooms
+// apply factory pattern
 //
 // user must be able to use potions, elixirs, etc
 // if user uses potion on monster the monster gains health
@@ -244,25 +245,6 @@ function setUpMap(room){
 	output.innerHTML += room.describeRoom() + "<br>" // Provides verbal description of entering current room.
 	output.innerHTML += room.getDescription2() + "<br>"; // Provides verbal description of current room.
 
-			// this will work but its probably a good idea to set this to an array once
-			// that is, when they enter the room for the first time set array tempItems
-			// not every single time the room is described etc
-	if(room.getItemAmount() > 0) // If there are items inside the room
-	{
-		for(var x=0;x<room.getItemAmount();x++){
-			output.innerHTML += "Thou encounterest ye olde ";
-			tempItems[x] = new Item("null",0,0,0);
-			tempItems[x].setItem(room.getItemAt(x));
-			
-			output.innerHTML += tempItems[x].getName();
-			output.innerHTML += ".<br>";
-		}
-
-		//POTION. Thou gain " + map.getHealth() + " HP.<br>";
-		//gordon.increaseHealth(map.getHealth());
-		//map.setHealth(0);		// Map health set to zero
-	}
-
 	if(room.getArmor() > 0) // If there are armor boosts inside the room
 	{   					// Player armor is increased.
 		output.innerHTML += "Thou encounterest ye olde GREENE ARMOUR. Thou gain " + map.getArmor() + " armor points.<br>";
@@ -285,9 +267,29 @@ function setUpMap(room){
 		output.innerHTML += (" " + m.getName() + " standeths before ye.<br>"); // Player is reminded that this is so.
 	}
 
+			// this will work but its probably a good idea to set this to an array once
+			// that is, when they enter the room for the first time set array tempItems
+			// not every single time the room is described etc
+	if(room.getItemAmount() > 0) // If there are items inside the room
+	{
+		for(var x=0;x<room.getItemAmount();x++){
+			output.innerHTML += "Thou encounterest ye olde ";
+			tempItems[x] = new Item("null",0,0,0);
+			tempItems[x].setItem(room.getItemAt(x));
+			
+			output.innerHTML += tempItems[x].getName();
+			output.innerHTML += ".<br>";
+		}
+
+		//POTION. Thou gain " + map.getHealth() + " HP.<br>";
+		//gordon.increaseHealth(map.getHealth());
+		//map.setHealth(0);		// Map health set to zero
+	}
+
+/*
 	if(room.getObjectCount() > 0) // If objects are still extant
 		output.innerHTML += room.getObjectDescription() + "<br>";  // Player is reminded as such.
-
+*/
 	if(firstScreen == true){
 		output.innerHTML += "Type HELP for a list of commands.<br>";
 		firstScreen = false;
@@ -417,9 +419,17 @@ function yourMove(){
 					output.innerHTML += "n"
 				output.innerHTML += (" " + m.getName() + " standeths before ye.<br>");
 			}
-
-			if(map.getObjectCount() > 0){ // If there are items, the user is reminded.
-				output.innerHTML += map.getObjectDescription() + "<br>";
+			
+			if(room.getItemAmount() > 0) // If there are items, the user is reminded.
+			{
+				for(var x=0;x<room.getItemAmount();x++){
+					output.innerHTML += "Thou encounterest ye olde ";
+					tempItems[x] = new Item("null",0,0,0);
+					tempItems[x].setItem(room.getItemAt(x));
+					
+					output.innerHTML += tempItems[x].getName();
+					output.innerHTML += ".<br>";
+				}
 			}
 
 			badCommand = false;
@@ -432,15 +442,16 @@ function yourMove(){
 		}
 	}
 
-	// Allows user to take weapons from room.
+/*	
 	else if((map.getObjectCount() > 0) && (verb == "TAKETH" || verb == "TAKE"
 		|| verb == "GET") &&
 		(noun == map.getObjectName() ) ) {
 			output.innerHTML += "Thou takest ye olde " + map.getObjectName() + ".<br>";
 			gordon.receiveWeapon(map.getObject()); 	// Adds item to inventory and
 			badCommand = false;						// detracts item from map.
-		}
+		}*/
 
+	// Allows user to take items from room.
 	else if((map.getItemAmount() > 0) && (verb == "TAKETH" || verb == "TAKE"
 		|| verb == "GET") && (map.isObjectThere(noun) != -1 )	) {
 
@@ -450,8 +461,6 @@ function yourMove(){
 		output.innerHTML += "Thou takest ye olde " + noun.toUpperCase() + ".<br>";
 		map.removeItemAt(indexOf);
 		badCommand = false;
-		
-		// have to set it so that item is removed
 
 	}
 

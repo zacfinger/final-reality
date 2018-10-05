@@ -34,11 +34,11 @@ class Weapon extends Item {
 		}
 
 		this.type = num;
-
+/*
 		var description0 = "Ye olde ";
 		var description1 = " lies on ye olde ground.";
 		this.description = description0 + this.name + description1;
-		
+		*/
 	}
 
 	getAttack(){
@@ -54,10 +54,10 @@ class Weapon extends Item {
 		//return ((this.type + 1) * 10);
 		return this.healthIncrease;
 	}
-
+/*
 	getDescription(){
 		return this.description;
-	}
+	}*/
 
 	getType(){
 		return this.type;

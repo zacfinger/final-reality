@@ -29,22 +29,21 @@ class Room {
 
 	constructor (xCoordinate,yCoordinate){ 
 
-			this.items = [];
+		this.items = [];
 
 		if(xCoordinate == 0 && yCoordinate == 0){
 
 			this.items[0] = new Item("POTION",10,0,5);
 			this.items[1] = new Item("ELIXIR",10,0,5);
 			this.items[2] = new Item("TONIC",10,0,5);
-
-			this.weapon = new Weapon(0);
+			this.items[3] = new Weapon(0);
 
 			this.description = "Thou cometh to thy parents house, which you left to fulfill your destiny.";
-			this.health = 0;
+			//this.health = 0;
 			this.armor = 10;
 			this.description2 = "You could go inside. ";
 			this.monsteramount = 0;
-			this.weaponamount = 1;
+			//this.weaponamount = 1;
 			this.obstructioncount = 0;
 			this.obstructionname = "LOG";
 			this.obstructionverb = "CLIMB";
@@ -54,7 +53,7 @@ class Room {
 		}
 
 		if(xCoordinate == 1 && yCoordinate == 0){ // Map 0 of new game
-			this.weapon = new Weapon(0);
+			//this.weapon = new Weapon(0);
 
 			// if look any direction and a monster before ye
 			// 
@@ -67,31 +66,31 @@ class Room {
 			this.description = "Thou findeth yeself in the woods. ";
 			this.description2 = "In the distance south is a great castle. ";
 			this.monsteramount = 1;
-			this.weaponamount = 0;
+			//this.weaponamount = 0;
 			this.obstructioncount = 1;
 			this.obstructionname = "LOG";
 			this.obstructionverb = "CLIMB";
 			this.obstructiondescription = "There is a LOG blocking thy path. Perhaps thou shalt CLIMB it.";
 			this.obstructiondamage = 0;
 			this.m = new Monster(0);
-			this.health = 0;
+			//this.health = 0;
 			this.armor = 0;
 		}
 
 		if(xCoordinate == 2 && yCoordinate == 0){ // directly south of Map 0
-			this.weapon = new Weapon(1);
+			this.items[0] = new Weapon(1);
 		
 			this.description = "Thou climbest overeth the LOG. ";
 			this.description2 = "Now thou findest yeself at a fork in the path. ";
 			this.monsteramount = 0;
-			this.weaponamount = 1;
+			//this.weaponamount = 1;
 			this.obstructioncount = 1;
 			this.obstructionname = "SPIDER";
 			this.obstructionverb = "DAGGER";
 			this.obstructiondescription = "Thou walkest forward. Ye old spider bites thy body with sickening precision. ";
 			this.obstructiondamage = 200;
 			this.m = new Monster(0);
-			this.health = 0;
+			//this.health = 0;
 			this.armor = 0;
 		}
 
@@ -132,7 +131,7 @@ class Room {
 	removeItemAt(num){
 		this.items.splice(num, 1);
 	}
-
+/*
 	getWeaponAmount(){
 		return this.weaponamount;
 	}
@@ -144,7 +143,7 @@ class Room {
 
 	getWeapon(){
 		return this.weapon;
-	}
+	}*/
 
 	describeRoom(){ // Returns primary description.
 		return this.description;
@@ -189,15 +188,15 @@ class Room {
 	getNoun(){ // Name of obstruction
 		return this.obstructionname;
 	}
-
+/*
 	getHealth(){
 		return this.health;
-	}
+	}*/
 
 	getArmor(){
 		return this.armor;
 	}
-
+/*
 	getObjectCount(){
 		return this.weaponamount;
 	}
@@ -212,7 +211,7 @@ class Room {
 
 	setHealth(num){
 		this.health = num;
-	}
+	}*/
 
 	setArmor(num){
 		this.armor = num;
@@ -229,18 +228,18 @@ class Room {
 	setRoom(map){
 		this.x = map.getX();
 		this.y = map.getY();
-		this.weapon.setItem(map.getWeapon());
+		//this.weapon.setItem(map.getWeapon());
 		this.description = map.describeRoom();
 		this.description2 = map.getDescription2();
 		this.monsteramount = map.getMonsterAmount();
-		this.weaponamount = map.getWeaponAmount();
+		//this.weaponamount = map.getWeaponAmount();
 		this.obstructioncount = map.getObstructCount();
 		this.obstructionname = map.getNoun();
 		this.obstructionverb = map.getVerb();
 		this.obstructiondescription = map.describeObstruction();
 		this.obstructiondamage = map.getDamage();
 		this.m.setMonster(map.getMonster());
-		this.health = map.getHealth();
+		//this.health = map.getHealth();
 		this.armor = map.getArmor();
 
 		this.items = [];
