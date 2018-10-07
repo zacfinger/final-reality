@@ -1,7 +1,7 @@
 // 1000 YEAR KINGDOM command line javascript game
 //
 // (c) 2018 ZacFinger.com
-// v0.0.1.810.06
+// v0.0.1.810.07
 
 // things left to do:
 // ------ ---- -- ---
@@ -323,9 +323,13 @@ function yourMove(){
 
 	// interpret the answer
 	// checks if first word is an object in the inventory
-	if(gordon.hasVerb(verb) != -1)  		// If verb inflicted was an object
-	{							  			// found in the user's inventory
-		
+	if( (gordon.hasVerb(verb) != -1) || (verb == "USE" && gordon.hasVerb(noun) != -1)) 	// If verb inflicted was an object
+	{							  														// found in the user's inventory
+		if(verb == "USE" && gordon.hasVerb(noun) != -1){
+			verb = noun; // not sure this is a good idea
+			noun = "";
+		}
+
 		if(gordon.getWeapon(gordon.hasVerb(verb)).isItemWeapon())
 			w = new Weapon(3);
 		else
@@ -355,7 +359,7 @@ function yourMove(){
 
 		// Above: Expected behavior when testing for edge cases
 
-		// bunch of booleans for my gauntlet of if-statements
+		// bunch of booleans for the gauntlet of if-statements
 		// every possible scenario to be accounted for
 		var impNull = (m == null); // if monster is not null
 		var nounIsMonsterName = false;
@@ -368,7 +372,7 @@ function yourMove(){
 		var verbIsWeapon = w.isItemWeapon(); // if verb is a weapon (not a regular item)
 		var nounIsEmptyOrIsMonsterName = (noun == "" || nounIsMonsterName);
 
-		if(impNotNullAndIsAlive && verbIsWeapon && nounIsEmptyOrIsMonsterName){
+		if((impNotNullAndIsAlive && verbIsWeapon && nounIsEmptyOrIsMonsterName)) {
 			// If monsters are still extant
 			// and noun is empty or
 			// if noun is monster the user 
@@ -378,7 +382,7 @@ function yourMove(){
 			output.innerHTML += w.attackString() + "<br>";
 			m.getHurt(w.getDamage());
 			output.innerHTML += "The " + m.getName() + " takes " + w.getDamage() + " damage.<br>";
-			map.setMonster(m); // Returns enemy to map
+			//map.setMonster(m); // Returns enemy to map
 
 			if(m.getHealth() <= 0) // If monster == teh deadz0r
 			{
@@ -406,21 +410,30 @@ function yourMove(){
 			badCommand = false;
 		}
 
-		else if((!verbIsWeapon && noun == "")){
+		else if(!verbIsWeapon && noun == "") {
 			// use non weapon items
-			// still need to figure out this part
-			output.innerHTML += "Thou useth the potion on yourself.<br>";
+			// still need to figure out best
+			// implementation for this part
+
+			output.innerHTML += w.healString();
+			// prints message such as 'thou drinkesteth ye olde potion'
+			// // also includes string such as thou gainseth 10 hp or mp accordingly
+
+			gordon.useItem(gordon.hasVerb(verb)); 
+			// modify stats and remove item from gordon's inventory
+
 			badCommand = false;
 		}
 
 		else if(!verbIsWeapon && (nounIsMonsterName && impNotNullAndIsAlive)){
 			// use non weapon items on monsters
 			// still need to figure out this part too
-			output.innerHTML += "Thou useth ye olde " + w.getName() +
-			" on the " + m.getName() + ". Why on earth wouldest thou do that?<br>";
+			output.innerHTML += m.useItem(w);
+			gordon.removeItem(gordon.hasVerb(verb));
 			badCommand = false;
 		}
 
+		map.setMonster(m); // Returns enemy to map
 	}
 
 	// <Go>	
@@ -428,7 +441,7 @@ function yourMove(){
 	else if(verb == "GO") // If user wishes to go...
 	{	
 		if(noun == "WEST" || noun == "EAST"){
-			output.innerHTML += "Thou canneth notst goeth in yonder direction.<br>";
+			output.innerHTML += "Thou canneth notst goeth in yonder direction...YET.<br>";
 			// ...they will find that quite difficult.
 
 			badCommand = false;
@@ -480,7 +493,7 @@ function yourMove(){
 
 			// monster description should probably be a function
 			if(map.getMonsterAmount() > 0){  // If there are monsters, the user is reminded.
-				m = map.getMonster(); 
+				//m = map.getMonster(); 
 				output.innerHTML += "A";
 				if(isVowel(m.getName().charAt(0)))
 					output.innerHTML += "n"
@@ -588,7 +601,6 @@ function yourMove(){
 			// if not then new room constructor
 			map = new Room(gordon.getPositionX(),gordon.getPositionY());
 		}
-
 		
 		//update the view
 		setUpMap(map);

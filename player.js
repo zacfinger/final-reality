@@ -15,6 +15,7 @@ class Player {
      * @param weapon[] 	inventory 		Array of Weapon objects
      * @param number 	weaponamount 	Amount of weapons
      * @param number 	positionX 		Player's current map location (0 = first map)
+     * @param number	gold			Amount of GP the user has
      * 						
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 	
@@ -30,13 +31,14 @@ class Player {
 
 		this.health = healthnum;
 		this.armor = armornum;
+		this.magic = 0;
 
 		this.inventory = [];	// Inventory of weapons
 		
 		this.inventory[0] = new Weapon(0);	// Default weapon
 		this.positionX = 0;					// First map
 		this.positionY = 0;
-
+		this.gold = 10;
 	}
 
 	setX(num){
@@ -176,6 +178,8 @@ class Player {
 			}
 		}
 
+		string += "* " + this.gold + " GP<br>";
+
 		return string + "<br>";
 	}
 
@@ -188,5 +192,38 @@ class Player {
 
 		return -1; // returns -1 if item is not found in the inventory.
 	}
+
+	removeItem(num){
+		this.inventory.splice(num,1); // remove item from inventory
+	}
+
+	useItem(num){
+		var healthAdjust = this.inventory[num].getHealthIncrease();
+		var magicAdjust = this.inventory[num].getMagicIncrease();
+
+		if(this.health + healthAdjust > 100){
+			this.health = 100;
+		}
+		else if (this.health + healthAdjust < 0){
+			this.health = 0;
+		}
+		else {
+			this.health += healthAdjust;
+		}
+
+		if(this.magic + magicAdjust > 100){
+			this.health = 100;
+		}
+		else if (this.magic + magicAdjust < 0){
+			this.magic = 0;
+		}
+		else {
+			this.magic += magicAdjust;
+		}
+
+		this.removeItem(num);
+	}
+
+	
 
 }

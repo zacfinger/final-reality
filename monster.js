@@ -14,6 +14,8 @@ class Monster {
      * @param string description 	Description of monster.
      * @param number type 			Monster attributes are determined by type in the constructor.
      * @param number health 		Depends on monster type.
+     * @param number gold			Amount of gold pieces the monster holds
+     * 
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	constructor (num){
@@ -25,6 +27,7 @@ class Monster {
 
 			this.description = "The beast is stout, the height of three or four of the King's feet. "
 			+ "It squeals as it lunges for thou, its mouth perferated by rows of teeth, dripping wet with ye olde blood.";
+
 		}
 		if(num == 1){
 			this.name = "PEASANT";
@@ -44,10 +47,19 @@ class Monster {
 
 		this.type = num;
 		this.health = (num+1) * 3;
+		this.gold = Math.floor((Math.random() * ((num+1)*10)) + ((num+1)*3));
 	}
 
 	getType(){
 		return this.type;
+	}
+
+	getGold(){
+		return this.gold;
+	}
+
+	setGold(num){
+		this.gold = num;
 	}
 
 	setMonster(m){
@@ -55,6 +67,7 @@ class Monster {
 		this.description = m.getDescription();
 		this.type = m.getType();
 		this.health = m.getHealth();
+		this.gold = m.getGold();
 	}
 
 	getName(){ // Returns monster's name
@@ -84,6 +97,33 @@ class Monster {
 
 	getDescription(){ // Returns description of monster
 		return this.description;
+	}
+
+	useItem(w){
+		var string = "Thou useth ye olde " + w.getName() + " on the " + this.name + ".<br> He ";
+
+		var healthAdjust = w.getHealthIncrease();
+		var maxHealth = (this.type+1) * 3;
+
+		if(healthAdjust >= 0)
+			string += "gainseth " + healthAdjust;
+		else
+			string += "loseth " + (-1 * healthAdjust);
+
+		if(this.health + healthAdjust > maxHealth){
+			this.health = maxHealth;
+		}
+		else if (this.health + healthAdjust < 0) {
+			this.health = 0;
+		}
+		else {
+
+			this.health += healthAdjust;
+		}
+
+		string += " HP.<br>Why on earth wouldst thou do that?<br>";
+
+		return string;
 	}
 
 }

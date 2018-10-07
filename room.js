@@ -148,7 +148,9 @@ class Room {
 	}
 
 	setMonster(temp){
-		this.m = temp;
+
+		this.m = new Monster(0);
+		this.m.setMonster(temp);
 	}
 
 	destroyAllMonsters(){ // Sets monster count to zero.
@@ -207,6 +209,7 @@ class Room {
 		if(map.getMonster() != null){
 			this.m = new Monster(0);
 			this.m.setMonster(map.getMonster());
+
 		}
 		
 		this.items = [];

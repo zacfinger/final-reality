@@ -23,6 +23,25 @@ class Item {
 		return this.isWeapon;
 	}
 
+	healString(){
+		var string = "Thou useth ye olde " + this.name + ".<br>";
+
+		if(this.healthIncrease != 0){
+			if(this.healthIncrease > 0)
+				string += "Thou gainesth " + this.healthIncrease + " HP.<br>";
+			else
+				string += "Thou loseth " + (-1 * this.healthIncrease) + " HP.<br>";
+		}
+		if(this.magicIncrease != 0){
+			if(this.magicIncrease > 0)
+				string += "Thou gainesth " + this.magicIncrease + " MP.<br>";
+			else
+				string += "Thou loseth " + (-1 * this.magicIncrease) + " MP.<br>";
+		}
+
+		return string;
+	}
+
 	getHealthIncrease(){
 		return this.healthIncrease;
 	}
