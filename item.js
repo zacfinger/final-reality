@@ -11,11 +11,16 @@ class Item {
 	// Ether = Restores MP
 	// Elixir = Restores both HP and MP
 
-	constructor(str, num1, num2, num3){
+	constructor(str, dmg, magic, price){
 		this.name = str;
-		this.healthIncrease = num1;
-		this.magicIncrease = num2;
-		this.price = num3;
+		this.healthIncrease = dmg;
+		this.magicIncrease = magic;
+		this.price = price;
+		this.isWeapon = false;
+	}
+
+	isItemWeapon(){
+		return this.isWeapon;
 	}
 
 	getHealthIncrease(){
@@ -35,9 +40,11 @@ class Item {
 	}
 
 	setItem(i){
+		
 		this.name = i.getName();
 		this.healthIncrease = i.getHealthIncrease();
 		this.magicIncrease = i.getMagicIncrease();
 		this.price = i.getPrice();
+		this.isWeapon = i.isItemWeapon();
 	}
 }

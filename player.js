@@ -33,9 +33,8 @@ class Player {
 
 		this.inventory = [];	// Inventory of weapons
 		
-		this.inventory[0] = new Weapon(0);// Default weapon
-		//this.weaponamount = 1;	
-		this.positionX = 0;		// First map
+		this.inventory[0] = new Weapon(0);	// Default weapon
+		this.positionX = 0;					// First map
 		this.positionY = 0;
 
 	}
@@ -54,18 +53,22 @@ class Player {
 		this.health = gordon.getHealth();
 		this.armor = gordon.getArmor();
 
-		//this.weaponamount = gordon.getWeaponAmount();
 		this.positionX = gordon.getPositionX();
 		this.positionY = gordon.getPositionY();
 
 		this.inventory = []; // Reset weapon inventory to empty
 
-		console.log("This should be zero: " + this.inventory.length);
+
 
 		for(var x=0; x<gordon.getWeaponAmount(); x++){
-			this.inventory[x] = new Item("null",0,0,0);
+			if(!gordon.getWeapon(x).isItemWeapon())
+				this.inventory[x] = new Item("null",0,0,0);
+			else
+				this.inventory[x] = new Weapon(3);
+
+			//this.inventory[x] = new Item("null",0,0,0);
 			this.inventory[x].setItem(gordon.getItem(x));
-			//console.log(gordon.getItem(x).getName());
+			
 		}
 		
 	}
@@ -84,12 +87,12 @@ class Player {
 		this.armor+=num;
 	}
 
-	getWeaponAmount() // Get amount of weapons
+	getWeaponAmount() // Get amount of items
 	{
 		return this.inventory.length;
 	}
 
-	getWeaponName(num){ // Get name of weapon in position num
+	getWeaponName(num){ // Get name of item in position num
 		return this.inventory[num].getName();
 	}
 
@@ -153,16 +156,14 @@ class Player {
 	}
 
 	receiveItem(thing){
-		this.inventory[this.inventory.length] = new Item("null",0,0,0);
+		if(thing.isItemWeapon())
+			this.inventory[this.inventory.length] = new Weapon(3);
+		else
+			this.inventory[this.inventory.length] = new Item("null",0,0,0);
+
 		this.inventory[this.inventory.length-1].setItem(thing);
-		//this.weaponamount++;
+		
 	}
-/*
-	receiveWeapon(thing){ // Add weapon to inventory
-		this.inventory[this.weaponamount] = new Weapon(0);
-		this.inventory[this.weaponamount].setItem(thing);	// Inputted weapon is added to player's
-		this.weaponamount++;						// inventory. Weapon amount is incremented.
-	}*/
 
 	printStatus(){ // Display health, armor, inventory
 		var string = "Thou hath " + this.health + " HP. Thine shielding is " + this.armor + ". ";
@@ -177,4 +178,15 @@ class Player {
 
 		return string + "<br>";
 	}
+
+	hasVerb(str){	// Checks to see if verb issued is an item in inventory.
+		for(var x=0;x<this.inventory.length;x++) // Cycles through inventory to check
+		{
+			if(str == this.inventory[x].getName())
+				return x; // returns index of requested item
+		}
+
+		return -1; // returns -1 if item is not found in the inventory.
+	}
+
 }

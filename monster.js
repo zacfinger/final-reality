@@ -37,6 +37,11 @@ class Monster {
 			+ "Its long arms ending in fingers sharp, as of knives.";
 		}
 
+		if(num == 3){
+			this.name = "TEST";
+			this.description = "Hello world.";
+		}
+
 		this.type = num;
 		this.health = (num+1) * 3;
 	}

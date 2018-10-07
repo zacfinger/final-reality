@@ -1,10 +1,11 @@
 // 1000 YEAR KINGDOM command line javascript game
 //
 // (c) 2018 ZacFinger.com
-// v0.0.1.810.04.21
+// v0.0.1.810.06
 
 // things left to do:
 // ------ ---- -- ---
+// array of monsters in rooms
 // clean up item and weapon classes
 // // rename item methods to be weapon method names
 // weapon methods must be inherited from item
@@ -21,6 +22,7 @@
 //
 // make monsters have gold and items
 // user can use word "loot" to loot monster
+// you encounter a goblins dead body
 // 
 // update rooms so that obstructions have directionality
 // make west and east work
@@ -126,11 +128,11 @@ var firstScreen = true;
 var tempPlayer = new Player(100,0);
 var myWorld = new World();
 var tempItems = [];
+var m = null;
+var w = new Item("null",0,0,0);
 
 gordon.setX(map.getX());
 gordon.setY(map.getY());
-//tempPlayer.setX(map.getX());
-//tempPlayer.setY(map.getY());
 
 // set view elements to local variables
 var output = document.getElementById("container");  // Get the content of the container element 
@@ -154,17 +156,6 @@ function isVowel(x) {
 
   result = x == "A" || x == "E" || x == "I" || x == "O" || x == "U";
   return result;
-}
-
-function isVerbWeapon(word){ 	// Checks to see if verb issued is a weapon in inventory.
-	for(var x=0; x < gordon.getWeaponAmount(); x++ ) // Cycles through inventory to check
-	{
-		w = gordon.getWeapon(x);
-
-		if(word == w.getName())
-			return x; // returns index of requested weapon
-	}
-	return -1; // returns -1 if weapon is not found in the inventory.
 }
 
 function printSpace(num){
@@ -252,27 +243,31 @@ function setUpMap(room){
 		map.setArmor(0);
 	}
 
-	if(room.getMonsterAmount() > 0){ // If monsters are extant
+	m = null;
 
+	if(room.getMonster() != null){ 		// If monsters are extant
+										// but not necessarily alive
+		
 		if(firstScreen){ // hard coded, this is probably bad
 			output.innerHTML += "Thou haveth upon yeself only thy DAGGER.<br>"+
 			"Verily something approaches from yonder umbrage!<br>";
 		}
 
-		m = room.getMonster(); 
+		m = new Monster(3); // test monster "Hello world"
+		m.setMonster(room.getMonster()); 
 		
-		output.innerHTML += "A";
-		if(isVowel(m.getName().charAt(0)))
-			output.innerHTML += "n"
-		output.innerHTML += (" " + m.getName() + " standeths before ye.<br>"); // Player is reminded that this is so.
+		if(room.getMonsterAmount() > 0){ 	// If monsters are extant
+			output.innerHTML += "A";		// and also alive
+			if(isVowel(m.getName().charAt(0)))
+				output.innerHTML += "n"
+			output.innerHTML += (" " + m.getName() + " standeths before ye.<br>"); // Player is reminded that this is so.
+		}
 	}
 
-			// this will work but its probably a good idea to set this to an array once
-			// that is, when they enter the room for the first time set array tempItems
-			// not every single time the room is described etc
-	if(room.getItemAmount() > 0) // If there are items inside the room
+	if(room.getObjectCount() > 0) // If objects are still extant
 	{
-		for(var x=0;x<room.getItemAmount();x++){
+		for(var x=0;x<room.getObjectCount();x++){
+			// Player is reminded as such.
 			output.innerHTML += "Thou encounterest ye olde ";
 			tempItems[x] = new Item("null",0,0,0);
 			tempItems[x].setItem(room.getItemAt(x));
@@ -280,16 +275,11 @@ function setUpMap(room){
 			output.innerHTML += tempItems[x].getName();
 			output.innerHTML += ".<br>";
 		}
-
-		//POTION. Thou gain " + map.getHealth() + " HP.<br>";
-		//gordon.increaseHealth(map.getHealth());
-		//map.setHealth(0);		// Map health set to zero
+		// this will work but its probably a good idea to set this to an array once
+		// that is, when they enter the room for the first time set array tempItems
+		// not every single time the room is described etc
 	}
 
-/*
-	if(room.getObjectCount() > 0) // If objects are still extant
-		output.innerHTML += room.getObjectDescription() + "<br>";  // Player is reminded as such.
-*/
 	if(firstScreen == true){
 		output.innerHTML += "Type HELP for a list of commands.<br>";
 		firstScreen = false;
@@ -333,12 +323,57 @@ function yourMove(){
 
 	// interpret the answer
 	// checks if first word is an object in the inventory
-	if(isVerbWeapon(verb) != -1)  // If verb inflicted was an object found
-	{							  // in the user's inventory
-		w = gordon.getWeapon(isVerbWeapon(verb));
+	if(gordon.hasVerb(verb) != -1)  		// If verb inflicted was an object
+	{							  			// found in the user's inventory
 		
-		if(noun == m.getName()) // If noun is monster the user 
-		{						// wishes to attack with noun			
+		if(gordon.getWeapon(gordon.hasVerb(verb)).isItemWeapon())
+			w = new Weapon(3);
+		else
+			w = new Item("null",0,0,0);
+		// not sure this is the best 
+		// thing to do considering weapon 
+		// extends item but it works
+
+		w.setItem(gordon.getWeapon(gordon.hasVerb(verb)));
+
+		/*___________________________________________________________________________________________________
+		|              |                          |                             |                            |
+		|              |        imp is null       |  imp is !null and is alive  |  imp is !null and is dead  |
+		|______________|__________________________|_____________________________|____________________________|
+		|              |                          |                             |                            |
+		|  dagger imp  | "Dagger at what" message | Imp is attacked with dagger |  Imp already dead message  |
+		|______________|__________________________|_____________________________|____________________________|
+		|              |                          |                             |                            |
+		|  dagger      | "Dagger at what" message | Imp is attacked with dagger |  "Dagger at what" message  |
+		|______________|__________________________|_____________________________|____________________________|
+		|              |                          |                             |                            |
+		|  potion      | Potion applied to player |   Potion applied to player  |  Potion applied to player  |
+		|______________|__________________________|_____________________________|____________________________|
+		|              |                          |                             |                            |
+		|  potion imp  | "Potion at what" message |    Potion applied to imp    |  Imp already dead message  |
+		|______________|__________________________|_____________________________|___________________________*/
+
+		// Above: Expected behavior when testing for edge cases
+
+		// bunch of booleans for my gauntlet of if-statements
+		// every possible scenario to be accounted for
+		var impNull = (m == null); // if monster is not null
+		var nounIsMonsterName = false;
+
+		if(!impNull)
+			nounIsMonsterName = (noun == m.getName());
+
+		var impNotNullAndIsAlive = (m != null && map.getMonsterAmount() >= 1);
+		var impNotNullAndIsDead = (m != null && map.getMonsterAmount() < 1);
+		var verbIsWeapon = w.isItemWeapon(); // if verb is a weapon (not a regular item)
+		var nounIsEmptyOrIsMonsterName = (noun == "" || nounIsMonsterName);
+
+		if(impNotNullAndIsAlive && verbIsWeapon && nounIsEmptyOrIsMonsterName){
+			// If monsters are still extant
+			// and noun is empty or
+			// if noun is monster the user 
+			// wishes to attack with noun
+				
 			// Takes damage
 			output.innerHTML += w.attackString() + "<br>";
 			m.getHurt(w.getDamage());
@@ -347,13 +382,45 @@ function yourMove(){
 
 			if(m.getHealth() <= 0) // If monster == teh deadz0r
 			{
-					output.innerHTML += "The " + m.getName() + " is vanquished.<br>";
-					map.destroyAllMonsters(); // Set monstercount to zero.
+				output.innerHTML += "The " + m.getName() + " is vanquished.<br>";
+				map.destroyAllMonsters(); // Set monstercount to zero.
 			}
-
+			
 			badCommand = false;
-
 		}
+
+		else if(impNotNullAndIsDead && nounIsMonsterName){ 
+			// If monster is dead but the user insists on using verb on it
+			output.innerHTML += "Verily! Ye olde " + m.getName() + " already lieseth lifeless before ye.<br>";
+			badCommand = false;
+		}
+
+		else if( (!verbIsWeapon && !nounIsEmptyOrIsMonsterName) ||
+			(verbIsWeapon && ((impNull) || 
+			(!nounIsEmptyOrIsMonsterName) || 
+			(noun == "" && impNotNullAndIsDead))
+			)) {
+			// noun is empty and no monsters afoot
+			// or noun not found in map
+			output.innerHTML += "Thou useth the " + w.getName() + " on which thing?<br>";
+			badCommand = false;
+		}
+
+		else if((!verbIsWeapon && noun == "")){
+			// use non weapon items
+			// still need to figure out this part
+			output.innerHTML += "Thou useth the potion on yourself.<br>";
+			badCommand = false;
+		}
+
+		else if(!verbIsWeapon && (nounIsMonsterName && impNotNullAndIsAlive)){
+			// use non weapon items on monsters
+			// still need to figure out this part too
+			output.innerHTML += "Thou useth ye olde " + w.getName() +
+			" on the " + m.getName() + ". Why on earth wouldest thou do that?<br>";
+			badCommand = false;
+		}
+
 	}
 
 	// <Go>	
@@ -420,17 +487,20 @@ function yourMove(){
 				output.innerHTML += (" " + m.getName() + " standeths before ye.<br>");
 			}
 			
-			if(room.getItemAmount() > 0) // If there are items, the user is reminded.
+			if(map.getObjectCount() > 0) // If there are items, the user is reminded.
 			{
-				for(var x=0;x<room.getItemAmount();x++){
+				for(var x=0;x<map.getObjectCount();x++){
 					output.innerHTML += "Thou encounterest ye olde ";
 					tempItems[x] = new Item("null",0,0,0);
-					tempItems[x].setItem(room.getItemAt(x));
+					tempItems[x].setItem(map.getItemAt(x));
 					
 					output.innerHTML += tempItems[x].getName();
 					output.innerHTML += ".<br>";
 				}
 			}
+
+			// above two if blocks should probably be a room function
+			// considering they are also called in setupMap()
 
 			badCommand = false;
 		}
@@ -442,24 +512,15 @@ function yourMove(){
 		}
 	}
 
-/*	
-	else if((map.getObjectCount() > 0) && (verb == "TAKETH" || verb == "TAKE"
-		|| verb == "GET") &&
-		(noun == map.getObjectName() ) ) {
-			output.innerHTML += "Thou takest ye olde " + map.getObjectName() + ".<br>";
-			gordon.receiveWeapon(map.getObject()); 	// Adds item to inventory and
-			badCommand = false;						// detracts item from map.
-		}*/
-
 	// Allows user to take items from room.
-	else if((map.getItemAmount() > 0) && (verb == "TAKETH" || verb == "TAKE"
+	else if((map.getObjectCount() > 0) && (verb == "TAKETH" || verb == "TAKE"
 		|| verb == "GET") && (map.isObjectThere(noun) != -1 )	) {
 
 		var indexOf = map.isObjectThere(noun);
 
-		gordon.receiveItem(map.getItemAt(indexOf));
 		output.innerHTML += "Thou takest ye olde " + noun.toUpperCase() + ".<br>";
-		map.removeItemAt(indexOf);
+		gordon.receiveItem(map.getItemAt(indexOf)); // Adds item to inventory and
+		map.removeItemAt(indexOf);					// detracts item from map.
 		badCommand = false;
 
 	}

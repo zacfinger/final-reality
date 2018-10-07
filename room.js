@@ -49,14 +49,13 @@ class Room {
 			this.obstructionverb = "CLIMB";
 			this.obstructiondescription = "There is a LOG blocking thy path. Perhaps thou shalt CLIMB it.";
 			this.obstructiondamage = 0;
-			this.m = new Monster(0);
+			//this.m = new Monster(0);
 		}
 
 		if(xCoordinate == 1 && yCoordinate == 0){ // Map 0 of new game
 			//this.weapon = new Weapon(0);
 
 			// if look any direction and a monster before ye
-			// 
 		
 			this.items[0] = new Item("POTION",10,0,5);
 			this.items[1] = new Item("ELIXIR",10,0,5);
@@ -89,7 +88,7 @@ class Room {
 			this.obstructionverb = "DAGGER";
 			this.obstructiondescription = "Thou walkest forward. Ye old spider bites thy body with sickening precision. ";
 			this.obstructiondamage = 200;
-			this.m = new Monster(0);
+			//this.m = new Monster(0);
 			//this.health = 0;
 			this.armor = 0;
 		}
@@ -110,7 +109,7 @@ class Room {
 
 	*/
 
-	getItemAmount(){
+	getObjectCount(){
 		return this.items.length;
 	}
 
@@ -131,20 +130,7 @@ class Room {
 	removeItemAt(num){
 		this.items.splice(num, 1);
 	}
-/*
-	getWeaponAmount(){
-		return this.weaponamount;
-	}
-
-	getObject(){
-		this.weaponamount--;
-		return this.weapon;
-	}
-
-	getWeapon(){
-		return this.weapon;
-	}*/
-
+	
 	describeRoom(){ // Returns primary description.
 		return this.description;
 	}
@@ -188,30 +174,10 @@ class Room {
 	getNoun(){ // Name of obstruction
 		return this.obstructionname;
 	}
-/*
-	getHealth(){
-		return this.health;
-	}*/
 
 	getArmor(){
 		return this.armor;
 	}
-/*
-	getObjectCount(){
-		return this.weaponamount;
-	}
-
-	getObjectDescription(){
-		return this.weapon.getDescription();
-	}
-
-	getObjectName(){
-		return this.weapon.getName();
-	}
-
-	setHealth(num){
-		this.health = num;
-	}*/
 
 	setArmor(num){
 		this.armor = num;
@@ -228,24 +194,29 @@ class Room {
 	setRoom(map){
 		this.x = map.getX();
 		this.y = map.getY();
-		//this.weapon.setItem(map.getWeapon());
 		this.description = map.describeRoom();
 		this.description2 = map.getDescription2();
 		this.monsteramount = map.getMonsterAmount();
-		//this.weaponamount = map.getWeaponAmount();
 		this.obstructioncount = map.getObstructCount();
 		this.obstructionname = map.getNoun();
 		this.obstructionverb = map.getVerb();
 		this.obstructiondescription = map.describeObstruction();
 		this.obstructiondamage = map.getDamage();
-		this.m.setMonster(map.getMonster());
-		//this.health = map.getHealth();
 		this.armor = map.getArmor();
 
+		if(map.getMonster() != null){
+			this.m = new Monster(0);
+			this.m.setMonster(map.getMonster());
+		}
+		
 		this.items = [];
 
-		for(var x=0;x<map.getItemAmount();x++){
-			this.items[x] = new Item("null",0,0,0);
+		for(var x=0;x<map.getObjectCount();x++){
+			if(map.getItemAt(x).isItemWeapon())
+				this.items[x] = new Weapon(3);
+			else
+				this.items[x] = new Item("null",0,0,0);
+
 			this.items[x].setItem(map.getItemAt(x));
 		}
 	}
