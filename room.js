@@ -216,7 +216,7 @@ class Room {
 
 		for(var x=0;x<map.getObjectCount();x++){
 			if(map.getItemAt(x).isItemWeapon())
-				this.items[x] = new Weapon(3);
+				this.items[x] = makeWeapon(WeaponEnum.AXE);
 			else
 				this.items[x] = new Item("null",0,0,0);
 
