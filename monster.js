@@ -59,7 +59,7 @@ class Monster {
 		this.inventory = [];
 
 		for(var x=0;x<inventoryLength;x++){
-			if(Math.floor(Math.random() * 100)>= 90){
+			if(Math.floor(Math.random() * 100)>= 20){
 				this.inventory[x] = new Item("null",0,0,0);
 				
 				this.inventory[x].setItem(
@@ -72,7 +72,6 @@ class Monster {
 			else
 				this.inventory[x] = new Weapon(1);
 		}
-
 
 		
 	}
@@ -149,6 +148,52 @@ class Monster {
 
 	getDescription(){ // Returns description of monster
 		return this.description;
+	}
+
+	describeMonster(){ 	// Describes the wretched beast
+						// acts as "print" method
+						// not "get" method
+		var str = this.description;
+
+		if(this.inventory.length > 0 || this.gold > 0){
+			str += "<br>It wields ";
+
+			if(this.inventory.length > 0){
+				for(var x=0;x<this.inventory.length;x++){
+
+					if(x == this.inventory.length-1){
+						// if item is the last or only item
+						str += " ye olde"
+					}
+					else {
+						str += "a";
+
+						if(isVowel(this.inventory[x].getName().charAt(0)))
+						str += "n"
+					}
+					
+					str += " " + this.inventory[x].getName();
+
+					if(x + 1 < this.inventory.length)
+						str += ", ";
+
+					if(x == this.inventory.length - 1 || this.gold > 0)
+					{
+						str += " and"
+					}
+				}
+
+				str += " ";
+			}
+
+			if(this.gold >0){
+				str += this.gold + " gold pieces";
+			}
+
+			str += "."
+		}
+
+		return str;
 	}
 
 	useItem(w){

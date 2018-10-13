@@ -1,7 +1,7 @@
 // 1000 YEAR KINGDOM command line javascript game
 //
 // (c) 2018 ZacFinger.com
-// v0.0.1.810.13.1323
+// v0.0.1.810.13.14
 
 // things left to do:
 // ------ ---- -- ---
@@ -151,6 +151,9 @@ document.getElementById("answer") // answer field now allows enter key as input
     }
 });
 
+// used globally
+// may not be best practice to declare in main.js
+// still learning about global vars in raw JS
 function isVowel(x) {
 
   var result;
@@ -524,7 +527,7 @@ function yourMove(){
 
 		if(map.getMonsterAmount() > 0 && noun == m.getName()) // If user looks at a monster
 		{
-			output.innerHTML += m.getDescription() + "<br>";  // The monster is described
+			output.innerHTML += m.describeMonster() + "<br>";  // The monster is described
 			badCommand = false;
 		}
 	}
