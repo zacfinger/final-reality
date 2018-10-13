@@ -19,6 +19,19 @@ class Item {
 		this.isWeapon = false;
 	}
 
+	makeItem(num){
+		switch(num) {
+		    case 1:
+		        return new Item("ELIXIR",10,0,5);
+		        break;
+		    case 2:
+		    	return new Item("TONIC",10,0,5);
+		    	break;
+		    default:
+		        return new Item("POTION",10,0,5);
+		}
+	}
+
 	isItemWeapon(){
 		return this.isWeapon;
 	}

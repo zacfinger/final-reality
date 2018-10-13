@@ -12,7 +12,7 @@ class Player {
      *
      * @param number 	health 			The player's health ( 0 - 100 )
      * @param number 	armor 			The player's armor ( 0 - 100 )
-     * @param weapon[] 	inventory 		Array of Weapon objects
+     * @param weapon[] 	inventory 		Array of Weapon and Item objects
      * @param number 	weaponamount 	Amount of weapons
      * @param number 	positionX 		Player's current map location (0 = first map)
      * @param number	gold			Amount of GP the user has

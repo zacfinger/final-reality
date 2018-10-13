@@ -15,8 +15,12 @@ class Monster {
      * @param number type 			Monster attributes are determined by type in the constructor.
      * @param number health 		Depends on monster type.
      * @param number gold			Amount of gold pieces the monster holds
+     * @param item[] inventory
      * 
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+     /// http://robdodson.me/javascript-design-patterns-factory/
+     /// https://medium.com/@SntsDev/the-factory-pattern-in-js-es6-78f0afad17e9
 
 	constructor (num){
 		if(num == 0){
@@ -48,6 +52,16 @@ class Monster {
 		this.type = num;
 		this.health = (num+1) * 3;
 		this.gold = Math.floor((Math.random() * ((num+1)*10)) + ((num+1)*3));
+
+		var inventoryLength = Math.floor(Math.random() * ((num+1)));
+		this.inventory = [];
+
+		for(var x=0;x<=inventoryLength;x++){
+			if(Math.floor(Math.random() * 100)>= 20)
+				this.inventory[x] = new Item("ELIXIR",10,0,5);
+			else
+				this.inventory[x] = new Weapon(1);
+		}
 	}
 
 	getType(){

@@ -1,7 +1,7 @@
 // 1000 YEAR KINGDOM command line javascript game
 //
 // (c) 2018 ZacFinger.com
-// v0.0.1.810.07
+// v0.0.1.810.13
 
 // things left to do:
 // ------ ---- -- ---
@@ -359,8 +359,9 @@ function yourMove(){
 
 		// Above: Expected behavior when testing for edge cases
 
-		// bunch of booleans for the gauntlet of if-statements
+		// below: bunch of booleans for the gauntlet of if-statements
 		// every possible scenario to be accounted for
+
 		var impNull = (m == null); // if monster is not null
 		var nounIsMonsterName = false;
 
@@ -433,7 +434,9 @@ function yourMove(){
 			badCommand = false;
 		}
 
-		map.setMonster(m); // Returns enemy to map
+		if(!impNull)
+			map.setMonster(m); // Returns enemy to map
+	
 	}
 
 	// <Go>	
@@ -600,6 +603,7 @@ function yourMove(){
 		else {
 			// if not then new room constructor
 			map = new Room(gordon.getPositionX(),gordon.getPositionY());
+			// should probably be map.setRoom
 		}
 		
 		//update the view

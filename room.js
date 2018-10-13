@@ -33,9 +33,13 @@ class Room {
 
 		if(xCoordinate == 0 && yCoordinate == 0){
 
-			this.items[0] = new Item("POTION",10,0,5);
-			this.items[1] = new Item("ELIXIR",10,0,5);
-			this.items[2] = new Item("TONIC",10,0,5);
+			this.items[0] = new Item("null",0,0,0);
+			this.items[1] = new Item("null",0,0,0);
+			this.items[2] = new Item("null",0,0,0);
+
+			this.items[0].setItem(this.items[0].makeItem(0)); // potion
+			this.items[1].setItem(this.items[1].makeItem(1)); // elixir
+			this.items[2].setItem(this.items[2].makeItem(2)); // tonic
 			this.items[3] = new Weapon(0);
 
 			this.description = "Thou cometh to thy parents house, which you left to fulfill your destiny.";
@@ -57,10 +61,9 @@ class Room {
 
 			// if look any direction and a monster before ye
 		
-			this.items[0] = new Item("POTION",10,0,5);
-			this.items[1] = new Item("ELIXIR",10,0,5);
-			this.items[2] = new Item("TONIC",10,0,5);
-
+			this.items[0] = new Item("null",0,0,0);
+			//this.items[0] = this.items[0].makeItem(0);
+			this.items[0].setItem(this.items[0].makeItem(0));
 			
 			this.description = "Thou findeth yeself in the woods. ";
 			this.description2 = "In the distance south is a great castle. ";
@@ -215,8 +218,11 @@ class Room {
 		this.items = [];
 
 		for(var x=0;x<map.getObjectCount();x++){
-			if(map.getItemAt(x).isItemWeapon())
-				this.items[x] = makeWeapon(WeaponEnum.AXE);
+			if(map.getItemAt(x).isItemWeapon()){
+				this.items[x] = new Weapon(3);
+				//this.items[x] = makeWeapon(WeaponEnum.AXE);
+				//will need to add this ENUM later
+			}
 			else
 				this.items[x] = new Item("null",0,0,0);
 

@@ -1,14 +1,3 @@
-// Check out this link:
-// https://stackoverflow.com/questions/287903/what-is-the-preferred-syntax-for-defining-enums-in-javascript
-let WeaponEnum = Object.freeze({
-	"DAGGER": 0,
-	"STAFF": 1,
-	"HAMMER": 2,
-	"AXE": 3,
-	"CATHERINE_SWORD": 4,
-});
-
-
 class Weapon extends Item {
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -90,17 +79,27 @@ class Weapon extends Item {
 		this.magicIncrease = w.getMagicIncrease();
 		this.isWeapon = w.isItemWeapon();
 	}
+
+	makeWeapon(weapon)
+	{
+		if (weapon in WeaponEnum)
+		{
+			return new Weapon(WeaponEnum[weapon]);
+		}
+		else
+		{
+			let err = weapon + " was not a valid weapon. Please refer to the WeaponEnum.";
+			throw err;
+		}
+	}
 }
 
-function makeWeapon(weapon)
-{
-	if (weapon in WeaponEnum)
-	{
-		return new Weapon(WeaponEnum[weapon]);
-	}
-	else
-	{
-		let err = weapon + " was not a valid weapon. Please refer to the WeaponEnum.";
-		throw err;
-	}
-}
+// Check out this link:
+// https://stackoverflow.com/questions/287903/what-is-the-preferred-syntax-for-defining-enums-in-javascript
+let WeaponEnum = Object.freeze({
+	"DAGGER": 0,
+	"STAFF": 1,
+	"HAMMER": 2,
+	"AXE": 3,
+	"CATHERINE_SWORD": 4,
+});
