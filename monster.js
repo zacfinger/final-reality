@@ -53,15 +53,28 @@ class Monster {
 		this.health = (num+1) * 3;
 		this.gold = Math.floor((Math.random() * ((num+1)*10)) + ((num+1)*3));
 
-		var inventoryLength = Math.floor(Math.random() * ((num+1)));
+		var inventoryLength = Math.floor(Math.random() * ((num+2)));
+		// need to fix random num generation
+		
 		this.inventory = [];
 
-		for(var x=0;x<=inventoryLength;x++){
-			if(Math.floor(Math.random() * 100)>= 20)
-				this.inventory[x] = new Item("ELIXIR",10,0,5);
+		for(var x=0;x<inventoryLength;x++){
+			if(Math.floor(Math.random() * 100)>= 90){
+				this.inventory[x] = new Item("null",0,0,0);
+				
+				this.inventory[x].setItem(
+					this.inventory[x].makeItem( ( Math.floor(Math.random() 
+						* (this.inventory[x].getTotalItemTypeNumber())))));
+				// this would probably look a lot nicer with an item factory class
+				// need to also fix random num generation it seems fucked up
+				// possibly might do this.inventory[x].setItem(ItemFactory.randomItem())
+			}
 			else
 				this.inventory[x] = new Weapon(1);
 		}
+
+
+		
 	}
 
 	getType(){
@@ -82,6 +95,31 @@ class Monster {
 		this.type = m.getType();
 		this.health = m.getHealth();
 		this.gold = m.getGold();
+
+
+		// might eventually want to do an InventoryClass
+		// since the below code is copied from player.setPlayer()
+		this.inventory = []; // reset inventory to empty
+
+		for(var x=0;x<m.getItemAmount();x++){
+			if(!m.getItem(x).isItemWeapon())
+				this.inventory[x] = new Item("null",0,0,0);
+			else
+				this.inventory[x] = new Weapon(3);
+
+			this.inventory[x].setItem(m.getItem(x));
+			// could possibly encapsulate the is Item/Weapon if statement
+			// within an InventoryClass in method setInventory
+		}
+
+	}
+
+	getItem(num){
+		return this.inventory[num];
+	}
+
+	getItemAmount(){
+		return this.inventory.length;
 	}
 
 	getName(){ // Returns monster's name

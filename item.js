@@ -17,6 +17,9 @@ class Item {
 		this.magicIncrease = magic;
 		this.price = price;
 		this.isWeapon = false;
+		this.itemTypeNumber = 3; 
+		// supposed to represent total number of item types
+		//  
 	}
 
 	makeItem(num){
@@ -30,6 +33,12 @@ class Item {
 		    default:
 		        return new Item("POTION",10,0,5);
 		}
+	}
+
+	// i recognize this adds some item factory functionality
+	// to item class. this should be its own class ItemFactory
+	getTotalItemTypeNumber(){
+		return this.itemTypeNumber;
 	}
 
 	isItemWeapon(){

@@ -1,7 +1,7 @@
 // 1000 YEAR KINGDOM command line javascript game
 //
 // (c) 2018 ZacFinger.com
-// v0.0.1.810.13
+// v0.0.1.810.13.1323
 
 // things left to do:
 // ------ ---- -- ---
@@ -58,6 +58,7 @@
 // https://webpack.js.org/concepts
 // https://wesbos.com/courses/
 // https://es6.io/
+// require.js
 
 // notes: http://www2.silverblade.net/cliches/
 // https://stackoverflow.com/questions/1640502/pc-speaker-beep-via-javascript
@@ -201,24 +202,24 @@ function help(){
 	// display the commands
 	output.innerHTML += "COMMAND LIST<br>" + "======= ====<br>"
 	+ "All commands in 1000 YEAR KINGDOM must be entered in verb-noun pairs.<br><br>"
-	+ "Verb" + printSpace(13) + "- Noun" + printSpace(15) + ": Function<br>"
-	+ "----------------" + printSpace(3) + "------------------" + printSpace(3) + "--------<br>"
-	+ "help" + printSpace(13) + "- me" + printSpace(17) + ": Accesses this list at any time during gameplay.<br>"
-	+ "scan" + printSpace(13) + "- environs" + printSpace(11) + ": Examine current location.<br>"
-	+ "go " + printSpace(14) + "- (north/south)" + printSpace(6) + ": Translates character in desired direction.<br>"
-	+ "taketh" + printSpace(11) + "- (name of weapon)" + printSpace(3) 
+	+ "Verb" + printSpace(13) + "Noun" + printSpace(15) + ": Function<br>"
+	+ "----------------" + printSpace(1) + "------------------" + printSpace(3) + "--------<br>"
+	+ "help" + printSpace(13) + "me" + printSpace(17) + ": Accesses this list at any time during gameplay.<br>"
+	+ "scan" + printSpace(13) + "environs" + printSpace(11) + ": Examine current location.<br>"
+	+ "go " + printSpace(14) + "(north/south)" + printSpace(6) + ": Translates character in desired direction.<br>"
+	+ "taketh" + printSpace(11) + "(name of weapon)" + printSpace(3) 
 	+ ": Allows user to add a weapon encountered in a room<br>"
-	+ "" + printSpace(40) + "to their inventory.<br>" + "scan" + printSpace(13) 
-	+ "- (name of monster)" + printSpace(2) + ": Allows user to examine monster.<br>"
-	+ "(name of weapon) - (name of object)" + printSpace(3) + ": Uses desired weapon against desired object.<br>"
-	+ printSpace(40) + "* Example: 'sword vine' allows user to<br>"
-	+ printSpace(42) + "use the SWORD to cut a stubborn VINE.<br>"
-	+ "(name of weapon) - (name of enemy)" + printSpace(4) + ": Uses desired weapon against desired enemy.<br>"
-	+ printSpace(40) + "* Example: 'dagger imp' allows the user<br>"
-	+ printSpace(42) + "to use the DAGGER against an IMP.<br>"
-	+ printSpace(40) + "* Example: 'sword goblin' allows the user<br>"
-	+ printSpace(42) + "to lance a GOBLIN with the SWORD.<br>"
-	+ "eval" + printSpace(13) + "- stats" + printSpace(14) 
+	+ "" + printSpace(38) + "to their inventory.<br>" + "scan" + printSpace(13) 
+	+ "(name of monster)" + printSpace(2) + ": Allows user to examine monster.<br>"
+	+ "(name of weapon) (name of object)" + printSpace(3) + ": Uses desired weapon against desired object.<br>"
+	+ printSpace(38) + "* Example: 'sword vine' allows user to<br>"
+	+ printSpace(40) + "use the SWORD to cut a stubborn VINE.<br>"
+	+ "(name of weapon) (name of enemy)" + printSpace(4) + ": Uses desired weapon against desired enemy.<br>"
+	+ printSpace(38) + "* Example: 'dagger imp' allows the user<br>"
+	+ printSpace(40) + "to use the DAGGER against an IMP.<br>"
+	+ printSpace(38) + "* Example: 'sword goblin' allows the user<br>"
+	+ printSpace(40) + "to lance a GOBLIN with the SWORD.<br>"
+	+ "eval" + printSpace(13) + "stats" + printSpace(14) 
 	+ ": Allows user to check health, armor and inventory.<br><br>"
 
 	// unsure whether to put story before or after command list in help menu
