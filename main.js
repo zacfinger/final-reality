@@ -1,7 +1,7 @@
 // 1000 YEAR KINGDOM command line javascript game
 //
 // (c) 2018 ZacFinger.com
-// v0.0.1.810.14
+// v0.0.1.810.14.17
 
 // things left to do:
 // ------ ---- -- ---
@@ -126,6 +126,7 @@ var gordon = new Player(100,0);
 var map = new Room(1,0);
 var tempMap = new Room(0,0);
 var firstScreen = true;
+var firstMonster = true;
 var tempPlayer = new Player(100,0);
 var myWorld = new World();
 var tempItems = [];
@@ -265,6 +266,7 @@ function setUpMap(room){
 			if(isVowel(m.getName().charAt(0)))
 				output.innerHTML += "n"
 			output.innerHTML += (" " + m.getName() + " standeths before ye.<br>"); // Player is reminded that this is so.
+			
 		}
 	}
 
@@ -327,8 +329,10 @@ function yourMove(){
 
 	// interpret the answer
 	// checks if first word is an object in the inventory
-	if( (gordon.hasVerb(verb) != -1) || (verb == "USE" && gordon.hasVerb(noun) != -1)) 	// If verb inflicted was an object
-	{							  														// found in the user's inventory
+	if( (gordon.hasVerb(verb) != -1) || (verb == "USE" && gordon.hasVerb(noun) != -1)) 	
+	// If verb inflicted was an object
+	// found in the user's inventory
+	{
 		if(verb == "USE" && gordon.hasVerb(noun) != -1){
 			verb = noun; // not sure this is a good idea
 			noun = "";
@@ -392,6 +396,10 @@ function yourMove(){
 			if(m.getHealth() <= 0) // If monster == teh deadz0r
 			{
 				output.innerHTML += "The " + m.getName() + " is vanquished.<br>";
+
+				if(firstMonster)
+					output.innerHTML += " What happenseth when thou shalt LOOKE at it?<br>";
+
 				map.destroyAllMonsters(); // Set monstercount to zero.
 			}
 			
@@ -401,6 +409,10 @@ function yourMove(){
 		else if(impNotNullAndIsDead && nounIsMonsterName){ 
 			// If monster is dead but the user insists on using verb on it
 			output.innerHTML += "Verily! Ye olde " + m.getName() + " already lieseth lifeless before ye.<br>";
+			if(firstMonster){
+				output.innerHTML += " Mighteth you wanteth to ye olde LOOT it of its belongings?<br>";
+				firstMonster = false;
+			}
 			badCommand = false;
 		}
 
@@ -494,7 +506,7 @@ function yourMove(){
 
 	// Allows user to examine environment.
 
-	else if(verb == "SCAN" || verb == "LOOK"){
+	else if(verb == "SCAN" || verb == "LOOK" || verb == "LOOKE"){
 		if(noun == "AROUND" || noun == "ENVIRONS" || noun == "ROOM" || noun == ""){
 			output.innerHTML += map.getDescription2() + "<br>"; // Describes current room at the user's request.
 
@@ -530,6 +542,12 @@ function yourMove(){
 		if(/*map.getMonsterAmount() > 0*/ map.getMonster() != null && noun == m.getName()) // If user looks at a monster
 		{
 			output.innerHTML += m.describeMonster() + "<br>";  // The monster is described
+
+			if(firstMonster && m.getHealth() <= 0){
+				output.innerHTML += " Mighteth you wanteth to ye olde LOOT it of its belongings?<br>";
+				firstMonster = false;
+			}
+
 			badCommand = false;
 		}
 	}
