@@ -58,6 +58,7 @@ class Monster {
 		
 		this.inventory = [];
 
+/*
 		for(var x=0;x<inventoryLength;x++){
 			if(Math.floor(Math.random() * 100)>= 20){
 				this.inventory[x] = new Item("null",0,0,0);
@@ -71,7 +72,7 @@ class Monster {
 			}
 			else
 				this.inventory[x] = new Weapon(1);
-		}
+		}*/
 
 		
 	}
@@ -153,17 +154,23 @@ class Monster {
 	describeMonster(){ 	// Describes the wretched beast
 						// acts as "print" method
 						// not "get" method
-		var str = this.description;
+		var str = "";
+
+		if(this.health > 0)
+			str += this.description;
 
 		if(this.inventory.length > 0 || this.gold > 0){
+			if(this.health <= 0)
+				str += "Thou examineth ye olde lifeless corpse of the " + this.name + ". ";
+
 			str += "<br>It wields ";
 
 			if(this.inventory.length > 0){
 				for(var x=0;x<this.inventory.length;x++){
 
-					if(x == this.inventory.length-1){
+					if(x == this.inventory.length - 1){
 						// if item is the last or only item
-						str += " ye olde"
+						str += "ye olde"
 					}
 					else {
 						str += "a";
@@ -174,16 +181,19 @@ class Monster {
 					
 					str += " " + this.inventory[x].getName();
 
-					if(x + 1 < this.inventory.length)
+					if(x + 1 < this.inventory.length) // if there is yet more
 						str += ", ";
 
-					if(x == this.inventory.length - 1 || this.gold > 0)
-					{
-						str += " and"
+					if((x + 1 == this.inventory.length - 1 && this.gold == 0) || 
+						(x == this.inventory.length -1 && this.gold > 0))
+					{	// if next item is last item or gold is extant
+						str += " and "
 					}
+
 				}
 
-				str += " ";
+				if(x != this.inventory.length - 1 && this.gold != 0)
+					str += " ";
 			}
 
 			if(this.gold >0){

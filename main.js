@@ -1,7 +1,7 @@
 // 1000 YEAR KINGDOM command line javascript game
 //
 // (c) 2018 ZacFinger.com
-// v0.0.1.810.13.14
+// v0.0.1.810.14
 
 // things left to do:
 // ------ ---- -- ---
@@ -525,7 +525,9 @@ function yourMove(){
 			badCommand = false;
 		}
 
-		if(map.getMonsterAmount() > 0 && noun == m.getName()) // If user looks at a monster
+		// TODO: refactor code so that map.getMonsterAmount >= 1 && monster.getHealth() <= 0 is equivalent to a dead monster
+		// map.getMonsterAmount == 0 && monster.getHealth of any value would be an empty room, not a room with a dead monster
+		if(/*map.getMonsterAmount() > 0*/ map.getMonster() != null && noun == m.getName()) // If user looks at a monster
 		{
 			output.innerHTML += m.describeMonster() + "<br>";  // The monster is described
 			badCommand = false;
