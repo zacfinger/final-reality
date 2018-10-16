@@ -58,7 +58,6 @@ class Monster {
 		
 		this.inventory = [];
 
-/*
 		for(var x=0;x<inventoryLength;x++){
 			if(Math.floor(Math.random() * 100)>= 20){
 				this.inventory[x] = new Item("null",0,0,0);
@@ -72,7 +71,7 @@ class Monster {
 			}
 			else
 				this.inventory[x] = new Weapon(1);
-		}*/
+		}
 
 		
 	}
@@ -112,6 +111,10 @@ class Monster {
 			// within an InventoryClass in method setInventory
 		}
 
+	}
+
+	resetInventory(){
+		this.inventory = [];
 	}
 
 	getItem(num){
@@ -159,10 +162,11 @@ class Monster {
 		if(this.health > 0)
 			str += this.description;
 
-		if(this.inventory.length > 0 || this.gold > 0){
-			if(this.health <= 0)
+		if(this.health <= 0)
 				str += "Thou examineth ye olde lifeless corpse of the " + this.name + ". ";
 
+		if(this.inventory.length > 0 || this.gold > 0){
+			
 			str += "<br>It wields ";
 
 			if(this.inventory.length > 0){
@@ -201,6 +205,8 @@ class Monster {
 			}
 
 			str += "."
+		} else {
+			str += "<br>Not much else to see here...";
 		}
 
 		return str;

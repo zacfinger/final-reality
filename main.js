@@ -1,44 +1,54 @@
-// 1000 YEAR KINGDOM command line javascript game
-//
-// (c) 2018 ZacFinger.com
-// v0.0.1.810.14.17
+// 1000YEARKINGDOM.COM
+// JavaScipt Interactive Fiction - a fantasy story.
+// Copyright (c) 2018 ZacFinger.com. All rights reserved.
+// https://github.com/zacfinger/final-reality
+var versionNumber = "v 0.0.1.810.15.23";
 
 // things left to do:
 // ------ ---- -- ---
-// array of monsters in rooms
+
+// inventory class
+// manages user inventory
+// manages equipped and equippable items
 // clean up item and weapon classes
 // // rename item methods to be weapon method names
 // weapon methods must be inherited from item
+// apply factory pattern
+// make items more robust (i.e., stats for items)
+
+// // user can use word "loot" to loot monster
+// // and add items to inventory
+
+// user types eval stats
+// from status screen user can equip other items
+// using "kill" to use currentyl equipped item
+// name of item as verb will work if item equipped
+// if item not equipped and you type it you should complain you have to equip item first
+// if user users weapon on self it takes damage
+
+// monster factory
+// "mob" array of monsters in rooms
+// if monster is dead and you enter room 
+// you encounter a goblins dead body
+
 // set and get methods in player, room, world, etc must work
 // world and player must be persistent as user changes rooms
-// apply factory pattern
-//
-// user must be able to use potions, elixirs, etc
-// if user uses potion on monster the monster gains health
-// if user uses potion on self it gains health
-// if user users weapon on self it takes damage
-// if user uses weapon on monster, monster takes dmg
-// user uses word "kill" to use currently equipped item
-//
-// make monsters have gold and items
-// user can use word "loot" to loot monster
-// you encounter a goblins dead body
-// 
+
 // update rooms so that obstructions have directionality
 // make west and east work
+// if user going forward = going south let "go forward/backward" work
 //
 // add large enough array in myWorld for all rooms to exist
 // // initialize large enough array
 // // room.js contains array of all possible rooms
-// // // pull rooms and monsters programmatically from JSON file?
+// // // use ajax pull rooms and monsters programmatically from JSON file?
 // https://www.w3schools.com/jquery/ajax_ajax.asp
+//
+// // add non violent NPCs
 //
 // firstScreen will not work if you are killed by the IMP in map 1,0
 // fix checking gordon health > 0 when monster attacks breaks functionality
 // 
-// add non violent NPCs
-// 
-// make items more robust (i.e., stats for items)
 // make INN in town restore health
 // make shop where you can buy items for the castle
 //
@@ -47,10 +57,10 @@
 // 
 // clean up/document/comment main.js/main.css/index.html 
 // make opening screen (first load up) block letter title screen
-// add copyright info to title screen
+// add copyright info to title screen this will take us v0.0.2
 //
 // test edge cases
-//
+// will be 0.0.2 when above are realized
 
 // https://babeljs.io/
 // https://webpack.js.org/
@@ -69,25 +79,6 @@
 
 ///////////////////////////
 
-// possible names
-// -------- -----
-// chairman of the rings // 2 results
-// premier of the rings // 0 results
-// president of the rings // 21 results
-// citizen of the rings // 1 result
-// legend of marie // 315000 results
-// final reality // 61500 results
-// peasant of the rings // 0 results
-// bourgeoisie of the rings // 0 results
-// bourgeois of the rings // 0 results
-// comrade of the rings // 
-
-///////////////////////////
-
-// kill goblin
-// loot goblin
-// "look at" goblin
-///////////////////////////
 
 /*
 you encountereth ye olde parish of st. dennis. it has a cemetary and it is constructed in the gothic architectural style. 
@@ -108,17 +99,13 @@ in the city:
 * peasant: this is lumeria, the city of lights
 * peasant: please! save the princess!
 * aristocratic girl: i am arylon! the dancer!
-* cleric: st. joan left the CATHERINE SWORD at the parish for safekeeping 360 years ago, before she was captured by the orcs.
+* cleric: it is said SAINT JOAN left the CATHERINE SWORD at the parish for safekeeping 360 years ago, 
+	before she was captured by the orcs.
 * guard: the king was sure that one day the HERO <name> will come to save the princess, just as in st. joan's prophecy
 * guard: the king was looking for <name> you do not happen to be them do you?
 * guard: robespierre used to be a good wizard, until...
 
 
-
-
-
-
-guards 
 */
 
 // define all the objects
@@ -140,7 +127,13 @@ gordon.setY(map.getY());
 var output = document.getElementById("container");  // Get the content of the container element 
 var answer = document.getElementById("answer"); // Get the answer field
 
-//output.innerHTML = "1000 YEAR KINGDOM<br>(c) 2018 ZacFinger.com<br>v0.0.1.81<br><br>";
+output.innerHTML = 
+"1000YearKingdom.com<br>"
++ "JavaScipt Interactive Fiction - a fantasy story.<br>"
++ "Copyright(c) 2018 ZacFinger.com. All rights reserved.<br>"
++ "https://github.com/zacfinger/final-reality<br>"
++ versionNumber + "<br><br>";
+
 
 //set up view
 answer.focus(); // autofocus on input field
@@ -208,12 +201,12 @@ function help(){
 	+ "All commands in 1000 YEAR KINGDOM must be entered in verb-noun pairs.<br><br>"
 	+ "Verb" + printSpace(13) + "Noun" + printSpace(15) + ": Function<br>"
 	+ "----------------" + printSpace(1) + "------------------" + printSpace(3) + "--------<br>"
-	+ "help" + printSpace(13) + "me" + printSpace(17) + ": Accesses this list at any time during gameplay.<br>"
-	+ "scan" + printSpace(13) + "environs" + printSpace(11) + ": Examine current location.<br>"
 	+ "go " + printSpace(14) + "(north/south)" + printSpace(6) + ": Translates character in desired direction.<br>"
-	+ "taketh" + printSpace(11) + "(name of weapon)" + printSpace(3) 
-	+ ": Allows user to add a weapon encountered in a room<br>"
-	+ "" + printSpace(38) + "to their inventory.<br>" + "scan" + printSpace(13) 
+	+ "look" + printSpace(13) + "around" + printSpace(13) + ": Examine current location. <br>"
+	//+ "scan" + printSpace(13) + "environs" + printSpace(11) + "<br>"
+	+ "take" + printSpace(13) + "(name of item)" + printSpace(5) 
+	+ ": Allows user to add an item encountered in a room<br>"
+	+ "" + printSpace(38) + "to their inventory.<br>" + "look" + printSpace(13) 
 	+ "(name of monster)" + printSpace(2) + ": Allows user to examine monster.<br>"
 	+ "(name of weapon) (name of object)" + printSpace(3) + ": Uses desired weapon against desired object.<br>"
 	+ printSpace(38) + "* Example: 'sword vine' allows user to<br>"
@@ -223,8 +216,9 @@ function help(){
 	+ printSpace(40) + "to use the DAGGER against an IMP.<br>"
 	+ printSpace(38) + "* Example: 'sword goblin' allows the user<br>"
 	+ printSpace(40) + "to lance a GOBLIN with the SWORD.<br>"
-	+ "eval" + printSpace(13) + "stats" + printSpace(14) 
-	+ ": Allows user to check health, armor and inventory.<br><br>"
+	+ "check" + printSpace(12) + "stats" + printSpace(14) 
+	+ ": Allows user to check health, armor and inventory.<br>"
+	+ "help" + printSpace(32) + ": Accesses this list at any time during gameplay.<br><br>"
 
 	// unsure whether to put story before or after command list in help menu
 	
@@ -267,6 +261,13 @@ function setUpMap(room){
 				output.innerHTML += "n"
 			output.innerHTML += (" " + m.getName() + " standeths before ye.<br>"); // Player is reminded that this is so.
 			
+		}
+		else {
+			output.innerHTML += "Ye olde lifeless corpse of the " + m.getName() + " lies before ye.<br>";
+			if(firstMonster){
+				output.innerHTML += "Mighteth you wanteth to LOOT it of its belongings?<br>";
+				firstMonster = false;
+			}
 		}
 	}
 
@@ -565,11 +566,84 @@ function yourMove(){
 
 	}
 
+	else if((verb == "LOOT" || (verb == "SEARCH" && noun == m.getName())) && m != null){
+		// what about if verb == loot and noun == monster that is not there
+		// what about if monster is null
+
+		if(firstMonster){
+			firstMonser = false;
+		}
+
+		if(m.getHealth() > 0){
+			output.innerHTML += "The " + m.getName() + " parries.<br>"
+		}
+		else {
+			output.innerHTML += "Thou searcheth the body of the " + m.getName() + "<br>";
+
+			if(m.getItemAmount() > 0 || m.getGold() > 0){
+				output.innerHTML += "You taketh for yeself ";
+
+				// basically re-used a bunch of code in monster.js
+				// there should probably be an inventory class
+				for(var x=0;x<m.getItemAmount();x++){
+
+						if(x == m.getItemAmount() - 1){
+							// if item is the last or only item
+							output.innerHTML += "ye olde"
+						}
+						else {
+							output.innerHTML += "a";
+
+							if(isVowel(m.getItem(x).getName().charAt(0)))
+								output.innerHTML += "n"
+						}
+						
+						output.innerHTML += " " + m.getItem(x).getName();
+						gordon.receiveItem(m.getItem(x));
+
+						if(x + 1 < m.getItemAmount()) // if there is yet more
+							output.innerHTML += ", ";
+
+						if((x + 1 == m.getItemAmount() - 1 && m.getGold() == 0) || 
+							(x == m.getItemAmount() -1 && m.getGold() > 0))
+						{	// if next item is last item or gold is extant
+							output.innerHTML += " and "
+						}
+
+						if(x == m.getItemAmount() - 1){
+							m.resetInventory();
+						}
+				}
+
+				if(x != m.getItemAmount() - 1 && m.getGold() != 0)
+					output.innerHTML += " ";
+
+
+				if(m.getGold() >0){
+					output.innerHTML += m.getGold() + " GP";
+					gordon.addGold(m.getGold());
+					m.setGold(0);
+				}
+
+				output.innerHTML += "<br>";
+			}
+			else {
+				output.innerHTML += "It has nothing upon its person, save possibly for plague.<br>";
+			}
+
+			
+		}
+
+		map.setMonster(m);
+		badCommand = false;
+	}
+
 	// Shows stats
 	else if((verb == "EVAL" || verb == "CHECK") &&
 		(noun == "STATISTICS" || noun == "STATS" || noun == "")){
 		output.innerHTML += gordon.printStatus();
 		badCommand = false;
+		// from this screen you can type 'equip' and the name of item to equip other weapons
 	}
 
 	// Shows help screen with list of commands
@@ -596,7 +670,7 @@ function yourMove(){
 		output.innerHTML += ": Bad command or non-extant object.<br>" + "Type 'help' for help.<br>";
 	}
 
-	if(map.getMonsterAmount() > 0){ // If monsters are extant.
+	if(map.getMonsterAmount() > 0 && verb != "HELP"){ // If monsters are extant.
 			
 			output.innerHTML += m.attackString() + "<br>";
 			output.innerHTML += "Thou takest " + m.getDamage() + " damage.<br>";

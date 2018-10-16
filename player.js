@@ -224,6 +224,12 @@ class Player {
 		this.removeItem(num);
 	}
 
-	
+	setGold(num){
+		this.gold = num;
+	}
+
+	addGold(num){
+		this.gold += num;
+	}
 
 }

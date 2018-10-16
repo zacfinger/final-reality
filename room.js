@@ -61,9 +61,11 @@ class Room {
 
 			// if look any direction and a monster before ye
 		
-			this.items[0] = new Item("null",0,0,0);
+			//this.items[0] = new Item("null",0,0,0);
 			//this.items[0] = this.items[0].makeItem(0);
-			this.items[0].setItem(this.items[0].makeItem(0));
+			//this.items[0].setItem(this.items[0].makeItem(0));
+
+			this.items = [];
 			
 			this.description = "Thou findeth yeself in the woods. ";
 			this.description2 = "In the distance south is a great castle. ";
