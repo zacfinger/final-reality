@@ -1,11 +1,33 @@
-// 1000YEARKINGDOM.COM
-// JavaScipt Interactive Fiction - a fantasy story.
-// Copyright (c) 2018 ZacFinger.com. All rights reserved.
-// https://github.com/zacfinger/final-reality
-var versionNumber = "v 0.0.1.810.15.23";
+var versionNumber = 
+"1000YearKingdom.com<br>"
++ "JavaScipt Interactive Fiction - a fantasy story.<br>"
++ "Copyright(c) 2018 ZacFinger.com. All rights reserved.<br>"
++ "https://github.com/zacfinger/final-reality<br>"
++ "v 0.0.1.810.29.22<br><br>";
 
 // things left to do:
 // ------ ---- -- ---
+// fix monster persistence issue when user dies and tempMap is loaded
+// // recreate: kill imp, climb log, kill self, imp is still there
+// // // // // //
+// commands to implement:
+// 'kill imp' (when item is equipped)
+// 'turn right'
+// 'look at imp'
+
+// model and view are mixed in various classes
+// example item.js contains healstring which prints a string
+// displaying what is happening but also modifies model
+
+// how will itemfactory and weaponfactory work if
+// player.js is called in html before itemfactory.js
+// considering player.js will need a weaponfactory in constructor
+
+// plan: instantiate an item factory in main.js
+// console.log the value of itemFactory.makeItem(ItemEnum.POTION)
+// if it works then define itemFactory i as a global variable
+// which can therefore be called in classes like player and monster
+// will need to test to make sure refactoring is a success
 
 // inventory class
 // manages user inventory
@@ -16,9 +38,6 @@ var versionNumber = "v 0.0.1.810.15.23";
 // apply factory pattern
 // make items more robust (i.e., stats for items)
 
-// // user can use word "loot" to loot monster
-// // and add items to inventory
-
 // user types eval stats
 // from status screen user can equip other items
 // using "kill" to use currentyl equipped item
@@ -28,8 +47,8 @@ var versionNumber = "v 0.0.1.810.15.23";
 
 // monster factory
 // "mob" array of monsters in rooms
-// if monster is dead and you enter room 
-// you encounter a goblins dead body
+// if you go north or south and monster is still there
+// // likelihood you get away some formula based on luck
 
 // set and get methods in player, room, world, etc must work
 // world and player must be persistent as user changes rooms
@@ -77,6 +96,10 @@ var versionNumber = "v 0.0.1.810.15.23";
 // https://www.ffcompendium.com/h/faqs/ff1bsiron.txt
 // https://strategywiki.org/wiki/Final_Fantasy/Items
 
+// inversion of control
+// all the object oriented concepts: polymorphism, reflection, inheritance, encapsulation
+// https://medium.freecodecamp.org/object-oriented-programming-concepts-21bb035f7260
+
 ///////////////////////////
 
 
@@ -109,6 +132,7 @@ in the city:
 */
 
 // define all the objects
+var ifactory = new itemFactory(); // not sure if this will work
 var gordon = new Player(100,0);
 var map = new Room(1,0);
 var tempMap = new Room(0,0);
@@ -127,12 +151,7 @@ gordon.setY(map.getY());
 var output = document.getElementById("container");  // Get the content of the container element 
 var answer = document.getElementById("answer"); // Get the answer field
 
-output.innerHTML = 
-"1000YearKingdom.com<br>"
-+ "JavaScipt Interactive Fiction - a fantasy story.<br>"
-+ "Copyright(c) 2018 ZacFinger.com. All rights reserved.<br>"
-+ "https://github.com/zacfinger/final-reality<br>"
-+ versionNumber + "<br><br>";
+output.innerHTML = versionNumber;
 
 
 //set up view
@@ -246,7 +265,7 @@ function setUpMap(room){
 
 	if(room.getMonster() != null){ 		// If monsters are extant
 										// but not necessarily alive
-		
+
 		if(firstScreen){ // hard coded, this is probably bad
 			output.innerHTML += "Thou haveth upon yeself only thy DAGGER.<br>"+
 			"Verily something approaches from yonder umbrage!<br>";
@@ -612,6 +631,7 @@ function yourMove(){
 
 						if(x == m.getItemAmount() - 1){
 							m.resetInventory();
+							// should this go outside the for loop?
 						}
 				}
 
@@ -620,6 +640,7 @@ function yourMove(){
 
 
 				if(m.getGold() >0){
+					// of gold thou has gained 120 GP
 					output.innerHTML += m.getGold() + " GP";
 					gordon.addGold(m.getGold());
 					m.setGold(0);
@@ -713,6 +734,12 @@ function yourMove(){
 	}
 
 }
+
+console.log(gordon.testItem);
+// test that item factory works when 
+// itemfactory object is instanatiated in main.js
+// but called in player class
+// spoiler: it does
 
 // set up new game
 setUpMap(map);

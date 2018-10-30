@@ -39,6 +39,9 @@ class Player {
 		this.positionX = 0;					// First map
 		this.positionY = 0;
 		this.gold = 10;
+
+		// testing itemFactory
+		this.testItem = ifactory.makeItem(ItemEnum.ELIXIIR);
 	}
 
 	setX(num){
@@ -157,6 +160,8 @@ class Player {
 		return this.inventory[x];
 	}
 
+	// could probably modify so that it also accepts an int for inventory index
+	// which is then called in setplayer
 	receiveItem(thing){
 		if(thing.isItemWeapon())
 			this.inventory[this.inventory.length] = new Weapon(3);

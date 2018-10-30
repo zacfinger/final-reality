@@ -53,7 +53,7 @@ class Room {
 			this.obstructionverb = "CLIMB";
 			this.obstructiondescription = "There is a LOG blocking thy path. Perhaps thou shalt CLIMB it.";
 			this.obstructiondamage = 0;
-			//this.m = new Monster(0);
+			this.m = null;
 		}
 
 		if(xCoordinate == 1 && yCoordinate == 0){ // Map 0 of new game
@@ -96,6 +96,7 @@ class Room {
 			//this.m = new Monster(0);
 			//this.health = 0;
 			this.armor = 0;
+			this.m = null;
 		}
 
 		this.x = xCoordinate;
@@ -210,12 +211,14 @@ class Room {
 		this.obstructiondescription = map.describeObstruction();
 		this.obstructiondamage = map.getDamage();
 		this.armor = map.getArmor();
+		this.m = null;
 
 		if(map.getMonster() != null){
 			this.m = new Monster(0);
 			this.m.setMonster(map.getMonster());
 
 		}
+
 		
 		this.items = [];
 

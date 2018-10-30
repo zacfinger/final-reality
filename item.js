@@ -22,6 +22,8 @@ class Item {
 		//  
 	}
 
+	// this will need to be removed from item.js and everywhere it is called
+	// replaced by itemfactory.js
 	makeItem(num){
 		switch(num) {
 		    case 1:
