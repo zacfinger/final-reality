@@ -3,7 +3,7 @@ var versionNumber =
 + "JavaScipt Interactive Fiction - a fantasy story.<br>"
 + "Copyright(c) 2018 ZacFinger.com. All rights reserved.<br>"
 + "https://github.com/zacfinger/final-reality<br>"
-+ "v 0.0.1.810.29.22<br><br>";
++ "v 0.0.1.810.30.2330<br><br>";
 
 // things left to do:
 // ------ ---- -- ---
@@ -23,10 +23,10 @@ var versionNumber =
 // player.js is called in html before itemfactory.js
 // considering player.js will need a weaponfactory in constructor
 
-// plan: instantiate an item factory in main.js
-// console.log the value of itemFactory.makeItem(ItemEnum.POTION)
-// if it works then define itemFactory i as a global variable
-// which can therefore be called in classes like player and monster
+// plan: instantiate a weaponFactory in main.js
+// console.log the value of weaponFactory.makeItem(WeaponEnum.DAGGER)
+// if it works then define wFactory as a global variable
+// which can therefore be called in classes like player, monster and room
 // will need to test to make sure refactoring is a success
 
 // inventory class
@@ -734,12 +734,6 @@ function yourMove(){
 	}
 
 }
-
-console.log(gordon.testItem);
-// test that item factory works when 
-// itemfactory object is instanatiated in main.js
-// but called in player class
-// spoiler: it does
 
 // set up new game
 setUpMap(map);

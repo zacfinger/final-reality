@@ -23,6 +23,12 @@ class itemFactory {
 	getTotalItemTypeNumber(){
 		return this.itemTypeNumber;
 	}
+
+	// should be removed from monster.js
+	makeRandomItem(){
+		var num = (Math.floor(Math.random() * (this.itemTypeNumber)));
+		return this.makeItem(num);
+	}
 }
 
 let ItemEnum = Object.freeze({

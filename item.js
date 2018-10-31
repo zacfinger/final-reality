@@ -22,7 +22,7 @@ class Item {
 		//  
 	}
 
-	// this will need to be removed from item.js and everywhere it is called
+	/* this will need to be removed from item.js and everywhere it is called
 	// replaced by itemfactory.js
 	makeItem(num){
 		switch(num) {
@@ -35,7 +35,7 @@ class Item {
 		    default:
 		        return new Item("POTION",10,0,5);
 		}
-	}
+	}*/
 
 	// i recognize this adds some item factory functionality
 	// to item class. this should be its own class ItemFactory

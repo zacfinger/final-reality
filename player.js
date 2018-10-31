@@ -40,8 +40,6 @@ class Player {
 		this.positionY = 0;
 		this.gold = 10;
 
-		// testing itemFactory
-		this.testItem = ifactory.makeItem(ItemEnum.ELIXIIR);
 	}
 
 	setX(num){

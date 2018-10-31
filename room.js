@@ -37,9 +37,10 @@ class Room {
 			this.items[1] = new Item("null",0,0,0);
 			this.items[2] = new Item("null",0,0,0);
 
-			this.items[0].setItem(this.items[0].makeItem(0)); // potion
-			this.items[1].setItem(this.items[1].makeItem(1)); // elixir
-			this.items[2].setItem(this.items[2].makeItem(2)); // tonic
+			this.items[0].setItem(ifactory.makeItem(ItemEnum.POTION));
+			this.items[1].setItem(ifactory.makeItem(ItemEnum.ELIXIR));
+			this.items[2].setItem(ifactory.makeItem(ItemEnum.TONIC));
+
 			this.items[3] = new Weapon(0);
 
 			this.description = "Thou cometh to thy parents house, which you left to fulfill your destiny.";

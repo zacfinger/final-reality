@@ -61,13 +61,8 @@ class Monster {
 		for(var x=0;x<inventoryLength;x++){
 			if(Math.floor(Math.random() * 100)>= 20){
 				this.inventory[x] = new Item("null",0,0,0);
+				this.inventory[x].setItem(ifactory.makeRandomItem());
 				
-				this.inventory[x].setItem(
-					this.inventory[x].makeItem( ( Math.floor(Math.random() 
-						* (this.inventory[x].getTotalItemTypeNumber())))));
-				// this would probably look a lot nicer with an item factory class
-				// need to also fix random num generation it seems fucked up
-				// possibly might do this.inventory[x].setItem(ItemFactory.randomItem())
 			}
 			else
 				this.inventory[x] = new Weapon(1);
